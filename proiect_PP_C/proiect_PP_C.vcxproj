@@ -144,6 +144,7 @@
   <ItemGroup>
     <Text Include="clasament.txt" />
     <Text Include="listaIntrebari.txt" />
+    <Text Include="mulraspIntrebari.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

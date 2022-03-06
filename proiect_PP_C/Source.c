@@ -21,9 +21,15 @@ void transformaInLitereMari(char s[]);
 void afisareClasament();
 int cautare(char s[]);
 void alcatuireClasament();
+void tipIntrebare();
+void tipIntrebareQ();
+void adaugareRaspunsMultiplu();
+void stocareRaspunsMultiplu();
+void adaugareIntrebariGrila();
 
 FILE* fptr;
 FILE* cls;
+FILE* multiplu;
 
 struct questions {
     char intrebare[150];
@@ -36,6 +42,13 @@ struct answers {
     struct answers* nextt;
 };
 struct answers* headd = NULL;
+
+struct grila {
+    char intrebare[150];
+    char raspuns[150];
+    struct grila* urm;
+};
+struct grila* cap = NULL;
 
 struct ranking {
     char nume[50];
@@ -86,17 +99,25 @@ void stocareIntrebari()
         caracter = fgetc(fptr);
     }
     fclose(fptr);
+
+    stocareRaspunsMultiplu();
     adaugIntrebareInLista(listaIntrebari, t);
     adaugRaspunsInLista(listaRaspunsuri, n);
+    adaugareIntrebariGrila();
 
-    //    for(int i=0;i<t;i++)
-    //        printf("%s\n",listaIntrebari[i]);
-    //
-    //    printf("\n");
-    //
-    //    for(int i=0;i<n;i++)
-    //        printf("%s\n",listaRaspunsuri[i]);
-
+    /*struct questions* parcurge = head;
+    while((*parcurge).next!=NULL)
+    {
+        printf("%s\n",(*parcurge).intrebare);
+        parcurge=(*parcurge).next;
+    }*/
+    /*struct answers* parcurge = headd;
+    while (parcurge != NULL)
+    {
+        printf("%s\n", (*parcurge).raspuns);
+        parcurge = (*parcurge).nextt;
+    }
+    exit(0);*/
 }
 
 void adaugIntrebareInLista(char listaIntrebari[][150], int t)
@@ -119,12 +140,6 @@ void adaugIntrebareInLista(char listaIntrebari[][150], int t)
             (*elem).next = elemNou;
         }
     }
-    //    struct questions *parcurge=head;
-    //    while((*parcurge).next!=NULL)
-    //    {
-    //        printf("%s\n",(*parcurge).intrebare);
-    //        parcurge=(*parcurge).next;
-    //    }
 }
 
 void adaugRaspunsInLista(char listaRaspunsuri[][150], int n)
@@ -148,12 +163,6 @@ void adaugRaspunsInLista(char listaRaspunsuri[][150], int n)
             (*elem).nextt = elemNou;
         }
     }
-    //    struct answers *parcurge=headd;
-    //    while(parcurge!=NULL)
-    //    {
-    //        printf("%s\n",parcurge->raspuns);
-    //        parcurge=parcurge->nextt;
-    //    }
 }
 
 void adaugareIntrebareInFisier()
@@ -176,6 +185,71 @@ void adaugareIntrebareInFisier()
     printf("Intrebarea a fost adaugata\n");
 }
 
+void adaugareIntrebariGrila()
+{
+    struct grila* elemGrila = cap;
+
+    while (elemGrila != NULL)
+    {
+        struct questions* elemRaspuns = (struct questions*)malloc(sizeof(struct questions));
+        struct answers* elemIntrebare = (struct answers*)malloc(sizeof(struct answers));
+
+        strcpy((*elemRaspuns).intrebare, (*elemGrila).intrebare);
+        contorIntrebari++;
+        (*elemRaspuns).next = NULL;
+        if (head == NULL)
+        {
+            head = elemRaspuns;
+        }
+        else {
+            struct questions* aux = head;
+            while ((*aux).next != NULL)
+            {
+                aux = (*aux).next;
+            }
+            (*aux).next = elemRaspuns;
+        }
+
+        char rasp[150],variante[150];
+        int i = 0, k = 0,poz=0;
+        memset(rasp, 0, 150);
+        memset(variante, 0, 150);
+        strcpy(rasp, (*elemGrila).raspuns);
+        i = strlen(rasp) - 2;
+        while(1)
+        { 
+            if (rasp[i] == '\n')
+                break;
+            i--;
+            poz = i;
+        }
+        for (int j = 0; j <=poz; j++)
+        {
+            variante[k++] = rasp[j];
+        }
+        variante[k - 1] = '\0';
+        variante[k] = '\0';
+
+        strcpy((*elemIntrebare).raspuns, variante);
+        (*elemIntrebare).nextt = NULL;
+        if (headd == NULL)
+        {
+            headd = elemIntrebare;
+        }
+        else
+        {
+            struct answers* aux = headd;
+            while ((*aux).nextt != NULL)
+            {
+                aux = (*aux).nextt;
+            }
+            (*aux).nextt = elemIntrebare;
+        }
+
+        elemGrila = (*elemGrila).urm;
+    }
+}
+
 void optiuniQuiz()
 {
     printf("1. Incepe quiz (tasta 1)\n");
@@ -191,13 +265,35 @@ void transformaInLitereMari(char s[])
         s[i] = tolower(s[i]);
 }
 
+void extrageRaspunsCorect(char d[], char s[], int* k)
+{
+    memset(s, 0, 150);
+    int i = strlen(d) - 2;
+    while (1)
+    {
+        if (d[i] == '\n')
+            break;
+        else
+            s[(*k)++] = d[i];
+        i--;
+    }
+    s[(*k)] = '\0';
+    for (int i = 0; i < (*k) / 2; i++)
+    {
+        char aux = s[i];
+        s[i] = s[(*k) - i - 1];
+        s[(*k) - i - 1] = aux;
+    }
+}
+
 int quiz()
 {
     getchar();
     struct questions* a = head;
     struct answers* b = headd;
-    int contor = 0, cateIntrebari = 0;
-    while (a != NULL && b != NULL)
+    struct grila* c = cap;
+    int contor = 0, cateIntrebari = 0,ok = 0;
+    while (a != NULL && b != NULL && c!=NULL)
     {
         //printf("%s\n",(*a).intrebare);
         //printf("%s\n",(*b).raspuns);
@@ -205,21 +301,75 @@ int quiz()
         char rasp[150], aux[150];
        
         printf("%s\n", (*a).intrebare);
+        if (strcmp((*a).intrebare, (*c).intrebare) == 0)
+        {
+            ok = 1;
+            char auxx[150];
+            memset(auxx, 0, 150);
+            strcpy(auxx, (*b).raspuns);
+            int val = 0;
+            int ok1 = 0, ok2 = 0;
+            int i = 0;
+            while (i < strlen(auxx))
+            {
+                if (i == 0)
+                    printf("a)");
+                if ((auxx[i] >= '0' && auxx[i] <= '9') || (auxx[i] >= 'a' && auxx[i] <= 'z') || (auxx[i] >= 'A' && auxx[i] <= 'Z'))
+                    printf("%c", auxx[i]);
+                if (auxx[i] == '\n')
+                    printf("\n");
+                if (auxx[i] == ' ')
+                    printf(" ");
+                if (auxx[i] == '\n' && ok1==0)
+                {
+                    ok1 = 1;
+                    printf("b)");
+                }
+                else
+                {
+                    if (auxx[i] == '\n' && ok1 == 1 && ok2 == 0)
+                    {
+                        ok2 = 0;
+                        printf("c)");
+                    }
+                }
+                i += 1;
+            }
+            printf("\n");
+        }
         //fflush(stdin);
 
         //fgets(rasp,150,stdin);
         gets(rasp);
-        strcpy(aux, (*b).raspuns);
+        char auxx[150];
+        int n = 0;
+        if (ok == 0) {
+            strcpy(aux, (*b).raspuns);
+            transformaInLitereMari(aux);
+        }
+        else {
+            
+            extrageRaspunsCorect((*c).raspuns, auxx, &n);
+            transformaInLitereMari(auxx);
+        }
 
         transformaInLitereMari(rasp);
-        transformaInLitereMari(aux);
+        
+        if (ok == 0) {
+            if (strcmp(aux, rasp) == 0)
+                contor += 1;
+        }
+        else
+        {
+            if (strcmp(auxx, rasp) == 0)
+                contor += 1;
+        }
 
-        //printf("%d %d\n\n",strlen(rasp),strlen(aux));
-
-        if (strcmp(aux, rasp) == 0)
-            contor += 1;
         a = (*a).next;
         b = (*b).nextt;
+        if (ok == 1) {
+            c = (*c).urm;
+        }
         cateIntrebari += 1;
     }
     return contor;
@@ -277,7 +427,6 @@ void incepeQuiz()
     }
 }
 
-//cauta in fisier daca numele persoanei a fost introdus deja sau nu
 int cautare(char s[])
 {
     cls = fopen("clasament.txt", "r");
@@ -328,7 +477,7 @@ void alcatuireClasament()
             if (rez[i] == ' ')
                 break;
             d[n++] = rez[i];
-            ;           i += 1;
+            i += 1;
         }
         strcpy((*elemNou).nume, d);
         //strcpy(aux, d);
@@ -412,7 +561,7 @@ void opuser()
 void opadmin()
 {
     printf("1. Adauga intrebare noua (tasta 1).\n");
-    printf("2. Modifica o intrebare existenta (tasta2).\n");
+    printf("2. Stergere intrebare (tasta2).\n");
     printf("3. Pagina principala (tasta 3)\n");
     printf("4. Paraseste jocul (tasta 4)\n");
 }
@@ -420,6 +569,7 @@ void opadmin()
 void optiuniAdministrator()
 {
     fptr = fopen("listaIntrebari.txt", "a");
+    multiplu = fopen("mulraspIntrebari.txt", "a");
     opadmin();
     while (1)
     {
@@ -429,16 +579,18 @@ void optiuniAdministrator()
         {
             printf("Ai parasit jocul");
             fclose(fptr);
+            fclose(multiplu);
             exit(0);
         }
         if (optiune == 1)
         {
             printf("Adaugare intrebare noua\n");
-            adaugareIntrebareInFisier();
+            tipIntrebare();
+            //adaugareIntrebareInFisier();
         }
         if (optiune == 2)
         {
-            printf("Modificare intrebare curenta\n");
+            printf("Stergere intrebare\n");
             exit(0);
         }
         if (optiune == 3)
@@ -449,9 +601,116 @@ void optiuniAdministrator()
     }
 }
 
+void tipIntrebareQ()
+{
+    printf("1. Introducere intrebare cu raspuns scurt (tasta 1)\n");
+    printf("2. Introducere intrebare cu raspuns multiplu (tasta 2)\n");
+    printf("3. Intoarce-te la meniul de administrator(tasta 3)\n");
+}
+
+void tipIntrebare()
+{
+    tipIntrebareQ();
+    while (1)
+    {
+        int optiune = 0;
+        scanf("%d", &optiune);
+        if (optiune == 3)
+        {
+            optiuniAdministrator();
+        }
+        if (optiune == 1)
+        {
+            adaugareIntrebareInFisier();
+            break;
+        }
+        if (optiune == 2)
+        {
+            adaugareRaspunsMultiplu();
+            break;
+        }
+    }
+}
+
+void stocareRaspunsMultiplu()
+{
+    multiplu = fopen("mulraspIntrebari.txt", "r");
+    char rez[150],intrebari[150];
+    int linie = 1, k = 0;
+    memset(rez, 0, 150);
+    memset(intrebari, 0, 150);
+    struct grila* elemNou = (struct grila*)malloc(sizeof(struct grila));
+    while (fgets(rez, 150, multiplu))
+    {
+        if ((linie - 1) % 5 == 0)
+        {
+            rez[strlen(rez) - 1] = '\0';
+            strcpy((*elemNou).intrebare, rez);
+        }
+        else
+        {
+            for (int i = 0; i < strlen(rez); i++)
+            {
+                intrebari[k++] = rez[i];
+            }
+            if (linie %5==0)
+            {
+                intrebari[k] = '\0';
+                strcpy((*elemNou).raspuns, intrebari);
+                (*elemNou).urm = NULL;
+                if (cap == NULL)
+                {
+                    cap = elemNou;
+                }
+                else
+                {
+                    struct grila* elem = cap;
+                    while ((*elem).urm != NULL)
+                    {
+                        elem = (*elem).urm;
+                    }
+                    (*elem).urm = elemNou;
+                }
+                memset(intrebari, 0, 150);
+                k = 0;
+                elemNou = (struct grila*)malloc(sizeof(struct grila));
+            }
+        }
+        linie += 1;
+    }
+}
+
+void adaugareRaspunsMultiplu() {
+    char* intrebare = (char*)malloc(150 * sizeof(char));
+    char* raspuns1 = (char*)malloc(30 * sizeof(char));
+    char* raspuns2 = (char*)malloc(30 * sizeof(char));
+    char* raspuns3 = (char*)malloc(30 * sizeof(char));
+    char* corect = (char*)malloc(30 * sizeof(char));
+    getchar();
+    printf("Introduceti intrebarea\n");
+    gets(intrebare);
+    printf("Introduceti prima varianta de raspuns\n");
+    gets(raspuns1);
+    printf("Introduceti a doua varianta de raspuns\n");
+    gets(raspuns2);
+    printf("Introduceti a treia varianta de raspuns\n");
+    gets(raspuns3);
+    printf("Introduceti raspunsul corect\n");
+    gets(corect);
+    
+    
+    fprintf(multiplu, "%s\n", intrebare);
+    fprintf(multiplu, "%s\n", raspuns1);
+    fprintf(multiplu, "%s\n", raspuns2);
+    fprintf(multiplu, "%s\n", raspuns3);
+    fprintf(multiplu, "%s\n", corect);
+
+    printf("Intrebarea a fost adaugata\n");
+}
+
 void opprinicipala()
 {
-    printf("1. Sunt un user obisnuit, nu administrator (tasta 1)\n");
+    printf("1. Sunt utilizator, nu administrator (tasta 1)\n");
     printf("2. Sunt administrator (tasta 2)\n");
     printf("3. Paraseste jocul (tasta 3)\n");
 }
@@ -491,7 +750,7 @@ int verificareAdministrator()
     char* parola = (char*)malloc(14 * sizeof(char));
     printf("Introduceti parola\n");
     scanf("%s", parola);
-    if (strcmp(parola, "administrator") != 0)
+    if (strcmp(parola, "admin") != 0)
         return 0;
     return 1;
 }

@@ -26,5 +26,8 @@
     <Text Include="listaIntrebari.txt">
       <Filter>Source Files</Filter>
     </Text>
+    <Text Include="mulraspIntrebari.txt">
+      <Filter>Source Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

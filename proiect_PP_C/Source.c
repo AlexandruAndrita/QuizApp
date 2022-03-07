@@ -69,6 +69,11 @@ void stocareIntrebari(int *contorIntrebari)
     int ok = 1;
     char caracter;
     fptr = fopen("listaIntrebari.txt", "r");
+    if (fptr == NULL)
+    {
+        printf("Eroare! Fisierul nu poate fi accesat");
+        exit(1);
+    }
     caracter = fgetc(fptr);
     while (caracter != EOF)
     {
@@ -402,6 +407,11 @@ void incepeQuiz(int contorIntrebari)
             catePuncte = quiz();
             printf("Scorul tau este: %d / %d\n", catePuncte, contorIntrebari);
             cls = fopen("clasament.txt", "a");
+            if (cls == NULL)
+            {
+                printf("Eroare! Fisierul nu poate fi accesat");
+                exit(1);
+            }
             fprintf(cls, "%s %d / %d\n", numeJucator, catePuncte, contorIntrebari);
             fclose(cls);
             printf("\n");
@@ -425,6 +435,11 @@ void incepeQuiz(int contorIntrebari)
 int cautare(char s[])
 {
     cls = fopen("clasament.txt", "r");
+    if (cls == NULL)
+    {
+        printf("Eroare! Fisierul nu poate fi accesat");
+        exit(1);
+    }
     char rez[50], d[100];
     int k = 0, n = 0;
     memset(rez, 0, 50);
@@ -471,6 +486,11 @@ int extrageScor(char s[])
 void alcatuireClasament()
 {
     cls = fopen("clasament.txt", "r");
+    if (cls == NULL)
+    {
+        printf("Eroare! Fisierul nu poate fi accesat");
+        exit(1);
+    }
     char rez[50], d[100];
     int k = 0, n = 0;
     memset(rez, 0, 50);
@@ -608,6 +628,16 @@ void optiuniAdministrator()
 {
     fptr = fopen("listaIntrebari.txt", "a");
     multiplu = fopen("mulraspIntrebari.txt", "a");
+    if (fptr == NULL)
+    {
+        printf("Eroare! Fisierul nu poate fi accesat");
+        exit(1);
+    }
+    if (multiplu == NULL)
+    {
+        printf("Eroare! Fisierul nu poate fi accesat");
+        exit(1);
+    }
     opadmin();
     while (1)
     {
@@ -690,6 +720,11 @@ void tipIntrebare()
 void stocareRaspunsMultiplu()
 {
     multiplu = fopen("mulraspIntrebari.txt", "r");
+    if (multiplu == NULL)
+    {
+        printf("Eroare! Fisierul nu poate fi accesat");
+        exit(1);
+    }
     char rez[150],intrebari[150];
     int linie = 1, k = 0;
     memset(rez, 0, 150);

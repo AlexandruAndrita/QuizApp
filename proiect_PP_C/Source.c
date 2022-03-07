@@ -452,11 +452,26 @@ int cautare(char s[])
     return 1;
 }
 
+int extrageScor(char s[])
+{
+    int numar = 0,n=strlen(s);
+    for (int i = 0; i < n; i++)
+    {
+        if (s[i] == '/')
+            break;
+        else
+        {
+            if (s[i] >= '0' && s[i] <= '9')
+                numar = numar * 10 + (s[i] - '0');
+        }
+    }
+    return numar;
+}
+
 void alcatuireClasament()
 {
     cls = fopen("clasament.txt", "r");
     char rez[50], d[100];
-    //char aux[100];
     int k = 0, n = 0;
     memset(rez, 0, 50);
     while (fgets(rez, 50, cls)) //citeste linie cu linie din fisier
@@ -465,7 +480,6 @@ void alcatuireClasament()
         k = strlen(rez);
         int i = 0;
         memset(d, 0, 100);
-        //memset(aux, 0, 100);
         n = 0;
         while (i < k)
         {
@@ -475,33 +489,52 @@ void alcatuireClasament()
             i += 1;
         }
         strcpy((*elemNou).nume, d);
-        //strcpy(aux, d);
         memset(d, 0, 100);
         n = 0;
         i += 1;
+        int curent = 0, anterior = 0,stop=0;
         while (i < k - 1)
         {
+            if (rez[i] == '/')
+                stop = 1;
+            if (stop == 0 && rez[i] >= '0' && rez[i] <= '9')
+                curent = curent*10 + (rez[i] - '0');
             d[n++] = rez[i];
             i += 1;
         }
         strcpy((*elemNou).punctaj, d);
-        //append(&clasament, aux, d);
         memset(d, 0, 100);
         n = 0;
         (*elemNou).urmator = NULL;
-        if (primul == NULL)
+        char p[50];
+        memset(p, 0,50);
+        if (primul != NULL) {
+            strcpy(p, (*primul).punctaj);
+            anterior = extrageScor(p);
+        }
+        if (primul == NULL || curent>anterior)
         {
+            (*elemNou).urmator = primul;
             primul = elemNou;
         }
-        else {
-            struct ranking* element = primul;
-            while ((*element).urmator != NULL)
+        else
+        {
+            struct ranking* aux = primul;
+            strcpy(p, (*(*aux).urmator).punctaj);
+            anterior = extrageScor(p);
+            while ((*aux).urmator != NULL)
             {
-                element = (*element).urmator;
+                if (anterior <= curent)
+                    break;
+                if ((*(*aux).urmator).punctaj != NULL) {
+                    strcpy(p, (*(*aux).urmator).punctaj);
+                    anterior = extrageScor(p);
+                }
+                aux = (*aux).urmator;
             }
-            (*element).urmator = elemNou;
+            (*elemNou).urmator = (*aux).urmator;
+            (*aux).urmator = elemNou;
         }
-        free(elemNou);
     }
     fclose(cls);
 }

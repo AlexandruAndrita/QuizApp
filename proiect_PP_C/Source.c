@@ -88,7 +88,6 @@ void stocareIntrebari()
                 if ((nrraspunsuri + 1) % 3 == 0)
                     strcpy(listaRaspunsuri[n++], linie);
             }
-            //printf("%d %d\n", strlen(linie),k);
             k = 0;
             memset(linie, 0, 100);
             ok = 0;
@@ -107,20 +106,6 @@ void stocareIntrebari()
     adaugIntrebareInLista(listaIntrebari, t);
     adaugRaspunsInLista(listaRaspunsuri, n);
     adaugareIntrebariGrila();
-
-    /*struct questions* parcurge = head;
-    while((*parcurge).next!=NULL)
-    {
-        printf("%s\n",(*parcurge).intrebare);
-        parcurge=(*parcurge).next;
-    }*/
-    /*struct answers* parcurge = headd;
-    while (parcurge != NULL)
-    {
-        printf("%s\n", (*parcurge).raspuns);
-        parcurge = (*parcurge).nextt;
-    }
-    exit(0);*/
 }
 
 void adaugIntrebareInLista(char listaIntrebari[][150], int t)

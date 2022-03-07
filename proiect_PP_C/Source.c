@@ -29,6 +29,7 @@ void adaugareIntrebariGrila(int *contorIntrebari);
 void extrageRaspunsCorect(char d[], char s[], int* k);
 void afisareVariante(char auxx[]);
 void extrageRaspuns(char rasp[], char variante[], int* k);
+int validareInput(char optiune[]);
 
 FILE* fptr;
 FILE* cls;
@@ -380,7 +381,7 @@ void incepeQuiz(int contorIntrebari)
             break;
         else {
             printf("Numele introdus este luat\n");
-            memset(numeJucator, 0, 30);
+            memset(numeJucator, 0, 50);
             scanf("%s", &numeJucator);
         }
     }
@@ -390,6 +391,7 @@ void incepeQuiz(int contorIntrebari)
     {
         int optiune = 0;
         scanf("%d", &optiune);
+
         if (optiune == 4)
         {
             printf("Ai parasit jocul");
@@ -499,6 +501,7 @@ void alcatuireClasament()
             }
             (*element).urmator = elemNou;
         }
+        free(elemNou);
     }
     fclose(cls);
 }
@@ -518,27 +521,35 @@ void optiuniUser()
     opuser();
     while (1)
     {
-        int optiune = 0;
-        scanf("%d", &optiune);
-        if (optiune == 4)
-        {
-            printf("Ai parasit jocul");
-            exit(0);
-        }
-        if (optiune == 1)
-        {
-            alcatuireClasament();
-            afisareClasament();
-        }
-        if (optiune == 2)
-        {
+        char optiune[256];
+        gets(optiune);
+        if (validareInput(optiune) == 1) {
+            int numar = atoi(optiune);
             int contorIntrebari = 0;
-            stocareIntrebari(&contorIntrebari);
-            incepeQuiz(contorIntrebari);
+            switch (numar)
+            {
+                case 4:
+                    printf("Ai parasit jocul");
+                    exit(0);
+                case 1:
+                    alcatuireClasament();
+                    afisareClasament();
+                    break;
+                case 2:
+                    contorIntrebari = 0;
+                    stocareIntrebari(&contorIntrebari);
+                    incepeQuiz(contorIntrebari);
+                    break;
+                case 3:
+                    paginaPrincipala();
+                    break;
+                default:
+                    printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
+            }
         }
-        if (optiune == 3)
+        else
         {
-            paginaPrincipala();
+            printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
         }
         opuser();
     }
@@ -567,29 +578,35 @@ void optiuniAdministrator()
     opadmin();
     while (1)
     {
-        int optiune = 0;
-        scanf("%d", &optiune);
-        if (optiune == 4)
-        {
-            printf("Ai parasit jocul");
-            fclose(fptr);
-            fclose(multiplu);
-            exit(0);
+        char optiune[256];
+        gets(optiune);
+        if (validareInput(optiune) == 1) {
+            int numar = atoi(optiune);
+            switch (numar)
+            {
+                case 4:
+                    printf("Ai parasit jocul");
+                    fclose(fptr);
+                    fclose(multiplu);
+                    exit(0);
+                case 1:
+                    printf("Adaugare intrebare noua\n");
+                    tipIntrebare();
+                    break;
+                    //adaugareIntrebareInFisier();
+                case 2:
+                    printf("Stergere/editare intrebare(nu inca implementat)\n");
+                    exit(0);
+                case 3:
+                    paginaPrincipala();
+                    break;
+                default:
+                    printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
+            }
         }
-        if (optiune == 1)
+        else
         {
-            printf("Adaugare intrebare noua\n");
-            tipIntrebare();
-            //adaugareIntrebareInFisier();
-        }
-        if (optiune == 2)
-        {
-            printf("Stergere/editare intrebare(nu inca implementat)\n");
-            exit(0);
-        }
-        if (optiune == 3)
-        {
-            paginaPrincipala();
+            printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
         }
         opadmin();
     }
@@ -607,22 +624,33 @@ void tipIntrebare()
     tipIntrebareQ();
     while (1)
     {
-        int optiune = 0;
-        scanf("%d", &optiune);
-        if (optiune == 3)
+        /*int optiune = 0;
+        scanf("%d", &optiune);*/
+        char optiune[256];
+        gets(optiune);
+        if (validareInput(optiune) == 1)
         {
-            optiuniAdministrator();
+            int numar = atoi(optiune);
+            switch (numar)
+            {
+            case 3:
+                optiuniAdministrator();
+                break;
+            case 1:
+                adaugareIntrebareInFisier();
+                break;
+            case 2:
+                adaugareRaspunsMultiplu();
+                break;
+            default:
+                printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
+            }
         }
-        if (optiune == 1)
+        else
         {
-            adaugareIntrebareInFisier();
-            break;
+            printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
         }
-        if (optiune == 2)
-        {
-            adaugareRaspunsMultiplu();
-            break;
-        }
+        tipIntrebareQ();
     }
 }
 
@@ -675,12 +703,13 @@ void stocareRaspunsMultiplu()
 }
 
 void adaugareRaspunsMultiplu() {
+    
     char* intrebare = (char*)malloc(150 * sizeof(char));
     char* raspuns1 = (char*)malloc(30 * sizeof(char));
     char* raspuns2 = (char*)malloc(30 * sizeof(char));
     char* raspuns3 = (char*)malloc(30 * sizeof(char));
     char* corect = (char*)malloc(30 * sizeof(char));
-    getchar();
+    //getchar();
     printf("Introduceti intrebarea\n");
     gets(intrebare);
     printf("Introduceti prima varianta de raspuns\n");
@@ -700,6 +729,12 @@ void adaugareRaspunsMultiplu() {
     fprintf(multiplu, "%s\n", corect);
 
     printf("Intrebarea a fost adaugata\n");
+
+    free(intrebare);
+    free(raspuns1);
+    free(raspuns2);
+    free(raspuns3);
+    free(corect);
 }
 
 void opprinicipala()
@@ -709,30 +744,47 @@ void opprinicipala()
     printf("3. Paraseste jocul (tasta 3)\n");
 }
 
+int validareInput(char optiune[])
+{
+    int n = strlen(optiune);
+    for (int i = 0; i < n; i++)
+    {
+        if (strchr("1234567890", optiune[i]) == 0)
+            return 0;
+    }
+    return 1;
+}
+
 void paginaPrincipala()
 {
-    printf("QuizApp\n");
     opprinicipala();
     while (1)
     {
-        int optiune = 0;
-        scanf("%d", &optiune);
-        if (optiune == 3)
-        {
-            printf("Ai parasit jocul");
-            exit(0);
+        char optiune[256];
+        gets(optiune);
+        if (validareInput(optiune) == 1) {
+            int numar = atoi(optiune);
+            switch (numar)
+            {
+                case 1:
+                    optiuniUser();
+                    break;
+                case 2:
+                    if (verificareAdministrator() == 1)
+                        optiuniAdministrator();
+                    else
+                        printf("Parola gresita. Nu aveti permisiunea de a va loga ca administrator\n");
+                    break;
+                case 3:
+                    printf("Ai parasit jocul");
+                    exit(0);
+                default:
+                    printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
+            }
         }
-        if (optiune == 1)
+        else
         {
-            optiuniUser();
-            break;
-        }
-        if (optiune == 2)
-        {
-            if (verificareAdministrator() == 1)
-                optiuniAdministrator();
-            else
-                printf("Parola gresita. Nu aveti permisiunea de a va loga ca administrator\n\n");
+            printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
         }
         opprinicipala();
     }
@@ -741,16 +793,16 @@ void paginaPrincipala()
 
 int verificareAdministrator()
 {
-    char* parola = (char*)malloc(14 * sizeof(char));
+    char parola[50];
     printf("Introduceti parola\n");
-    scanf("%s", parola);
+    gets(parola);
     if (strcmp(parola, "admin") != 0)
         return 0;
     return 1;
 }
 
 int main() {
-    
+    printf("QuizApp\n");
     paginaPrincipala();
 
     return 0;

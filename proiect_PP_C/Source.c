@@ -838,8 +838,9 @@ void paginaPrincipala()
                     optiuniUser();
                     break;
                 case 2:
-                    if (verificareAdministrator() == 1)
+                    if (verificareAdministrator() == 1) {
                         optiuniAdministrator();
+                    }
                     else
                         printf("Parola gresita. Nu aveti permisiunea de a va loga ca administrator\n");
                     break;

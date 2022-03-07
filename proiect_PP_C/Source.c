@@ -26,6 +26,9 @@ void tipIntrebareQ();
 void adaugareRaspunsMultiplu();
 void stocareRaspunsMultiplu();
 void adaugareIntrebariGrila();
+void extrageRaspunsCorect(char d[], char s[], int* k);
+void afisareVariante(char auxx[]);
+void extrageRaspuns(char rasp[], char variante[], int* k);
 
 FILE* fptr;
 FILE* cls;
@@ -185,6 +188,26 @@ void adaugareIntrebareInFisier()
     printf("Intrebarea a fost adaugata\n");
 }
 
+void extrageRaspuns(char rasp[],char variante[],int *k)
+{
+    memset(variante, 0, 150);
+    int i = 0, poz = 0;
+    i = strlen(rasp) - 2;
+    while (1)
+    {
+        if (rasp[i] == '\n')
+            break;
+        i--;
+        poz = i;
+    }
+    for (int j = 0; j <= poz; j++)
+    {
+        variante[(*k)++] = rasp[j];
+    }
+    variante[(*k) - 1] = '\0';
+    variante[(*k)] = '\0';
+}
+
 void adaugareIntrebariGrila()
 {
     struct grila* elemGrila = cap;
@@ -211,24 +234,10 @@ void adaugareIntrebariGrila()
         }
 
         char rasp[150],variante[150];
-        int i = 0, k = 0,poz=0;
+        int k = 0;
         memset(rasp, 0, 150);
-        memset(variante, 0, 150);
         strcpy(rasp, (*elemGrila).raspuns);
-        i = strlen(rasp) - 2;
-        while(1)
-        { 
-            if (rasp[i] == '\n')
-                break;
-            i--;
-            poz = i;
-        }
-        for (int j = 0; j <=poz; j++)
-        {
-            variante[k++] = rasp[j];
-        }
-        variante[k - 1] = '\0';
-        variante[k] = '\0';
+        extrageRaspuns(rasp, variante, &k);
 
         strcpy((*elemIntrebare).raspuns, variante);
         (*elemIntrebare).nextt = NULL;
@@ -286,18 +295,47 @@ void extrageRaspunsCorect(char d[], char s[], int* k)
     }
 }
 
+void afisareVariante(char auxx[])
+{
+    int ok1 = 0, ok2 = 0;
+    int i = 0;
+    while (i < strlen(auxx))
+    {
+        if (i == 0)
+            printf("a)");
+        if ((auxx[i] >= '0' && auxx[i] <= '9') || (auxx[i] >= 'a' && auxx[i] <= 'z') || (auxx[i] >= 'A' && auxx[i] <= 'Z'))
+            printf("%c", auxx[i]);
+        if (auxx[i] == '\n')
+            printf("\n");
+        if (auxx[i] == ' ')
+            printf(" ");
+        if (auxx[i] == '\n' && ok1 == 0)
+        {
+            ok1 = 1;
+            printf("b)");
+        }
+        else
+        {
+            if (auxx[i] == '\n' && ok1 == 1 && ok2 == 0)
+            {
+                ok2 = 0;
+                printf("c)");
+            }
+        }
+        i += 1;
+    }
+    printf("\n");
+}
+
 int quiz()
 {
     getchar();
     struct questions* a = head;
     struct answers* b = headd;
     struct grila* c = cap;
-    int contor = 0, cateIntrebari = 0,ok = 0;
+    int contor = 0, ok = 0;
     while (a != NULL && b != NULL && c!=NULL)
     {
-        //printf("%s\n",(*a).intrebare);
-        //printf("%s\n",(*b).raspuns);
-        
         char rasp[150], aux[150];
        
         printf("%s\n", (*a).intrebare);
@@ -307,35 +345,7 @@ int quiz()
             char auxx[150];
             memset(auxx, 0, 150);
             strcpy(auxx, (*b).raspuns);
-            int val = 0;
-            int ok1 = 0, ok2 = 0;
-            int i = 0;
-            while (i < strlen(auxx))
-            {
-                if (i == 0)
-                    printf("a)");
-                if ((auxx[i] >= '0' && auxx[i] <= '9') || (auxx[i] >= 'a' && auxx[i] <= 'z') || (auxx[i] >= 'A' && auxx[i] <= 'Z'))
-                    printf("%c", auxx[i]);
-                if (auxx[i] == '\n')
-                    printf("\n");
-                if (auxx[i] == ' ')
-                    printf(" ");
-                if (auxx[i] == '\n' && ok1==0)
-                {
-                    ok1 = 1;
-                    printf("b)");
-                }
-                else
-                {
-                    if (auxx[i] == '\n' && ok1 == 1 && ok2 == 0)
-                    {
-                        ok2 = 0;
-                        printf("c)");
-                    }
-                }
-                i += 1;
-            }
-            printf("\n");
+            afisareVariante(auxx);
         }
         //fflush(stdin);
 
@@ -343,6 +353,7 @@ int quiz()
         gets(rasp);
         char auxx[150];
         int n = 0;
+        memset(auxx, 0, 150);
         if (ok == 0) {
             strcpy(aux, (*b).raspuns);
             transformaInLitereMari(aux);
@@ -370,7 +381,6 @@ int quiz()
         if (ok == 1) {
             c = (*c).urm;
         }
-        cateIntrebari += 1;
     }
     return contor;
 }
@@ -561,7 +571,7 @@ void opuser()
 void opadmin()
 {
     printf("1. Adauga intrebare noua (tasta 1).\n");
-    printf("2. Stergere intrebare (tasta2).\n");
+    printf("2. Stergere/editare intrebare(nu inca implementat) (tasta2).\n");
     printf("3. Pagina principala (tasta 3)\n");
     printf("4. Paraseste jocul (tasta 4)\n");
 }
@@ -590,7 +600,7 @@ void optiuniAdministrator()
         }
         if (optiune == 2)
         {
-            printf("Stergere intrebare\n");
+            printf("Stergere/editare intrebare(nu inca implementat)\n");
             exit(0);
         }
         if (optiune == 3)

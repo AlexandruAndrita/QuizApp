@@ -11,10 +11,10 @@ void paginaPrincipala();
 void adaugareIntrebareInFisier();
 void opprinicipala();
 int verificareAdministrator();
-void stocareIntrebari();
+void stocareIntrebari(int *contorIntrebari);
 void adaugIntrebareInLista(char listaIntrebari[][150], int t);
 void adaugRaspunsInLista(char listaRaspunsuri[][150], int n);
-void incepeQuiz();
+void incepeQuiz(int contorIntrebari);
 void optiuniQuiz();
 int quiz();
 void transformaInLitereMari(char s[]);
@@ -25,7 +25,7 @@ void tipIntrebare();
 void tipIntrebareQ();
 void adaugareRaspunsMultiplu();
 void stocareRaspunsMultiplu();
-void adaugareIntrebariGrila();
+void adaugareIntrebariGrila(int *contorIntrebari);
 void extrageRaspunsCorect(char d[], char s[], int* k);
 void afisareVariante(char auxx[]);
 void extrageRaspuns(char rasp[], char variante[], int* k);
@@ -60,9 +60,8 @@ struct ranking {
 };
 struct ranking* primul = NULL;
 
-int contorIntrebari = 0;
 
-void stocareIntrebari()
+void stocareIntrebari(int *contorIntrebari)
 {
     char listaIntrebari[150][150], listaRaspunsuri[150][150], linie[150];
     int k = 0, n = 0, t = 0, nrintrebari = 0, nrraspunsuri = 0;
@@ -81,7 +80,7 @@ void stocareIntrebari()
             if ((nrintrebari - 1) % 3 == 0)
             {
                 strcpy(listaIntrebari[t++], linie);
-                contorIntrebari++;
+                (*contorIntrebari)++;
             }
             else
             {
@@ -105,7 +104,7 @@ void stocareIntrebari()
     stocareRaspunsMultiplu();
     adaugIntrebareInLista(listaIntrebari, t);
     adaugRaspunsInLista(listaRaspunsuri, n);
-    adaugareIntrebariGrila();
+    adaugareIntrebariGrila(contorIntrebari);
 }
 
 void adaugIntrebareInLista(char listaIntrebari[][150], int t)
@@ -193,7 +192,7 @@ void extrageRaspuns(char rasp[],char variante[],int *k)
     variante[(*k)] = '\0';
 }
 
-void adaugareIntrebariGrila()
+void adaugareIntrebariGrila(int *contorIntrebari)
 {
     struct grila* elemGrila = cap;
 
@@ -203,7 +202,7 @@ void adaugareIntrebariGrila()
         struct answers* elemIntrebare = (struct answers*)malloc(sizeof(struct answers));
 
         strcpy((*elemRaspuns).intrebare, (*elemGrila).intrebare);
-        contorIntrebari++;
+        (*contorIntrebari)++;
         (*elemRaspuns).next = NULL;
         if (head == NULL)
         {
@@ -344,7 +343,6 @@ int quiz()
             transformaInLitereMari(aux);
         }
         else {
-            
             extrageRaspunsCorect((*c).raspuns, auxx, &n);
             transformaInLitereMari(auxx);
         }
@@ -370,7 +368,7 @@ int quiz()
     return contor;
 }
 
-void incepeQuiz()
+void incepeQuiz(int contorIntrebari)
 {
     char numeJucator[50];
     memset(numeJucator, 0, 50);
@@ -534,8 +532,9 @@ void optiuniUser()
         }
         if (optiune == 2)
         {
-            stocareIntrebari();
-            incepeQuiz();
+            int contorIntrebari = 0;
+            stocareIntrebari(&contorIntrebari);
+            incepeQuiz(contorIntrebari);
         }
         if (optiune == 3)
         {
@@ -751,6 +750,7 @@ int verificareAdministrator()
 }
 
 int main() {
+    
     paginaPrincipala();
 
     return 0;

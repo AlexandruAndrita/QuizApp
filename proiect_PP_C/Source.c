@@ -30,6 +30,7 @@ void extrageRaspunsCorect(char d[], char s[], int* k);
 void afisareVariante(char auxx[]);
 void extrageRaspuns(char rasp[], char variante[], int* k);
 int validareInput(char optiune[]);
+void stergeLista();
 
 FILE* fptr;
 FILE* cls;
@@ -374,12 +375,26 @@ int quiz()
     return contor;
 }
 
+void stergeLista()
+{
+    struct ranking* prev = primul;
+    struct ranking* cur=(struct ranking*)malloc(sizeof(struct ranking));
+    while (prev != NULL)
+    {
+        cur = prev->urmator;
+        free(prev);
+        prev = cur;
+    }
+    primul = NULL;
+}
+
 void incepeQuiz(int contorIntrebari)
 {
     char numeJucator[50];
     memset(numeJucator, 0, 50);
     printf("Introduceti-va numele\n");
-    scanf("%s", &numeJucator);
+    gets(numeJucator);
+    
     while (1)
     {
         if (cautare(numeJucator) == 1)
@@ -387,46 +402,66 @@ void incepeQuiz(int contorIntrebari)
         else {
             printf("Numele introdus este luat\n");
             memset(numeJucator, 0, 50);
-            scanf("%s", &numeJucator);
+            gets(numeJucator);
         }
     }
+    
     int catePuncte = 0;
     optiuniQuiz();
     while (1)
     {
-        int optiune = 0;
-        scanf("%d", &optiune);
-
-        if (optiune == 4)
+        
+        char optiune[256];
+        scanf("%s", optiune);
+       
+        if (validareInput(optiune) == 1)
         {
-            printf("Ai parasit jocul");
-            exit(0);
-        }
-        if (optiune == 1)
-        {
-            catePuncte = quiz();
-            printf("Scorul tau este: %d / %d\n", catePuncte, contorIntrebari);
-            cls = fopen("clasament.txt", "a");
-            if (cls == NULL)
+            int numar = atoi(optiune);
+            if (numar != 4 && numar != 1 && numar != 2 && numar != 3)
             {
-                printf("Eroare! Fisierul nu poate fi accesat");
-                exit(1);
+                printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
             }
-            fprintf(cls, "%s %d / %d\n", numeJucator, catePuncte, contorIntrebari);
-            fclose(cls);
-            printf("\n");
-            break;
+            else {
+                if (numar == 4)
+                {
+                    printf("Ai parasit jocul");
+                    exit(0);
+                }
+                if (numar == 1)
+                {
+                    catePuncte = quiz();
+                    printf("Scorul tau este: %d / %d\n", catePuncte, contorIntrebari);
+                    cls = fopen("clasament.txt", "a");
+                    if (cls == NULL)
+                    {
+                        printf("Eroare! Fisierul nu poate fi accesat");
+                        exit(1);
+                    }
+                    fprintf(cls, "%s %d / %d\n", numeJucator, catePuncte, contorIntrebari);
+                    fclose(cls);
+                    printf("\n");
+                    //break;
+                }
+                if (numar == 2)
+                {
+                    //optiuniUser();
+                    //optiuniPrincipala();
+                    //break;
+                    printf("Nu este inca implementat");
+                    exit(0);
+                }
+                if (numar == 3)
+                {
+                    stergeLista();
+                    alcatuireClasament();
+                    afisareClasament();
+                    //break;
+                }
+            }
         }
-        if (optiune == 2)
+        else
         {
-            optiuniUser();
-            break;
-        }
-        if (optiune == 3)
-        {
-            alcatuireClasament();
-            afisareClasament();
-            break;
+            printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
         }
         optiuniQuiz();
     }
@@ -449,9 +484,9 @@ int cautare(char s[])
         n = 0;
         k = strlen(rez);
         int i = 0;
-        while (i < k)
+        while (i < k-1)
         {
-            if (rez[i] == ' ')
+            if (rez[i]==' ' && rez[i + 1] >= '0' && rez[i + 1] <= '9')
                 break;
             d[n++] = rez[i];
             i += 1;
@@ -585,6 +620,7 @@ void optiuniUser()
                     printf("Ai parasit jocul");
                     exit(0);
                 case 1:
+                    stergeLista();
                     alcatuireClasament();
                     afisareClasament();
                     break;

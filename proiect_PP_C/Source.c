@@ -33,6 +33,7 @@ int validareInput(char optiune[]);
 void stergeLista();
 int transformaInNumar(char rasp[]);
 void extrageGrila(char variante[], char grila[], char rasp[],int *m);
+void reguli();
 
 
 FILE* fptr;
@@ -945,7 +946,9 @@ void opprinicipala()
 {
     printf("1. Sunt utilizator, nu administrator (tasta 1)\n");
     printf("2. Sunt administrator (tasta 2)\n");
-    printf("3. Paraseste jocul (tasta 3)\n");
+    printf("3. Vizualizare reguli (tasta 3)\n");
+    printf("4. Paraseste jocul (tasta 4)\n");
+    
 }
 
 int validareInput(char optiune[])
@@ -957,6 +960,15 @@ int validareInput(char optiune[])
             return 0;
     }
     return 1;
+}
+
+void reguli()
+{
+    printf("\n");
+    printf("1.Pentru intrebariel cu raspuns scurt, va fi introdus doar raspunsul care este considerat corect de catre utilizator.\n");
+    printf("2.Pentru intrebarile de tip grila, se va raspunde cu 1 (adica a) ),2 (adica b) ) sau 3 (adica c) ).\n  Orice alt raspuns va fi considerat gresit.\n");
+    printf("3.Scorul va fi afisat la final, iar numele si scorul vor fi puse intr-un clasament.\n  Clasamentul poate fi vizuzalizat de catre utilizator daca se doreste acest lucru.\n");
+    printf("\n");
 }
 
 void paginaPrincipala()
@@ -980,9 +992,12 @@ void paginaPrincipala()
                     else
                         printf("Parola gresita. Nu aveti permisiunea de a va loga ca administrator\n");
                     break;
-                case 3:
+                case 4:
                     printf("Ai parasit jocul");
                     exit(0);
+                case 3:
+                    reguli();
+                    break;
                 default:
                     printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
             }

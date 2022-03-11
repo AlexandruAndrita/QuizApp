@@ -17,7 +17,7 @@ void adaugRaspunsInLista(char listaRaspunsuri[][150], int n);
 void incepeQuiz(int contorIntrebari);
 void optiuniQuiz();
 int quiz();
-void transformaInLitereMari(char s[]);
+void transformaDinLitereMari(char s[]);
 void afisareClasament();
 int cautare(char s[]);
 void alcatuireClasament();
@@ -31,6 +31,9 @@ void afisareVariante(char auxx[]);
 void extrageRaspuns(char rasp[], char variante[], int* k);
 int validareInput(char optiune[]);
 void stergeLista();
+int transformaInNumar(char rasp[]);
+void extrageGrila(char variante[], char grila[], char rasp[],int *m);
+
 
 FILE* fptr;
 FILE* cls;
@@ -258,7 +261,7 @@ void optiuniQuiz()
     printf("4. Paraseste jocul (tasta 4)\n");
 }
 
-void transformaInLitereMari(char s[])
+void transformaDinLitereMari(char s[])
 {
     int n = strlen(s);
     for (int i = 0; i < n; i++)
@@ -318,13 +321,87 @@ void afisareVariante(char auxx[])
     printf("\n");
 }
 
+/*
+daca userul a ajuns la intrebari gen grila, atunci trebuie sa fie avertizat sa raspunda numai cu 1,2 sau 3, de la tastatura
+*/
+
+int transformaInNumar(char rasp[])
+{
+    int n = strlen(rasp), nr = 0, i = 0;
+    while (i < n)
+    {
+        if (rasp[i] >= '0' && rasp[i] <= '9')
+            nr = nr * 10 + rasp[i] - '0';
+        i++;
+    }
+    return nr;
+}
+
+void extrageGrila(char variante[], char grila[],char rasp[],int *m)
+{
+    int n = strlen(variante),nr = 0;
+    int varUser = transformaInNumar(rasp);
+    if (varUser == 1)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            if (variante[i] == '\n')
+                nr += 1;
+            if (nr == 0 && variante[i]!='\n')
+            {
+                grila[(*m)++] = variante[i];
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+    else
+    {
+        if (varUser == 2)
+        {
+            for (int i = 0; i < n; i++)
+            {
+                if (variante[i] == '\n')
+                    nr += 1;
+                if (nr == 1 && variante[i]!='\n')
+                {
+                    grila[(*m)++] = variante[i];
+                }
+                else
+                {
+                    if (nr > 1)
+                        break;
+                }
+            }
+        }
+        else
+        {
+            if (varUser == 3)
+            {
+                for (int i = 0; i < n; i++)
+                {
+                    if (variante[i] == '\n')
+                        nr += 1;
+                    if (nr == 2 && variante[i]!='\n')
+                    {
+                        grila[(*m)++] = variante[i];
+                    }
+                }
+            }
+        }
+    }
+    grila[(*m)] = '\0';
+}
+
 int quiz()
 {
     getchar();
     struct questions* a = head;
     struct answers* b = headd;
     struct grila* c = cap;
-    int contor = 0, ok = 0;
+    int contor = 0, ok = 0; //ok=0 inseamna ca nu avem intrebari de tip grila
     while (a != NULL && b != NULL && c!=NULL)
     {
         char rasp[150], aux[150];
@@ -341,20 +418,29 @@ int quiz()
         //fflush(stdin);
 
         //fgets(rasp,150,stdin);
-        gets(rasp);
-        char auxx[150];
-        int n = 0;
+        gets(rasp); //raspunsul userului pentru intrebarile cu raspuns scurt
+        char auxx[150],grila[150];
+        int n = 0, m = 0;
         memset(auxx, 0, 150);
+        memset(grila, 0, 150);
         if (ok == 0) {
             strcpy(aux, (*b).raspuns);
-            transformaInLitereMari(aux);
+            transformaDinLitereMari(aux);
         }
         else {
             extrageRaspunsCorect((*c).raspuns, auxx, &n);
-            transformaInLitereMari(auxx);
+            char variante[150];
+            memset(variante, 0, 150);
+            strcpy(variante, (*b).raspuns);
+            extrageGrila(variante, grila,rasp,&m);
         }
 
-        transformaInLitereMari(rasp);
+        if (ok == 0)
+            transformaDinLitereMari(rasp);
+        else {
+            transformaDinLitereMari(auxx);
+            transformaDinLitereMari(grila);
+        }
         
         if (ok == 0) {
             if (strcmp(aux, rasp) == 0)
@@ -362,8 +448,9 @@ int quiz()
         }
         else
         {
-            if (strcmp(auxx, rasp) == 0)
+            if (strcmp(auxx, grila) == 0) {
                 contor += 1;
+            }
         }
 
         a = (*a).next;

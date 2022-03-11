@@ -823,9 +823,22 @@ void adaugareRaspunsMultiplu() {
     printf("Introduceti a treia varianta de raspuns\n");
     gets(raspuns3);
     printf("Introduceti raspunsul corect\n");
-    gets(corect);
     
+
+    while (1) {
+
+        gets(corect);
+        if (strcmp(raspuns1, corect) != 0 && strcmp(raspuns2, corect) != 0 && strcmp(raspuns3, corect) != 0)
+        {
+            printf("Raspunsul corect nu coincide cu niciuna dintre variante.\nIntroduceti unul dintre raspunsurile introduse deja.\n");
+        }
+        else
+        {
+            break;
+        }
+    }
     
+
     fprintf(multiplu, "%s\n", intrebare);
     fprintf(multiplu, "%s\n", raspuns1);
     fprintf(multiplu, "%s\n", raspuns2);

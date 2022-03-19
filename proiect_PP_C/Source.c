@@ -12,11 +12,9 @@ void adaugareIntrebareInFisier();
 void opprinicipala();
 int verificareAdministrator();
 void stocareIntrebari(int * contorIntrebariScurt,int * contorIntrebariGrila);
-void adaugIntrebareInLista(char listaIntrebari[][150], int t);
-void adaugRaspunsInLista(char listaRaspunsuri[][150], int n);
+void adaugareIntrebariRaspScurt(char listaIntrebari[][150], int t, char listaRaspunsuri[][150], int n);
 void incepeQuiz(int contorIntrebariScurt,int contorIntrebariGrila);
 void optiuniQuiz();
-//int quiz();
 void transformaDinLitereMari(char s[]);
 void afisareClasament();
 int cautare(char s[]);
@@ -42,18 +40,15 @@ FILE* fptr;
 FILE* cls;
 FILE* multiplu;
 
+//structura pentru intrebarile cu raspuns scurt
 struct questions {
     char intrebare[150];
+    char raspuns[150];
     struct questions* next;
 };
 struct questions* head = NULL;
 
-struct answers {
-    char raspuns[150];
-    struct answers* nextt;
-};
-struct answers* headd = NULL;
-
+//structura pentru intrebarile tip grila
 struct grila {
     char intrebare[150];
     char raspuns[150];
@@ -61,6 +56,7 @@ struct grila {
 };
 struct grila* cap = NULL;
 
+//structura pentru clasament
 struct ranking {
     char nume[50];
     char punctaj[50];
@@ -114,52 +110,30 @@ void stocareIntrebari(int *contorIntrebariScurt,int * contorIntrebariGrila)
     fclose(fptr);
 
     stocareRaspunsMultiplu();
-    adaugIntrebareInLista(listaIntrebari, t);
-    adaugRaspunsInLista(listaRaspunsuri, n);
+    adaugareIntrebariRaspScurt(listaIntrebari,t,listaRaspunsuri,n);
     numarareIntrebariGrila(contorIntrebariGrila);
 }
 
-void adaugIntrebareInLista(char listaIntrebari[][150], int t)
-{
-    for (int i = 0; i < t; i++)
-    {
-        struct questions* elemNou = (struct questions*)malloc(sizeof(struct questions));
-        strcpy((*elemNou).intrebare, listaIntrebari[i]);
-        (*elemNou).next = NULL;
-        if (head == NULL)
-        {
-            head = elemNou;
-        }
-        else {
-            struct questions* elem = head;
-            while ((*elem).next != NULL)
-            {
-                elem = (*elem).next;
-            }
-            (*elem).next = elemNou;
-        }
-    }
-}
-
-void adaugRaspunsInLista(char listaRaspunsuri[][150], int n)
+void adaugareIntrebariRaspScurt(char listaIntrebari[][150], int t, char listaRaspunsuri[][150], int n)
 {
     for (int i = 0; i < n; i++)
     {
-        struct answers* elemNou = (struct answers*)malloc(sizeof(struct answers));
-        strcpy((*elemNou).raspuns, listaRaspunsuri[i]);
-        (*elemNou).nextt = NULL;
-        if (headd == NULL)
+        struct questions* elem = (struct questions*)malloc(sizeof(struct questions));
+        strcpy((*elem).intrebare, listaIntrebari[i]);
+        strcpy((*elem).raspuns, listaRaspunsuri[i]);
+        (*elem).next = NULL;
+        if (head == NULL)
         {
-            headd = elemNou;
+            head = elem;
         }
         else
         {
-            struct answers* elem = headd;
-            while ((*elem).nextt != NULL)
+            struct questions* aux = head;
+            while ((*aux).next != NULL)
             {
-                elem = (*elem).nextt;
+                aux = (*aux).next;
             }
-            (*elem).nextt = elemNou;
+            (*aux).next = elem;
         }
     }
 }
@@ -376,9 +350,8 @@ int quizScurt()
 {
     getchar();
     struct questions* a = head;
-    struct answers* b = headd;
     int contor = 0;
-    while (a != NULL && b != NULL)
+    while (a != NULL)
     {
         char rasp[150], aux[150];
 
@@ -390,7 +363,7 @@ int quizScurt()
         memset(auxx, 0, 150);
         memset(grila, 0, 150);
         
-        strcpy(aux, (*b).raspuns);
+        strcpy(aux, (*a).raspuns);
         transformaDinLitereMari(aux);
         
         transformaDinLitereMari(rasp);
@@ -399,8 +372,6 @@ int quizScurt()
              contor += 1;
 
         a = (*a).next;
-        b = (*b).nextt;
-        
     }
     return contor;
 }
@@ -494,7 +465,7 @@ void incepeQuiz(int contorIntrebariScurt,int contorIntrebariGrila)
                     memset(opt, 0, 10);
                     while (1)
                     {
-                        scanf("%s", &opt);
+                        scanf("%s", opt);
                         if (validareInput(opt) == 1)
                         {
                             numarOptiune = atoi(opt);

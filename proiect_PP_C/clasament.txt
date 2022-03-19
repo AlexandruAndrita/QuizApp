@@ -1,9 +1,7 @@
-Matei 4 / 20
-Alex 10 / 20
-Gheorghe 5 / 20
-Max 6 / 20
-Victor 1 / 20
-Diana 18 / 20
-ana maria 1 / 20
-denis matei 13 / 20
-ff 3 / 10
+Matei 4 / 5
+Gheorghe 5 / 5
+Max 5 / 5
+Victor 1 / 5
+ana maria 1 / 5
+denis matei 3 / 5
+laura 2 / 5

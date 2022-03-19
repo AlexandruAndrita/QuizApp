@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
+#include <time.h>
+
 
 void optiuniUser();
 void opuser();
@@ -32,15 +33,16 @@ void stergeLista();
 int transformaInNumar(char rasp[]);
 void extrageGrila(char variante[], char grila[], char rasp[],int *m);
 void reguli();
-int quizScurt();
-int quizGrila();
+int quizScurt(int contorIntrebariScurt);
+int quizGrila(int contorIntrebariGrila);
+void generareNumere(int aparitii[], int maxNrIntrebari);
+int verificaAparitii(int aparitii[]);
 
 
 FILE* fptr;
 FILE* cls;
 FILE* multiplu;
 
-//structura pentru intrebarile cu raspuns scurt
 struct questions {
     char intrebare[150];
     char raspuns[150];
@@ -48,7 +50,6 @@ struct questions {
 };
 struct questions* head = NULL;
 
-//structura pentru intrebarile tip grila
 struct grila {
     char intrebare[150];
     char raspuns[150];
@@ -56,7 +57,6 @@ struct grila {
 };
 struct grila* cap = NULL;
 
-//structura pentru clasament
 struct ranking {
     char nume[50];
     char punctaj[50];
@@ -346,74 +346,119 @@ void stergeLista()
     primul = NULL;
 }
 
-int quizScurt()
+int verificaAparitii(int aparitii[])
+{
+    int cateNumere = 0;
+    for (int i = 0; i <= 9; i++)
+    {
+        if (aparitii[i] != 0)
+            cateNumere++;
+    }
+    if (cateNumere != 5)
+        return 0;
+    return 1;
+}
+
+void generareNumere(int aparitii[],int maxNrIntrebari)
+{
+    while (1)
+    {
+        if (verificaAparitii(aparitii, maxNrIntrebari) == 1)
+            break;
+        int val = rand() % (maxNrIntrebari+1);
+        if (aparitii[val] == 0)
+        {
+            aparitii[val]++;
+        }
+    }
+}
+
+int quizScurt(int contorIntrebariScurt)
 {
     getchar();
     struct questions* a = head;
-    int contor = 0;
+    int contor = 0, j = 0, i = 0;
+    int* aparitii = (int*)calloc(10, sizeof(int));
+    generareNumere(aparitii,contorIntrebariScurt);
+    
     while (a != NULL)
     {
         char rasp[150], aux[150];
+        if (i == 5)
+            break;
+        if (aparitii[j]!=0)
+        {
+            printf("%s\n", (*a).intrebare);
 
-        printf("%s\n", (*a).intrebare);
-        
-        gets(rasp); //raspunsul userului
-        char auxx[150], grila[150];
-        int n = 0, m = 0;
-        memset(auxx, 0, 150);
-        memset(grila, 0, 150);
-        
-        strcpy(aux, (*a).raspuns);
-        transformaDinLitereMari(aux);
-        
-        transformaDinLitereMari(rasp);
-        
-        if (strcmp(aux, rasp) == 0)
-             contor += 1;
+            gets(rasp); //raspunsul userului
+            char auxx[150], grila[150];
+            int n = 0, m = 0;
+            memset(auxx, 0, 150);
+            memset(grila, 0, 150);
+
+            strcpy(aux, (*a).raspuns);
+            transformaDinLitereMari(aux);
+
+            transformaDinLitereMari(rasp);
+
+            if (strcmp(aux, rasp) == 0)
+                contor += 1;
+            i++;
+        }
 
         a = (*a).next;
+        j++;
     }
+    free(aparitii);
     return contor;
 }
 
-int quizGrila()
+int quizGrila(int contorIntrebariGrila)
 {
     getchar();
     struct grila* c = cap;
-    int contor = 0;
+    int contor = 0, j = 0, i = 0;
+    int* aparitii = (int*)calloc(10, sizeof(int));
+    generareNumere(aparitii, contorIntrebariGrila);
+       
     while (c != NULL)
     {
         char rasp[150], aux[150];
-        
-        //verificare corectitudine
-
-        printf("%s\n", (*c).intrebare);
-        char auxx[150];
-        memset(auxx, 0, 150);
-        strcpy(auxx, (*c).raspuns);
-        afisareVariante(auxx);
-        
-        gets(rasp); //raspunsul userului
-        char grila[150];
-        int n = 0, m = 0;
-        memset(auxx, 0, 150);
-        memset(grila, 0, 150);
-        extrageRaspunsCorect((*c).raspuns, auxx, &n);
-
-        char variante[150];
-        memset(variante, 0, 150);
-        strcpy(variante, (*c).raspuns);
-        extrageGrila(variante, grila, rasp, &m);
-
-        transformaDinLitereMari(auxx);
-        transformaDinLitereMari(grila);
-        
-        if (strcmp(auxx, grila) == 0) 
+        if (i == 5)
+            break;
+        if (aparitii[j] != 0) 
         {
-            contor += 1;
+            printf("%s\n", (*c).intrebare);
+            char auxx[150];
+            memset(auxx, 0, 150);
+            strcpy(auxx, (*c).raspuns);
+            afisareVariante(auxx);
+
+            gets(rasp); //raspunsul userului
+            char grila[150];
+            int n = 0, m = 0;
+            memset(auxx, 0, 150);
+            memset(grila, 0, 150);
+            extrageRaspunsCorect((*c).raspuns, auxx, &n);
+
+            char variante[150];
+            memset(variante, 0, 150);
+            strcpy(variante, (*c).raspuns);
+            extrageGrila(variante, grila, rasp, &m);
+
+            transformaDinLitereMari(auxx);
+            transformaDinLitereMari(grila);
+
+            if (strcmp(auxx, grila) == 0)
+            {
+                contor += 1;
+            }
+            i++;
         }
         c = (*c).urm;
+        j++;
     }
+    free(aparitii);
     return contor;
 }
 
@@ -485,28 +530,28 @@ void incepeQuiz(int contorIntrebariScurt,int contorIntrebariGrila)
                     }
                     if (numarOptiune == 1)
                     {
-                        catePuncte = quizGrila();
-                        printf("Scorul tau este: %d / %d\n", catePuncte, contorIntrebariGrila);
+                        catePuncte = quizGrila(contorIntrebariGrila);
+                        printf("Scorul tau este: %d / %d\n", catePuncte, 5);
                         cls = fopen("clasament.txt", "a");
                         if (cls == NULL)
                         {
                             printf("Eroare! Fisierul nu poate fi accesat");
                             exit(1);
                         }
-                        fprintf(cls, "%s %d / %d\n", numeJucator, catePuncte, contorIntrebariGrila);
+                        fprintf(cls, "%s %d / %d\n", numeJucator, catePuncte, 5);
                         fclose(cls);
                         printf("\n");
                     }
                     else {
-                        catePuncte = quizScurt();
-                        printf("Scorul tau este: %d / %d\n", catePuncte, contorIntrebariScurt);
+                        catePuncte = quizScurt(contorIntrebariScurt);
+                        printf("Scorul tau este: %d / %d\n", catePuncte, 5);
                         cls = fopen("clasament.txt", "a");
                         if (cls == NULL)
                         {
                             printf("Eroare! Fisierul nu poate fi accesat");
                             exit(1);
                         }
-                        fprintf(cls, "%s %d / %d\n", numeJucator, catePuncte, contorIntrebariScurt);
+                        fprintf(cls, "%s %d / %d\n", numeJucator, catePuncte, 5);
                         fclose(cls);
                         printf("\n");
                     }
@@ -932,7 +977,7 @@ void opprinicipala()
 {
     printf("1. Sunt utilizator, nu administrator (tasta 1)\n");
     printf("2. Sunt administrator (tasta 2)\n");
-    printf("3. Vizualizare reguli (tasta 3)\n");
+    printf("3. Reguli (tasta 3)\n");
     printf("4. Paraseste jocul (tasta 4)\n");
     
 }
@@ -1009,6 +1054,7 @@ int verificareAdministrator()
 
 int main() {
     printf("QuizApp\n");
+    srand(time(0));
     paginaPrincipala();
 
     return 0;

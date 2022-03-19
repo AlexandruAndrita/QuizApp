@@ -11,12 +11,12 @@ void paginaPrincipala();
 void adaugareIntrebareInFisier();
 void opprinicipala();
 int verificareAdministrator();
-void stocareIntrebari(int *contorIntrebari);
+void stocareIntrebari(int * contorIntrebariScurt,int * contorIntrebariGrila);
 void adaugIntrebareInLista(char listaIntrebari[][150], int t);
 void adaugRaspunsInLista(char listaRaspunsuri[][150], int n);
-void incepeQuiz(int contorIntrebari);
+void incepeQuiz(int contorIntrebariScurt,int contorIntrebariGrila);
 void optiuniQuiz();
-int quiz();
+//int quiz();
 void transformaDinLitereMari(char s[]);
 void afisareClasament();
 int cautare(char s[]);
@@ -25,7 +25,7 @@ void tipIntrebare();
 void tipIntrebareQ();
 void adaugareRaspunsMultiplu();
 void stocareRaspunsMultiplu();
-void adaugareIntrebariGrila(int *contorIntrebari);
+void numarareIntrebariGrila(int *contorIntrebari);
 void extrageRaspunsCorect(char d[], char s[], int* k);
 void afisareVariante(char auxx[]);
 void extrageRaspuns(char rasp[], char variante[], int* k);
@@ -34,6 +34,8 @@ void stergeLista();
 int transformaInNumar(char rasp[]);
 void extrageGrila(char variante[], char grila[], char rasp[],int *m);
 void reguli();
+int quizScurt();
+int quizGrila();
 
 
 FILE* fptr;
@@ -66,8 +68,7 @@ struct ranking {
 };
 struct ranking* primul = NULL;
 
-
-void stocareIntrebari(int *contorIntrebari)
+void stocareIntrebari(int *contorIntrebariScurt,int * contorIntrebariGrila)
 {
     char listaIntrebari[150][150], listaRaspunsuri[150][150], linie[150];
     int k = 0, n = 0, t = 0, nrintrebari = 0, nrraspunsuri = 0;
@@ -91,7 +92,7 @@ void stocareIntrebari(int *contorIntrebari)
             if ((nrintrebari - 1) % 3 == 0)
             {
                 strcpy(listaIntrebari[t++], linie);
-                (*contorIntrebari)++;
+                (*contorIntrebariScurt)++;
             }
             else
             {
@@ -115,7 +116,7 @@ void stocareIntrebari(int *contorIntrebari)
     stocareRaspunsMultiplu();
     adaugIntrebareInLista(listaIntrebari, t);
     adaugRaspunsInLista(listaRaspunsuri, n);
-    adaugareIntrebariGrila(contorIntrebari);
+    numarareIntrebariGrila(contorIntrebariGrila);
 }
 
 void adaugIntrebareInLista(char listaIntrebari[][150], int t)
@@ -203,53 +204,13 @@ void extrageRaspuns(char rasp[],char variante[],int *k)
     variante[(*k)] = '\0';
 }
 
-void adaugareIntrebariGrila(int *contorIntrebari)
+void numarareIntrebariGrila(int *contorIntrebariGrila)
 {
     struct grila* elemGrila = cap;
 
     while (elemGrila != NULL)
     {
-        struct questions* elemRaspuns = (struct questions*)malloc(sizeof(struct questions));
-        struct answers* elemIntrebare = (struct answers*)malloc(sizeof(struct answers));
-
-        strcpy((*elemRaspuns).intrebare, (*elemGrila).intrebare);
-        (*contorIntrebari)++;
-        (*elemRaspuns).next = NULL;
-        if (head == NULL)
-        {
-            head = elemRaspuns;
-        }
-        else {
-            struct questions* aux = head;
-            while ((*aux).next != NULL)
-            {
-                aux = (*aux).next;
-            }
-            (*aux).next = elemRaspuns;
-        }
-
-        char rasp[150],variante[150];
-        int k = 0;
-        memset(rasp, 0, 150);
-        strcpy(rasp, (*elemGrila).raspuns);
-        extrageRaspuns(rasp, variante, &k);
-
-        strcpy((*elemIntrebare).raspuns, variante);
-        (*elemIntrebare).nextt = NULL;
-        if (headd == NULL)
-        {
-            headd = elemIntrebare;
-        }
-        else
-        {
-            struct answers* aux = headd;
-            while ((*aux).nextt != NULL)
-            {
-                aux = (*aux).nextt;
-            }
-            (*aux).nextt = elemIntrebare;
-        }
-
+        (*contorIntrebariGrila)++;
         elemGrila = (*elemGrila).urm;
     }
 }
@@ -293,15 +254,21 @@ void extrageRaspunsCorect(char d[], char s[], int* k)
 void afisareVariante(char auxx[])
 {
     int ok1 = 0, ok2 = 0;
-    int i = 0;
+    int i = 0, caractereNewLine=0;
     while (i < strlen(auxx))
     {
         if (i == 0)
             printf("a)");
         if ((auxx[i] >= '0' && auxx[i] <= '9') || (auxx[i] >= 'a' && auxx[i] <= 'z') || (auxx[i] >= 'A' && auxx[i] <= 'Z'))
             printf("%c", auxx[i]);
-        if (auxx[i] == '\n')
+        if (auxx[i] == '\n') {
             printf("\n");
+            caractereNewLine++;
+        }
+        if (auxx[i] == '\n' && caractereNewLine == 3)
+        {
+            break;
+        }
         if (auxx[i] == ' ')
             printf(" ");
         if (auxx[i] == '\n' && ok1 == 0)
@@ -321,10 +288,6 @@ void afisareVariante(char auxx[])
     }
     printf("\n");
 }
-
-/*
-daca userul a ajuns la intrebari gen grila, atunci trebuie sa fie avertizat sa raspunda numai cu 1,2 sau 3, de la tastatura
-*/
 
 int transformaInNumar(char rasp[])
 {
@@ -396,73 +359,6 @@ void extrageGrila(char variante[], char grila[],char rasp[],int *m)
     grila[(*m)] = '\0';
 }
 
-int quiz()
-{
-    getchar();
-    struct questions* a = head;
-    struct answers* b = headd;
-    struct grila* c = cap;
-    int contor = 0, ok = 0; //ok=0 inseamna ca nu avem intrebari de tip grila
-    while (a != NULL && b != NULL && c!=NULL)
-    {
-        char rasp[150], aux[150];
-       
-        printf("%s\n", (*a).intrebare);
-        if (strcmp((*a).intrebare, (*c).intrebare) == 0)
-        {
-            ok = 1;
-            char auxx[150];
-            memset(auxx, 0, 150);
-            strcpy(auxx, (*b).raspuns);
-            afisareVariante(auxx);
-        }
-        //fflush(stdin);
-
-        //fgets(rasp,150,stdin);
-        gets(rasp); //raspunsul userului pentru intrebarile cu raspuns scurt
-        char auxx[150],grila[150];
-        int n = 0, m = 0;
-        memset(auxx, 0, 150);
-        memset(grila, 0, 150);
-        if (ok == 0) {
-            strcpy(aux, (*b).raspuns);
-            transformaDinLitereMari(aux);
-        }
-        else {
-            extrageRaspunsCorect((*c).raspuns, auxx, &n);
-            char variante[150];
-            memset(variante, 0, 150);
-            strcpy(variante, (*b).raspuns);
-            extrageGrila(variante, grila,rasp,&m);
-        }
-
-        if (ok == 0)
-            transformaDinLitereMari(rasp);
-        else {
-            transformaDinLitereMari(auxx);
-            transformaDinLitereMari(grila);
-        }
-        
-        if (ok == 0) {
-            if (strcmp(aux, rasp) == 0)
-                contor += 1;
-        }
-        else
-        {
-            if (strcmp(auxx, grila) == 0) {
-                contor += 1;
-            }
-        }
-
-        a = (*a).next;
-        b = (*b).nextt;
-        if (ok == 1) {
-            c = (*c).urm;
-        }
-    }
-    return contor;
-}
-
 void stergeLista()
 {
     struct ranking* prev = primul;
@@ -476,7 +372,81 @@ void stergeLista()
     primul = NULL;
 }
 
-void incepeQuiz(int contorIntrebari)
+int quizScurt()
+{
+    getchar();
+    struct questions* a = head;
+    struct answers* b = headd;
+    int contor = 0;
+    while (a != NULL && b != NULL)
+    {
+        char rasp[150], aux[150];
+
+        printf("%s\n", (*a).intrebare);
+        
+        gets(rasp); //raspunsul userului
+        char auxx[150], grila[150];
+        int n = 0, m = 0;
+        memset(auxx, 0, 150);
+        memset(grila, 0, 150);
+        
+        strcpy(aux, (*b).raspuns);
+        transformaDinLitereMari(aux);
+        
+        transformaDinLitereMari(rasp);
+        
+        if (strcmp(aux, rasp) == 0)
+             contor += 1;
+
+        a = (*a).next;
+        b = (*b).nextt;
+        
+    }
+    return contor;
+}
+
+int quizGrila()
+{
+    getchar();
+    struct grila* c = cap;
+    int contor = 0;
+    while (c != NULL)
+    {
+        char rasp[150], aux[150];
+        
+        //verificare corectitudine
+
+        printf("%s\n", (*c).intrebare);
+        char auxx[150];
+        memset(auxx, 0, 150);
+        strcpy(auxx, (*c).raspuns);
+        afisareVariante(auxx);
+        
+        gets(rasp); //raspunsul userului
+        char grila[150];
+        int n = 0, m = 0;
+        memset(auxx, 0, 150);
+        memset(grila, 0, 150);
+        extrageRaspunsCorect((*c).raspuns, auxx, &n);
+
+        char variante[150];
+        memset(variante, 0, 150);
+        strcpy(variante, (*c).raspuns);
+        extrageGrila(variante, grila, rasp, &m);
+
+        transformaDinLitereMari(auxx);
+        transformaDinLitereMari(grila);
+        
+        if (strcmp(auxx, grila) == 0) 
+        {
+            contor += 1;
+        }
+        c = (*c).urm;
+    }
+    return contor;
+}
+
+void incepeQuiz(int contorIntrebariScurt,int contorIntrebariGrila)
 {
     char numeJucator[50];
     memset(numeJucator, 0, 50);
@@ -495,6 +465,7 @@ void incepeQuiz(int contorIntrebari)
     }
     
     int catePuncte = 0;
+    int catePuncteGrila = 0, catePuncteScurt = 0;
     optiuniQuiz();
     while (1)
     {
@@ -517,23 +488,65 @@ void incepeQuiz(int contorIntrebari)
                 }
                 if (numar == 1)
                 {
-                    catePuncte = quiz();
-                    printf("Scorul tau este: %d / %d\n", catePuncte, contorIntrebari);
-                    cls = fopen("clasament.txt", "a");
-                    if (cls == NULL)
+                    printf("Doriti un test grila sau un test cu raspunsuri scurte?\n 1. Grila (Tasta 1)\n 2. Raspuns scurt (Tasta 2)\n");
+                    char opt[10];
+                    int numarOptiune = 0;
+                    memset(opt, 0, 10);
+                    while (1)
                     {
-                        printf("Eroare! Fisierul nu poate fi accesat");
-                        exit(1);
+                        scanf("%s", &opt);
+                        if (validareInput(opt) == 1)
+                        {
+                            numarOptiune = atoi(opt);
+                            if (numarOptiune == 1 || numarOptiune == 2)
+                                break;
+                            else
+                            {
+                                printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
+                                printf("Doriti un test grila sau un test cu raspunsuri scurte?\n 1. Grila (Tasta 1)\n 2. Raspuns scurt (Tasta 2)\n");
+                            }
+                        }
+                        else
+                        {
+                            printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
+                            printf("Doriti un test grila sau un test cu raspunsuri scurte?\n 1. Grila (Tasta 1)\n 2. Raspuns scurt (Tasta 2)\n");
+                        }
                     }
-                    fprintf(cls, "%s %d / %d\n", numeJucator, catePuncte, contorIntrebari);
-                    fclose(cls);
-                    printf("\n");
-                    //break;
+                    if (numarOptiune == 1)
+                    {
+                        catePuncte = quizGrila();
+                        printf("Scorul tau este: %d / %d\n", catePuncte, contorIntrebariGrila);
+                        cls = fopen("clasament.txt", "a");
+                        if (cls == NULL)
+                        {
+                            printf("Eroare! Fisierul nu poate fi accesat");
+                            exit(1);
+                        }
+                        fprintf(cls, "%s %d / %d\n", numeJucator, catePuncte, contorIntrebariGrila);
+                        fclose(cls);
+                        printf("\n");
+                    }
+                    else {
+                        catePuncte = quizScurt();
+                        printf("Scorul tau este: %d / %d\n", catePuncte, contorIntrebariScurt);
+                        cls = fopen("clasament.txt", "a");
+                        if (cls == NULL)
+                        {
+                            printf("Eroare! Fisierul nu poate fi accesat");
+                            exit(1);
+                        }
+                        fprintf(cls, "%s %d / %d\n", numeJucator, catePuncte, contorIntrebariScurt);
+                        fclose(cls);
+                        printf("\n");
+                    }
+                    
                 }
                 if (numar == 2)
                 {
                     //optiuniUser();
-                    //optiuniPrincipala();
+                    //fflush(stdin);
+                    //paginaPrincipala();
+                    
                     //break;
                     printf("Nu este inca implementat");
                     exit(0);
@@ -701,7 +714,8 @@ void optiuniUser()
         gets(optiune);
         if (validareInput(optiune) == 1) {
             int numar = atoi(optiune);
-            int contorIntrebari = 0;
+            int contorIntrebariScurt = 0;
+            int contorIntrebariGrila = 0;
             switch (numar)
             {
                 case 4:
@@ -713,9 +727,10 @@ void optiuniUser()
                     afisareClasament();
                     break;
                 case 2:
-                    contorIntrebari = 0;
-                    stocareIntrebari(&contorIntrebari);
-                    incepeQuiz(contorIntrebari);
+                    contorIntrebariScurt = 0;
+                    contorIntrebariGrila = 0;
+                    stocareIntrebari(&contorIntrebariScurt,&contorIntrebariGrila);
+                    incepeQuiz(contorIntrebariScurt,contorIntrebariGrila);
                     break;
                 case 3:
                     paginaPrincipala();

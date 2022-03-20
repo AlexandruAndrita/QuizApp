@@ -37,6 +37,14 @@ int quizScurt(int contorIntrebariScurt);
 int quizGrila(int contorIntrebariGrila);
 void generareNumere(int aparitii[], int maxNrIntrebari);
 int verificaAparitii(int aparitii[]);
+void stergereIntrebareScurt();
+void afisareIntrebari(char** mat, int n);
+char** initializareMatrice();
+void citireIndecsi(int* ind, int* k, int index);
+void completareInFisier(int* ind, int k, char** matrice, int index);
+int cautareBinara(int val, int* ind, int k);
+void sortare(int* ind, int k);
+void stergereIntrebareGrila();
 
 
 FILE* fptr;
@@ -85,14 +93,14 @@ void stocareIntrebari(int *contorIntrebariScurt,int * contorIntrebariGrila)
             nrintrebari += 1;
             nrraspunsuri += 1;
             linie[k] = '\0';
-            if ((nrintrebari - 1) % 3 == 0)
+            if ((nrintrebari + 1) % 2 == 0)
             {
                 strcpy(listaIntrebari[t++], linie);
                 (*contorIntrebariScurt)++;
             }
             else
             {
-                if ((nrraspunsuri + 1) % 3 == 0)
+                if (nrraspunsuri %2 == 0)
                     strcpy(listaRaspunsuri[n++], linie);
             }
             k = 0;
@@ -153,9 +161,11 @@ void adaugareIntrebareInFisier()
 
     fprintf(fptr, "%s", intrebare);
     fprintf(fptr, "%s", raspuns);
-    fprintf(fptr, "\n");
+    //fprintf(fptr, "%c",'\n');
 
     printf("Intrebarea a fost adaugata\n");
+    free(intrebare);
+    free(raspuns);
 }
 
 void extrageRaspuns(char rasp[],char variante[],int *k)
@@ -378,7 +388,7 @@ int quizScurt(int contorIntrebariScurt)
     getchar();
     struct questions* a = head;
     int contor = 0, j = 0, i = 0;
-    int* aparitii = (int*)calloc(10, sizeof(int));
+    int* aparitii = (int*)calloc(contorIntrebariScurt, sizeof(int));
     generareNumere(aparitii,contorIntrebariScurt);
     
     while (a != NULL)
@@ -418,7 +428,7 @@ int quizGrila(int contorIntrebariGrila)
     getchar();
     struct grila* c = cap;
     int contor = 0, j = 0, i = 0;
-    int* aparitii = (int*)calloc(10, sizeof(int));
+    int* aparitii = (int*)calloc(contorIntrebariGrila, sizeof(int));
     generareNumere(aparitii, contorIntrebariGrila);
        
     while (c != NULL)
@@ -774,7 +784,7 @@ void opuser()
 void opadmin()
 {
     printf("1. Adauga intrebare noua (tasta 1).\n");
-    printf("2. Stergere/editare intrebare(nu inca implementat) (tasta2).\n");
+    printf("2. Stergere intrebare (tasta2).\n");
     printf("3. Pagina principala (tasta 3)\n");
     printf("4. Paraseste jocul (tasta 4)\n");
 }
@@ -813,8 +823,48 @@ void optiuniAdministrator()
                     break;
                     //adaugareIntrebareInFisier();
                 case 2:
-                    printf("Stergere/editare intrebare(nu inca implementat)\n");
-                    exit(0);
+                    printf("Doriti sa stergeti intrebari cu raspuns scurt sau intrebari tip grila?\n");
+                    printf("1. Intrebare cu raspuns scurt (tasta 1)\n 2. Intrebare tip grila (tasta2)\n");
+                    char* optiune = (char*)calloc(10, sizeof(char));
+                    int numarOptiune = 0;
+                    while (1)
+                    {
+                        scanf("%s", optiune);
+                        
+                        if (validareInput(optiune) == 1)
+                        {
+                            numarOptiune = atoi(optiune);
+                            if (numarOptiune == 1 || numarOptiune == 2) {
+                                
+                                break;
+                            }
+                            else
+                            {
+                                printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
+                                printf("1. Intrebare cu raspuns scurt (tasta 1)\n2. Intrebare tip grila (tasta2)\n");
+                            }
+                        }
+                        else
+                        {
+                            printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
+                            printf("1. Intrebare cu raspuns scurt (tasta 1)\n2. Intrebare tip grila (tasta2)\n");
+                        }
+                    }
+                    free(optiune);
+                    if (numarOptiune == 1)
+                    {
+                        getchar();
+                        stergereIntrebareScurt();
+                    }
+                    else 
+                    {
+                        if (numarOptiune == 2) 
+                        {
+                            getchar();
+                            stergereIntrebareGrila();
+                        }
+                    }
+                    break;
                 case 3:
                     paginaPrincipala();
                     break;
@@ -828,6 +878,191 @@ void optiuniAdministrator()
         }
         opadmin();
     }
+}
+
+void stergereIntrebareGrila()
+{
+
+}
+
+void afisareIntrebari(char** mat, int n)
+{
+    printf("Pe care intrebari doriti sa le stergeti?\n\n");
+    for (int i = 0; i < n; i++)
+    {
+        if (i % 2 == 0) {
+            printf("Intrebarea cu indexul=%d: %s", (i+1)/2+1, mat[i]);
+        }
+        else
+        {
+            printf("Raspunsul intrebarii cu indexul=%d: %s\n", (i+1)/2, mat[i]);
+        }
+    }
+    printf("Introduceti indecsii intrebarilor pe care doriti sa le stergeti:\n");
+}
+
+char** initializareMatrice()
+{
+    char** matrice = (char**)malloc(150 * sizeof(char*));
+    for (int i = 0; i < 150; i++)
+    {
+        matrice[i] = (char*)calloc(150, sizeof(char));
+    }
+    return matrice;
+}
+
+void citireIndecsi(int* ind, int* k,int index)
+{
+    char* optiune = (char*)calloc(150, sizeof(char));
+    scanf("%[^\n]s", optiune);
+    int n = strlen(optiune), numar = 0;
+    for(int i=0;i<n;i++)
+    {
+        if (optiune[i] >= '0' && optiune[i] <= '9')
+        {
+            numar = numar * 10 + optiune[i] - '0';
+        }
+        if (optiune[i] == ' ')
+        {
+            if (numar <= index)
+            {
+                ind[(*k)++] = numar;
+            }
+            numar = 0;
+        }
+        else {
+            if ((optiune[i] >= '0' && optiune[i] <= '9') && (strchr("0123456789\n ",optiune[i+1])==0))
+            {
+                numar = 0;
+                continue;
+            }
+            else
+            {
+                if ((optiune[i] >= '0' && optiune[i] <= '9') && (strchr("0123456789\n ", optiune[i-1]) == 0) && i>0)
+                {
+                    numar = 0;
+                    continue;
+                }
+            }
+        }
+    }
+    //if (optiune[n - 1] >= '0' && optiune[n - 1] <= '9')
+    //{
+    if (numar <= index)
+    {
+        ind[(*k)++] = numar;
+    }
+    //}
+    free(optiune);
+}
+
+void sortare(int* ind, int k)
+{
+    for (int i = 0; i < k; i++)
+    {
+        int elem = ind[i],indice=i;
+        for (int j = i + 1; j < k; j++)
+        {
+            if (elem > ind[j])
+            {
+                elem = ind[j];
+                indice = j;
+            }
+        }
+        ind[indice] = ind[i];
+        ind[i] = elem;
+    }
+}
+
+void stergereIntrebareScurt()
+{
+    char** matrice = initializareMatrice();
+    char* spare = (char*)malloc(150 * sizeof(char));
+    int index = 0;
+    
+    fptr = fopen("listaIntrebari.txt", "r");
+    if (fptr == NULL)
+    {
+        printf("Fisierul nu poate fi accesat");
+        exit(1);
+    }
+    else
+    {
+        while (fgets(spare, 150, fptr))
+        {
+            strcpy(matrice[index], spare);
+            index++;
+        }
+    }
+    fclose(fptr);
+
+    free(spare);
+    afisareIntrebari(matrice,index);
+    int k = 0;
+    int* ind = (int*)calloc(150, sizeof(int));
+    citireIndecsi(ind, &k,index);
+    sortare(ind, k);
+    
+    getchar();
+
+    completareInFisier(ind, k,matrice,index);
+    free(ind);
+    for (int i = 0; i < 150; i++)
+        free(matrice[i]);
+    free(matrice);
+}
+
+int cautareBinara(int val, int* ind, int k)
+{
+    int st = 0, dr = k - 1;
+    while (st <= dr)
+    {
+        int mij = (st + dr) / 2;
+        if (ind[mij] == val)
+            return 1;
+        if (val > ind[mij])
+        {
+            st = mij + 1;
+        }
+        else
+        {
+            dr = mij - 1;
+        }
+    }
+    return -1;
+}
+
+void completareInFisier(int *ind,int k,char **matrice,int index)
+{
+    fptr = fopen("listaIntrebari.txt", "w");
+    if (fptr == NULL)
+    {
+        printf("Fisierul nu exista");
+        exit(1);
+    }
+    else {
+        int i = 0, j = 1;
+        while(i<index)
+        {
+            if (cautareBinara(j, ind, k) == -1) {
+                fprintf(fptr, "%s", matrice[i]);
+                i++;
+                fprintf(fptr, "%s", matrice[i]);
+                i++;
+                j++;
+            }
+            else
+            {
+                if (cautareBinara(j, ind, k) == 1)
+                {
+                    i += 2;
+                    j++;
+                }
+            }
+        }
+        
+    }
+    fclose(fptr);
 }
 
 void tipIntrebareQ()
@@ -999,6 +1234,7 @@ void reguli()
     printf("1.Pentru intrebariel cu raspuns scurt, va fi introdus doar raspunsul care este considerat corect de catre utilizator.\n");
     printf("2.Pentru intrebarile de tip grila, se va raspunde cu 1 (adica a) ),2 (adica b) ) sau 3 (adica c) ).\n  Orice alt raspuns va fi considerat gresit.\n");
     printf("3.Scorul va fi afisat la final, iar numele si scorul vor fi puse intr-un clasament.\n  Clasamentul poate fi vizuzalizat de catre utilizator daca se doreste acest lucru.\n");
+    printf("4.Pentru stergerea de intrebari vor fi introdusi indecsii intrebarilor ce vor fi a sterse separati printr-un spatiu.\n");
     printf("\n");
 }
 

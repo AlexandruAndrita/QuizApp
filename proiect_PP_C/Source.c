@@ -45,6 +45,8 @@ void completareInFisier(int* ind, int k, char** matrice, int index);
 int cautareBinara(int val, int* ind, int k);
 void sortare(int* ind, int k);
 void stergereIntrebareGrila();
+void afisareIntrebariGrila(char** matrice, int index);
+void completareInFisierGrila(int* ind, int k, char** matrice, int index);
 
 
 FILE* fptr;
@@ -824,7 +826,7 @@ void optiuniAdministrator()
                     //adaugareIntrebareInFisier();
                 case 2:
                     printf("Doriti sa stergeti intrebari cu raspuns scurt sau intrebari tip grila?\n");
-                    printf("1. Intrebare cu raspuns scurt (tasta 1)\n 2. Intrebare tip grila (tasta2)\n");
+                    printf("1. Intrebare cu raspuns scurt (tasta 1)\n2. Intrebare tip grila (tasta2)\n");
                     char* optiune = (char*)calloc(10, sizeof(char));
                     int numarOptiune = 0;
                     while (1)
@@ -880,9 +882,100 @@ void optiuniAdministrator()
     }
 }
 
+void afisareIntrebariGrila(char** matrice, int index)
+{
+    printf("Pe care intrebari doriti sa le stergeti?\n\n");
+    int i = 0;
+    while(i<index)
+    {
+        int aux = (i + 1) / 5 + 1;
+        printf("Intrebarea cu indexul=%d: %s", aux, matrice[i]);
+        i++;
+        printf("Variantele de raspuns ale intrebarii cu indexul=%d:\n",aux);
+        printf("a)%s", matrice[i]);
+        i++;
+        printf("b)%s", matrice[i]);
+        i++;
+        printf("c)%s", matrice[i]);
+        i++;
+        printf("Raspuns corect de la intrebarea cu indexul=%d: %s\n", aux,matrice[i]);
+        i++;
+    }
+}
+
+void completareInFisierGrila(int *ind,int k,char **matrice,int index)
+{
+    multiplu = fopen("mulraspIntrebari.txt", "w");
+    if (multiplu == NULL)
+    {
+        printf("Fisierul nu exista");
+        exit(1);
+    }
+    else
+    {
+        int i = 0, j = 1;
+        while (i < index)
+        {
+            if (cautareBinara(j, ind, k) == -1)
+            {
+                fprintf(multiplu, "%s", matrice[i]);
+                i++;
+                fprintf(multiplu, "%s", matrice[i]);
+                i++;
+                fprintf(multiplu, "%s", matrice[i]);
+                i++;
+                fprintf(multiplu, "%s", matrice[i]);
+                i++;
+                fprintf(multiplu, "%s", matrice[i]);
+                i++;
+                j++;
+            }
+            else
+            {
+                if (cautareBinara(j, ind, k) == 1)
+                {
+                    i += 5;
+                    j++;
+                }
+            }
+        }
+    }
+}
+
 void stergereIntrebareGrila()
 {
+    char** matrice;
+    matrice = initializareMatrice();
+    char* spare = (char*)calloc(150, sizeof(char));
+    int index = 0;
 
+    multiplu = fopen("mulraspIntrebari.txt", "r");
+    if (multiplu == NULL)
+    {
+        printf("Fisierul nu poate fi accesat.");
+        exit(1);
+    }
+    else {
+        while (fgets(spare, 150, multiplu))
+        {
+            strcpy(matrice[index], spare);
+            index++;
+        }
+    }
+    fclose(multiplu);
+
+    free(spare);
+    afisareIntrebariGrila(matrice, index);
+    int k = 0;
+    int* ind = (int*)calloc(150, sizeof(int));
+    citireIndecsi(ind, &k, index);
+    sortare(ind, k);
+    getchar();
+    completareInFisierGrila(ind, k, matrice, index);
+    free(ind);
+    for (int i = 0; i < 150; i++)
+        free(matrice[i]);
+    free(matrice);
 }
 
 void afisareIntrebari(char** mat, int n)

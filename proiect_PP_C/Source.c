@@ -36,7 +36,7 @@ void reguli();
 int quizScurt(int contorIntrebariScurt);
 int quizGrila(int contorIntrebariGrila);
 void generareNumere(int aparitii[], int maxNrIntrebari);
-int verificaAparitii(int aparitii[]);
+int verificaAparitii(int aparitii[],int maxNrIntrebari);
 void stergereIntrebareScurt();
 void afisareIntrebari(char** mat, int n);
 char** initializareMatrice();
@@ -150,11 +150,9 @@ void adaugareIntrebariRaspScurt(char listaIntrebari[][150], int t, char listaRas
 
 void adaugareIntrebareInFisier()
 {
-    char* intrebare = (char*)malloc(150 * sizeof(char));
-    char* raspuns = (char*)malloc(150 * sizeof(char));
-    char propozitie[150];
+    char propozitie[150],intrebare[150],raspuns[150];
     printf("Introduceti intrebarea:\n");
-    getchar();
+    //getchar();
     fgets(propozitie, 150, stdin);
     strcpy(intrebare, propozitie);
     printf("Introduceti raspunsul:\n");
@@ -163,11 +161,8 @@ void adaugareIntrebareInFisier()
 
     fprintf(fptr, "%s", intrebare);
     fprintf(fptr, "%s", raspuns);
-    //fprintf(fptr, "%c",'\n');
 
     printf("Intrebarea a fost adaugata\n");
-    free(intrebare);
-    free(raspuns);
 }
 
 void extrageRaspuns(char rasp[],char variante[],int *k)
@@ -358,10 +353,10 @@ void stergeLista()
     primul = NULL;
 }
 
-int verificaAparitii(int aparitii[])
+int verificaAparitii(int aparitii[],int maxNrIntrebari)
 {
     int cateNumere = 0;
-    for (int i = 0; i <= 9; i++)
+    for (int i = 0; i <= maxNrIntrebari; i++)
     {
         if (aparitii[i] != 0)
             cateNumere++;
@@ -375,7 +370,7 @@ void generareNumere(int aparitii[],int maxNrIntrebari)
 {
     while (1)
     {
-        if (verificaAparitii(aparitii, maxNrIntrebari) == 1)
+        if (verificaAparitii(aparitii,maxNrIntrebari) == 1)
             break;
         int val = rand() % (maxNrIntrebari+1);
         if (aparitii[val] == 0)
@@ -940,6 +935,7 @@ void completareInFisierGrila(int *ind,int k,char **matrice,int index)
             }
         }
     }
+    fclose(multiplu);
 }
 
 void stergereIntrebareGrila()

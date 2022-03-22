@@ -4,26 +4,26 @@
 #include <time.h>
 
 
-void optiuniUser();
+void optiuniUser(char* clasament, char* intrebariScurte, char* intrebariGrila);
 void opuser();
-void optiuniAdministrator();
+void optiuniAdministrator(char* clasament, char* intrebariScurte, char* intrebariGrila);
 void opadmin();
-void paginaPrincipala();
-void adaugareIntrebareInFisier();
+void paginaPrincipala(char* clasament, char* intrebariScurte, char* intrebariGrila);
+void adaugareIntrebareInFisier(char* intrebariScurte);
 void opprinicipala();
 int verificareAdministrator();
-void stocareIntrebari(int * contorIntrebariScurt,int * contorIntrebariGrila);
+void stocareIntrebari(int* contorIntrebariScurt, int* contorIntrebariGrila, char* clasament, char* intrebariScurte, char* intrebariGrila);
 void adaugareIntrebariRaspScurt(char listaIntrebari[][150], int t, char listaRaspunsuri[][150], int n);
-void incepeQuiz(int contorIntrebariScurt,int contorIntrebariGrila);
+void incepeQuiz(int contorIntrebariScurt, int contorIntrebariGrila, char* clasament, char* intrebariScurte, char* intrebariGrila);
 void optiuniQuiz();
 void transformaDinLitereMari(char s[]);
 void afisareClasament();
-int cautare(char s[]);
-void alcatuireClasament();
-void tipIntrebare();
+int cautare(char s[], char* clasament);
+void alcatuireClasament(char* clasament);
+void tipIntrebare(char* clasament, char* intrebariScurte, char* intrebariGrila);
 void tipIntrebareQ();
-void adaugareRaspunsMultiplu();
-void stocareRaspunsMultiplu();
+void adaugareRaspunsMultiplu(char* intrebariGrila);
+void stocareRaspunsMultiplu(char* intrebariGrila);
 void numarareIntrebariGrila(int *contorIntrebari);
 void extrageRaspunsCorect(char d[], char s[], int* k);
 void afisareVariante(char auxx[]);
@@ -37,21 +37,19 @@ int quizScurt(int contorIntrebariScurt);
 int quizGrila(int contorIntrebariGrila);
 void generareNumere(int aparitii[], int maxNrIntrebari);
 int verificaAparitii(int aparitii[],int maxNrIntrebari);
-void stergereIntrebareScurt();
+void stergereIntrebareScurt(char* intreabariScurt);
 void afisareIntrebari(char** mat, int n);
 char** initializareMatrice();
 void citireIndecsi(int* ind, int* k, int index);
-void completareInFisier(int* ind, int k, char** matrice, int index);
+void completareInFisier(int* ind, int k, char** matrice, int index, char* intrebariScurt);
 int cautareBinara(int val, int* ind, int k);
 void sortare(int* ind, int k);
-void stergereIntrebareGrila();
+void stergereIntrebareGrila(char* intrebariGrila);
 void afisareIntrebariGrila(char** matrice, int index);
-void completareInFisierGrila(int* ind, int k, char** matrice, int index);
+void completareInFisierGrila(int* ind, int k, char** matrice, int index, char* intrebariGrila);
+char* initializare();
+void numeFisiere(char* clasament, char* intrebariScurte, char* intrebariGrila);
 
-
-FILE* fptr;
-FILE* cls;
-FILE* multiplu;
 
 struct questions {
     char intrebare[150];
@@ -74,13 +72,14 @@ struct ranking {
 };
 struct ranking* primul = NULL;
 
-void stocareIntrebari(int *contorIntrebariScurt,int * contorIntrebariGrila)
+void stocareIntrebari(int *contorIntrebariScurt,int * contorIntrebariGrila,char* clasament, char* intrebariScurte, char* intrebariGrila)
 {
     char listaIntrebari[150][150], listaRaspunsuri[150][150], linie[150];
     int k = 0, n = 0, t = 0, nrintrebari = 0, nrraspunsuri = 0;
     int ok = 1;
     char caracter;
-    fptr = fopen("listaIntrebari.txt", "r");
+    FILE* fptr;
+    fptr = fopen(intrebariScurte, "r");
     if (fptr == NULL)
     {
         printf("Eroare! Fisierul nu poate fi accesat");
@@ -119,7 +118,7 @@ void stocareIntrebari(int *contorIntrebariScurt,int * contorIntrebariGrila)
     }
     fclose(fptr);
 
-    stocareRaspunsMultiplu();
+    stocareRaspunsMultiplu(intrebariGrila);
     adaugareIntrebariRaspScurt(listaIntrebari,t,listaRaspunsuri,n);
     numarareIntrebariGrila(contorIntrebariGrila);
 }
@@ -148,9 +147,11 @@ void adaugareIntrebariRaspScurt(char listaIntrebari[][150], int t, char listaRas
     }
 }
 
-void adaugareIntrebareInFisier()
+void adaugareIntrebareInFisier(char *intrebariScurte)
 {
     char propozitie[150],intrebare[150],raspuns[150];
+    FILE* fptr;
+    fptr = fopen(intrebariScurte, "a");
     printf("Introduceti intrebarea:\n");
     //getchar();
     fgets(propozitie, 150, stdin);
@@ -163,6 +164,7 @@ void adaugareIntrebareInFisier()
     fprintf(fptr, "%s", raspuns);
 
     printf("Intrebarea a fost adaugata\n");
+    fclose(fptr);
 }
 
 void extrageRaspuns(char rasp[],char variante[],int *k)
@@ -356,12 +358,12 @@ void stergeLista()
 int verificaAparitii(int aparitii[],int maxNrIntrebari)
 {
     int cateNumere = 0;
-    for (int i = 0; i <= maxNrIntrebari; i++)
+    for (int i = 0; i < maxNrIntrebari; i++)
     {
         if (aparitii[i] != 0)
             cateNumere++;
     }
-    if (cateNumere != 5)
+    if (cateNumere != 5) //pentru ca vreau sa am 5 intrebari la fiecare quiz
         return 0;
     return 1;
 }
@@ -372,7 +374,7 @@ void generareNumere(int aparitii[],int maxNrIntrebari)
     {
         if (verificaAparitii(aparitii,maxNrIntrebari) == 1)
             break;
-        int val = rand() % (maxNrIntrebari+1);
+        int val =(rand() % maxNrIntrebari)+1;
         if (aparitii[val] == 0)
         {
             aparitii[val]++;
@@ -469,7 +471,7 @@ int quizGrila(int contorIntrebariGrila)
     return contor;
 }
 
-void incepeQuiz(int contorIntrebariScurt,int contorIntrebariGrila)
+void incepeQuiz(int contorIntrebariScurt,int contorIntrebariGrila,char* clasament, char* intrebariScurte, char* intrebariGrila)
 {
     char numeJucator[50];
     memset(numeJucator, 0, 50);
@@ -478,7 +480,7 @@ void incepeQuiz(int contorIntrebariScurt,int contorIntrebariGrila)
     
     while (1)
     {
-        if (cautare(numeJucator) == 1)
+        if (cautare(numeJucator,clasament) == 1)
             break;
         else {
             printf("Numele introdus este luat\n");
@@ -539,7 +541,8 @@ void incepeQuiz(int contorIntrebariScurt,int contorIntrebariGrila)
                     {
                         catePuncte = quizGrila(contorIntrebariGrila);
                         printf("Scorul tau este: %d / %d\n", catePuncte, 5);
-                        cls = fopen("clasament.txt", "a");
+                        FILE* cls;
+                        cls = fopen(clasament, "a");
                         if (cls == NULL)
                         {
                             printf("Eroare! Fisierul nu poate fi accesat");
@@ -552,7 +555,8 @@ void incepeQuiz(int contorIntrebariScurt,int contorIntrebariGrila)
                     else {
                         catePuncte = quizScurt(contorIntrebariScurt);
                         printf("Scorul tau este: %d / %d\n", catePuncte, 5);
-                        cls = fopen("clasament.txt", "a");
+                        FILE* cls;
+                        cls = fopen(clasament, "a");
                         if (cls == NULL)
                         {
                             printf("Eroare! Fisierul nu poate fi accesat");
@@ -577,7 +581,7 @@ void incepeQuiz(int contorIntrebariScurt,int contorIntrebariGrila)
                 if (numar == 3)
                 {
                     stergeLista();
-                    alcatuireClasament();
+                    alcatuireClasament(clasament);
                     afisareClasament();
                     //break;
                 }
@@ -591,9 +595,10 @@ void incepeQuiz(int contorIntrebariScurt,int contorIntrebariGrila)
     }
 }
 
-int cautare(char s[])
+int cautare(char s[],char *clasament)
 {
-    cls = fopen("clasament.txt", "r");
+    FILE* cls;
+    cls = fopen(clasament, "r");
     if (cls == NULL)
     {
         printf("Eroare! Fisierul nu poate fi accesat");
@@ -642,9 +647,10 @@ int extrageScor(char s[])
     return numar;
 }
 
-void alcatuireClasament()
+void alcatuireClasament(char *clasament)
 {
-    cls = fopen("clasament.txt", "r");
+    FILE* cls;
+    cls = fopen(clasament, "r");
     if (cls == NULL)
     {
         printf("Eroare! Fisierul nu poate fi accesat");
@@ -728,7 +734,7 @@ void afisareClasament()
     }
 }
 
-void optiuniUser()
+void optiuniUser(char* clasament, char* intrebariScurte, char* intrebariGrila)
 {
     opuser();
     while (1)
@@ -745,18 +751,18 @@ void optiuniUser()
                     printf("Ai parasit jocul");
                     exit(0);
                 case 1:
-                    stergeLista();
-                    alcatuireClasament();
+                    stergeLista(clasament);
+                    alcatuireClasament(clasament);
                     afisareClasament();
                     break;
                 case 2:
                     contorIntrebariScurt = 0;
                     contorIntrebariGrila = 0;
-                    stocareIntrebari(&contorIntrebariScurt,&contorIntrebariGrila);
-                    incepeQuiz(contorIntrebariScurt,contorIntrebariGrila);
+                    stocareIntrebari(&contorIntrebariScurt,&contorIntrebariGrila,clasament,intrebariScurte,intrebariGrila);
+                    incepeQuiz(contorIntrebariScurt,contorIntrebariGrila,clasament,intrebariScurte,intrebariGrila);
                     break;
                 case 3:
-                    paginaPrincipala();
+                    paginaPrincipala(clasament,intrebariScurte,intrebariGrila);
                     break;
                 default:
                     printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
@@ -786,10 +792,12 @@ void opadmin()
     printf("4. Paraseste jocul (tasta 4)\n");
 }
 
-void optiuniAdministrator()
+void optiuniAdministrator(char *clasament,char *intrebariScurte, char *intrebariGrila)
 {
-    fptr = fopen("listaIntrebari.txt", "a");
-    multiplu = fopen("mulraspIntrebari.txt", "a");
+    FILE* fptr;
+    FILE* multiplu;
+    fptr = fopen(intrebariScurte, "a");
+    multiplu = fopen(intrebariGrila, "a");
     if (fptr == NULL)
     {
         printf("Eroare! Fisierul nu poate fi accesat");
@@ -816,7 +824,7 @@ void optiuniAdministrator()
                     exit(0);
                 case 1:
                     printf("Adaugare intrebare noua\n");
-                    tipIntrebare();
+                    tipIntrebare(clasament,intrebariScurte,intrebariGrila);
                     break;
                     //adaugareIntrebareInFisier();
                 case 2:
@@ -851,19 +859,19 @@ void optiuniAdministrator()
                     if (numarOptiune == 1)
                     {
                         getchar();
-                        stergereIntrebareScurt();
+                        stergereIntrebareScurt(intrebariScurte);
                     }
                     else 
                     {
                         if (numarOptiune == 2) 
                         {
                             getchar();
-                            stergereIntrebareGrila();
+                            stergereIntrebareGrila(intrebariGrila);
                         }
                     }
                     break;
                 case 3:
-                    paginaPrincipala();
+                    paginaPrincipala(clasament,intrebariScurte,intrebariGrila);
                     break;
                 default:
                     printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
@@ -898,9 +906,10 @@ void afisareIntrebariGrila(char** matrice, int index)
     }
 }
 
-void completareInFisierGrila(int *ind,int k,char **matrice,int index)
+void completareInFisierGrila(int *ind,int k,char **matrice,int index,char *intrebariGrila)
 {
-    multiplu = fopen("mulraspIntrebari.txt", "w");
+    FILE* multiplu;
+    multiplu = fopen(intrebariGrila, "w");
     if (multiplu == NULL)
     {
         printf("Fisierul nu exista");
@@ -938,14 +947,15 @@ void completareInFisierGrila(int *ind,int k,char **matrice,int index)
     fclose(multiplu);
 }
 
-void stergereIntrebareGrila()
+void stergereIntrebareGrila(char *intrebariGrila)
 {
     char** matrice;
     matrice = initializareMatrice();
     char* spare = (char*)calloc(150, sizeof(char));
     int index = 0;
 
-    multiplu = fopen("mulraspIntrebari.txt", "r");
+    FILE* multiplu;
+    multiplu = fopen(intrebariGrila, "r");
     if (multiplu == NULL)
     {
         printf("Fisierul nu poate fi accesat.");
@@ -967,7 +977,7 @@ void stergereIntrebareGrila()
     citireIndecsi(ind, &k, index);
     sortare(ind, k);
     getchar();
-    completareInFisierGrila(ind, k, matrice, index);
+    completareInFisierGrila(ind, k, matrice, index,intrebariGrila);
     free(ind);
     for (int i = 0; i < 150; i++)
         free(matrice[i]);
@@ -993,9 +1003,12 @@ void afisareIntrebari(char** mat, int n)
 char** initializareMatrice()
 {
     char** matrice = (char**)malloc(150 * sizeof(char*));
-    for (int i = 0; i < 150; i++)
+    if (matrice != NULL)
     {
-        matrice[i] = (char*)calloc(150, sizeof(char));
+        for (int i = 0; i < 150; i++)
+        {
+            matrice[i] = (char*)calloc(150, sizeof(char));
+        }
     }
     return matrice;
 }
@@ -1063,13 +1076,14 @@ void sortare(int* ind, int k)
     }
 }
 
-void stergereIntrebareScurt()
+void stergereIntrebareScurt(char *intreabariScurt)
 {
     char** matrice = initializareMatrice();
     char* spare = (char*)malloc(150 * sizeof(char));
     int index = 0;
     
-    fptr = fopen("listaIntrebari.txt", "r");
+    FILE* fptr;
+    fptr = fopen(intreabariScurt, "r");
     if (fptr == NULL)
     {
         printf("Fisierul nu poate fi accesat");
@@ -1094,7 +1108,7 @@ void stergereIntrebareScurt()
     
     getchar();
 
-    completareInFisier(ind, k,matrice,index);
+    completareInFisier(ind, k,matrice,index,intreabariScurt);
     free(ind);
     for (int i = 0; i < 150; i++)
         free(matrice[i]);
@@ -1121,9 +1135,10 @@ int cautareBinara(int val, int* ind, int k)
     return -1;
 }
 
-void completareInFisier(int *ind,int k,char **matrice,int index)
+void completareInFisier(int *ind,int k,char **matrice,int index,char *intrebariScurt)
 {
-    fptr = fopen("listaIntrebari.txt", "w");
+    FILE* fptr;
+    fptr = fopen(intrebariScurt, "w");
     if (fptr == NULL)
     {
         printf("Fisierul nu exista");
@@ -1161,13 +1176,11 @@ void tipIntrebareQ()
     printf("3. Intoarce-te la meniul de administrator(tasta 3)\n");
 }
 
-void tipIntrebare()
+void tipIntrebare(char* clasament, char* intrebariScurte, char* intrebariGrila)
 {
     tipIntrebareQ();
     while (1)
     {
-        /*int optiune = 0;
-        scanf("%d", &optiune);*/
         char optiune[256];
         gets(optiune);
         if (validareInput(optiune) == 1)
@@ -1176,13 +1189,13 @@ void tipIntrebare()
             switch (numar)
             {
             case 3:
-                optiuniAdministrator();
+                optiuniAdministrator(clasament,intrebariScurte,intrebariGrila);
                 break;
             case 1:
-                adaugareIntrebareInFisier();
+                adaugareIntrebareInFisier(intrebariScurte);
                 break;
             case 2:
-                adaugareRaspunsMultiplu();
+                adaugareRaspunsMultiplu(intrebariGrila);
                 break;
             default:
                 printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
@@ -1196,9 +1209,10 @@ void tipIntrebare()
     }
 }
 
-void stocareRaspunsMultiplu()
+void stocareRaspunsMultiplu(char *intrebariGrila)
 {
-    multiplu = fopen("mulraspIntrebari.txt", "r");
+    FILE* multiplu;
+    multiplu = fopen(intrebariGrila, "r");
     if (multiplu == NULL)
     {
         printf("Eroare! Fisierul nu poate fi accesat");
@@ -1249,8 +1263,10 @@ void stocareRaspunsMultiplu()
     }
 }
 
-void adaugareRaspunsMultiplu() {
+void adaugareRaspunsMultiplu(char *intrebariGrila) {
     
+    FILE* multiplu;
+    multiplu = fopen(intrebariGrila, "a");
     char* intrebare = (char*)malloc(150 * sizeof(char));
     char* raspuns1 = (char*)malloc(30 * sizeof(char));
     char* raspuns2 = (char*)malloc(30 * sizeof(char));
@@ -1271,17 +1287,22 @@ void adaugareRaspunsMultiplu() {
     while (1) {
 
         gets(corect);
+        if (strcmp(raspuns1, corect) == 0) {
+            break;
+        }
+        if (strcmp(raspuns2, corect) == 0) {
+            break;
+        }
+        if (strcmp(raspuns3, corect) == 0) {
+            break;
+        }
         if (strcmp(raspuns1, corect) != 0 && strcmp(raspuns2, corect) != 0 && strcmp(raspuns3, corect) != 0)
         {
             printf("Raspunsul corect nu coincide cu niciuna dintre variante.\nIntroduceti unul dintre raspunsurile introduse deja.\n");
         }
-        else
-        {
-            break;
-        }
+        
     }
     
-
     fprintf(multiplu, "%s\n", intrebare);
     fprintf(multiplu, "%s\n", raspuns1);
     fprintf(multiplu, "%s\n", raspuns2);
@@ -1327,7 +1348,7 @@ void reguli()
     printf("\n");
 }
 
-void paginaPrincipala()
+void paginaPrincipala(char *clasament,char* intrebariScurte, char *intrebariGrila)
 {
     opprinicipala();
     while (1)
@@ -1339,11 +1360,11 @@ void paginaPrincipala()
             switch (numar)
             {
                 case 1:
-                    optiuniUser();
+                    optiuniUser(clasament,intrebariScurte,intrebariGrila);
                     break;
                 case 2:
                     if (verificareAdministrator() == 1) {
-                        optiuniAdministrator();
+                        optiuniAdministrator(clasament,intrebariScurte,intrebariGrila);
                     }
                     else
                         printf("Parola gresita. Nu aveti permisiunea de a va loga ca administrator\n");
@@ -1370,6 +1391,7 @@ void paginaPrincipala()
 int verificareAdministrator()
 {
     char parola[50];
+    memset(parola, 0, 50);
     printf("Introduceti parola\n");
     gets(parola);
     if (strcmp(parola, "admin") != 0)
@@ -1377,10 +1399,34 @@ int verificareAdministrator()
     return 1;
 }
 
+char* initializare()
+{
+    char* numeFisier = (char*)malloc(20* sizeof(char));
+    if (numeFisier != NULL) {
+        for (int i = 0; i < 20; i++)
+            numeFisier[i] = 0;
+    }
+    return numeFisier;
+}
+
+void numeFisiere(char* clasament, char* intrebariScurte, char* intrebariGrila)
+{
+    strcpy(clasament, "clasament.txt");
+    strcpy(intrebariScurte, "listaIntrebari.txt");
+    strcpy(intrebariGrila, "mulraspIntrebari.txt");
+}
+
 int main() {
     printf("QuizApp\n");
     srand(time(0));
-    paginaPrincipala();
+    char* clasament = initializare();
+    char* intrebariScurte = initializare();
+    char* intrebariGrila = initializare();
+    numeFisiere(clasament, intrebariScurte, intrebariGrila);
+    paginaPrincipala(clasament,intrebariScurte,intrebariGrila);
+    free(clasament);
+    free(intrebariScurte);
+    free(intrebariGrila);
 
     return 0;
 }

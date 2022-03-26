@@ -5,12 +5,14 @@ struct questions {
 };
 struct questions* head = NULL;
 
+
 struct grila {
     char intrebare[150];
     char raspuns[150];
     struct grila* urm;
 };
 struct grila* cap = NULL;
+
 
 struct ranking {
     char nume[50];

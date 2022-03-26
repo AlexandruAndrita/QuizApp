@@ -7,103 +7,11 @@
 #include "structuri.h"
 #include "optiuni.h"
 #include "admin.h"
+#include "stocareIntrebari.h"
+#include "adaugareInFisier.h"
 
 
 
-void stocareIntrebari(int *contorIntrebariScurt,int * contorIntrebariGrila,char* clasament, char* intrebariScurte, char* intrebariGrila)
-{
-    char listaIntrebari[150][150], listaRaspunsuri[150][150], linie[150];
-    int k = 0, n = 0, t = 0, nrintrebari = 0, nrraspunsuri = 0;
-    int ok = 1;
-    char caracter;
-    FILE* fptr;
-    fptr = fopen(intrebariScurte, "r");
-    if (fptr == NULL)
-    {
-        printf("Eroare! Fisierul nu poate fi accesat");
-        exit(1);
-    }
-    caracter = fgetc(fptr);
-    while (caracter != EOF)
-    {
-        if (caracter == '\n')
-        {
-            ok = 1;
-            nrintrebari += 1;
-            nrraspunsuri += 1;
-            linie[k] = '\0';
-            if ((nrintrebari + 1) % 2 == 0)
-            {
-                strcpy(listaIntrebari[t++], linie);
-                (*contorIntrebariScurt)++;
-            }
-            else
-            {
-                if (nrraspunsuri %2 == 0)
-                    strcpy(listaRaspunsuri[n++], linie);
-            }
-            k = 0;
-            memset(linie, 0, 100);
-            ok = 0;
-        }
-        if (ok == 1) {
-            linie[k++] = caracter;
-        }
-        if (ok == 0) {
-            ok = 1;
-        }
-        caracter = fgetc(fptr);
-    }
-    fclose(fptr);
-
-    stocareRaspunsMultiplu(intrebariGrila);
-    adaugareIntrebariRaspScurt(listaIntrebari,t,listaRaspunsuri,n);
-    numarareIntrebariGrila(contorIntrebariGrila);
-}
-
-void adaugareIntrebariRaspScurt(char listaIntrebari[][150], int t, char listaRaspunsuri[][150], int n)
-{
-    for (int i = 0; i < n; i++)
-    {
-        struct questions* elem = (struct questions*)malloc(sizeof(struct questions));
-        strcpy((*elem).intrebare, listaIntrebari[i]);
-        strcpy((*elem).raspuns, listaRaspunsuri[i]);
-        (*elem).next = NULL;
-        if (head == NULL)
-        {
-            head = elem;
-        }
-        else
-        {
-            struct questions* aux = head;
-            while ((*aux).next != NULL)
-            {
-                aux = (*aux).next;
-            }
-            (*aux).next = elem;
-        }
-    }
-}
-
-void adaugareIntrebareInFisier(char *intrebariScurte)
-{
-    char propozitie[150],intrebare[150],raspuns[150];
-    FILE* fptr;
-    fptr = fopen(intrebariScurte, "a");
-    printf("Introduceti intrebarea:\n");
-    //getchar();
-    fgets(propozitie, 150, stdin);
-    strcpy(intrebare, propozitie);
-    printf("Introduceti raspunsul:\n");
-    fgets(propozitie, 150, stdin);
-    strcpy(raspuns, propozitie);
-
-    fprintf(fptr, "%s", intrebare);
-    fprintf(fptr, "%s", raspuns);
-
-    printf("Intrebarea a fost adaugata\n");
-    fclose(fptr);
-}
 
 void extrageRaspuns(char rasp[],char variante[],int *k)
 {
@@ -135,7 +43,6 @@ void numarareIntrebariGrila(int *contorIntrebariGrila)
         elemGrila = (*elemGrila).urm;
     }
 }
-
 
 void transformaDinLitereMari(char s[])
 {
@@ -1007,7 +914,7 @@ void tipIntrebare(char* clasament, char* intrebariScurte, char* intrebariGrila,c
                 optiuniAdministrator(clasament,intrebariScurte,intrebariGrila,parolaAdmin);
                 break;
             case 1:
-                adaugareIntrebareInFisier(intrebariScurte);
+                adaugareRaspunsScurt(intrebariScurte);
                 break;
             case 2:
                 adaugareRaspunsMultiplu(intrebariGrila);
@@ -1024,114 +931,6 @@ void tipIntrebare(char* clasament, char* intrebariScurte, char* intrebariGrila,c
     }
 }
 
-void stocareRaspunsMultiplu(char *intrebariGrila)
-{
-    FILE* multiplu;
-    multiplu = fopen(intrebariGrila, "r");
-    if (multiplu == NULL)
-    {
-        printf("Eroare! Fisierul nu poate fi accesat");
-        exit(1);
-    }
-    char rez[150],intrebari[150];
-    int linie = 1, k = 0;
-    memset(rez, 0, 150);
-    memset(intrebari, 0, 150);
-    struct grila* elemNou = (struct grila*)malloc(sizeof(struct grila));
-    while (fgets(rez, 150, multiplu))
-    {
-        if ((linie - 1) % 5 == 0)
-        {
-            rez[strlen(rez) - 1] = '\0';
-            strcpy((*elemNou).intrebare, rez);
-        }
-        else
-        {
-            for (int i = 0; i < strlen(rez); i++)
-            {
-                intrebari[k++] = rez[i];
-            }
-            if (linie %5==0)
-            {
-                intrebari[k] = '\0';
-                strcpy((*elemNou).raspuns, intrebari);
-                (*elemNou).urm = NULL;
-                if (cap == NULL)
-                {
-                    cap = elemNou;
-                }
-                else
-                {
-                    struct grila* elem = cap;
-                    while ((*elem).urm != NULL)
-                    {
-                        elem = (*elem).urm;
-                    }
-                    (*elem).urm = elemNou;
-                }
-                memset(intrebari, 0, 150);
-                k = 0;
-                elemNou = (struct grila*)malloc(sizeof(struct grila));
-            }
-        }
-        linie += 1;
-    }
-}
-
-void adaugareRaspunsMultiplu(char *intrebariGrila) {
-    
-    FILE* multiplu;
-    multiplu = fopen(intrebariGrila, "a");
-    char* intrebare = (char*)malloc(150 * sizeof(char));
-    char* raspuns1 = (char*)malloc(30 * sizeof(char));
-    char* raspuns2 = (char*)malloc(30 * sizeof(char));
-    char* raspuns3 = (char*)malloc(30 * sizeof(char));
-    char* corect = (char*)malloc(30 * sizeof(char));
-    //getchar();
-    printf("Introduceti intrebarea\n");
-    gets(intrebare);
-    printf("Introduceti prima varianta de raspuns\n");
-    gets(raspuns1);
-    printf("Introduceti a doua varianta de raspuns\n");
-    gets(raspuns2);
-    printf("Introduceti a treia varianta de raspuns\n");
-    gets(raspuns3);
-    printf("Introduceti raspunsul corect\n");
-    
-
-    while (1) {
-
-        gets(corect);
-        if (strcmp(raspuns1, corect) == 0) {
-            break;
-        }
-        if (strcmp(raspuns2, corect) == 0) {
-            break;
-        }
-        if (strcmp(raspuns3, corect) == 0) {
-            break;
-        }
-        if (strcmp(raspuns1, corect) != 0 && strcmp(raspuns2, corect) != 0 && strcmp(raspuns3, corect) != 0)
-        {
-            printf("Raspunsul corect nu coincide cu niciuna dintre variante.\nIntroduceti unul dintre raspunsurile introduse deja.\n");
-        }
-        
-    }
-    
-    fprintf(multiplu, "%s\n", intrebare);
-    fprintf(multiplu, "%s\n", raspuns1);
-    fprintf(multiplu, "%s\n", raspuns2);
-    fprintf(multiplu, "%s\n", raspuns3);
-    fprintf(multiplu, "%s\n", corect);
-
-    printf("Intrebarea a fost adaugata\n");
-
-    free(intrebare);
-    free(raspuns1);
-    free(raspuns2);
-    free(raspuns3);
-    free(corect);
-}
 
 int validareInput(char optiune[])
 {
@@ -1156,16 +955,13 @@ void paginaPrincipala(char *clasament,char* intrebariScurte, char *intrebariGril
             switch (numar)
             {
                 case 1:
-                    //system("cls");
                     optiuniUser(clasament,intrebariScurte,intrebariGrila,parolaAdmin);
                     break;
                 case 2:
                     if (verificareParolaAdministrator(parolaAdmin) == 1) {
-                        //system("cls");
                         optiuniAdministrator(clasament,intrebariScurte,intrebariGrila,parolaAdmin);
                     }
                     else {
-                        //system("cls");
                         printf("Parola gresita. Nu aveti permisiunea de a va loga ca administrator\n\n");
                     }
                     break;

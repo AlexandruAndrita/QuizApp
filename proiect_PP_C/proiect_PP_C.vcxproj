@@ -148,9 +148,11 @@
     <Text Include="mulraspIntrebari.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="adaugareInFisier.h" />
     <ClInclude Include="admin.h" />
     <ClInclude Include="optiuni.h" />
     <ClInclude Include="prototipuri.h" />
+    <ClInclude Include="stocareIntrebari.h" />
     <ClInclude Include="structuri.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

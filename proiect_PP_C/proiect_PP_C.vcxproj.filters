@@ -43,5 +43,8 @@
     <ClInclude Include="optiuni.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="admin.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

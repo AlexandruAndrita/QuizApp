@@ -126,7 +126,7 @@ void schimbareParolaAdmin(char* parolaAdmin)
     free(confirmareparolaNoua);
 }
 
-int verificareAdministrator(char* parolaAdmin)
+int verificareParolaAdministrator(char* parolaAdmin)
 {
     FILE* pointerFis;
     pointerFis = fopen(parolaAdmin, "r");

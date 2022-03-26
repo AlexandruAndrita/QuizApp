@@ -1,36 +1,24 @@
-In ce an a inceput Primul Razboi Mondial?
-1914
-Care este cel mai lung fluviu din Europa?
-Volga
-Din ce tara izvoraste Dunarea?
-Germania
-In ce an a intrat Romania in Uniunea Europeana?
-2007
-Ce poet a scris poezia "Plumb"?
-George Bacovia
-Cate zile are un an bisect?
-366
-Cati ani a durat razboiul de 100 de ani?
-116
-Cate titluri mondiale are Lewis Hamilton?
-7
-Unde s-a nascut Ion Creanga?
-Humulesti
-Care este una dintre echipele italiene din Formula 1?
-Ferrari
-Ce tip de lac este lacul Iezer?
-Glaciar
-Care este cel mai inalt munte de pe glob?
-Everest
-Cate continente exista pe Pamant?
-7
-In ce an s-a nascut regele Mihai I?
-1921
-Cine a scris romanul "Ion"?
-Liviu Rebreanu
-In ce an a devenit fotbalul sport olimpic?
-1900
-Ce culoare are cutia neagra a unui avion?
-Portocalie
-Care este singurul continent pe care nu traiesc ursi?
-Antarctica
+In ce an a inceput Primul Razboi Mondial?;1914
+Care este cel mai lung fluviu din Europa?;Volga
+Din ce tara izvoraste Dunarea?;Germania
+In ce an a intrat Romania in Uniunea Europeana?;2007
+Ce poet a scris poezia "Plumb"?;George Bacovia
+Cate zile are un an bisect?;366
+Cati ani a durat razboiul de 100 de ani?;116
+Cate titluri mondiale are Lewis Hamilton?;7
+Unde s-a nascut Ion Creanga?;Humulesti
+Care este una dintre echipele italiene din Formula 1?;Ferrari
+Ce tip de lac este lacul Iezer?;Glaciar
+Care este cel mai inalt munte de pe glob?;Everest
+Cate continente exista pe Pamant?;7
+In ce an s-a nascut regele Mihai I?;1921
+Cine a scris romanul "Ion"?;Liviu Rebreanu
+In ce an a devenit fotbalul sport olimpic?;1900
+Ce culoare are cutia neagra a unui avion?;Portocalie
+Care este singurul continent pe care nu traiesc ursi?;Antarctica
+In ce oras ucrainean a avut loc dezastrul nuclear?;Pripeat
+In ce tara se afla Casa Rosada?;Argentina
+Care este cea mai mica tara din lume?;Vaticanul
+Care este cea mai vorbita limba din lume?;Chineza
+Care este cea mai mare insula din lume?;Groenlanda
+Cine a scris Odiseea?;Homer

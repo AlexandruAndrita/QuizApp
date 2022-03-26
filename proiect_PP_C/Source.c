@@ -1160,7 +1160,7 @@ void paginaPrincipala(char *clasament,char* intrebariScurte, char *intrebariGril
                     optiuniUser(clasament,intrebariScurte,intrebariGrila,parolaAdmin);
                     break;
                 case 2:
-                    if (verificareAdministrator(parolaAdmin) == 1) {
+                    if (verificareParolaAdministrator(parolaAdmin) == 1) {
                         //system("cls");
                         optiuniAdministrator(clasament,intrebariScurte,intrebariGrila,parolaAdmin);
                     }

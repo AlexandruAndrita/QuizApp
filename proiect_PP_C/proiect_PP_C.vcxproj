@@ -148,6 +148,7 @@
     <Text Include="mulraspIntrebari.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="admin.h" />
     <ClInclude Include="optiuni.h" />
     <ClInclude Include="prototipuri.h" />
     <ClInclude Include="structuri.h" />

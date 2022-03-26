@@ -1,60 +1,16 @@
-Care este tara care forma unei cizme?
-Italia
-Austria
-Elvetia
-Italia
-Cate culori are steagul Suediei?
-2
-4
-3
-2
-Cate state are SUA?
-50
-49
-48
-50
-In ce an s-a scufundat Titanicul?
-1913
-1914
-1912
-1912
-Cate laturi are un hexagon?
-6
-5
-7
-6
-In ce an a inceput Al Doilea Razboi Mondial?
-1945
-1939
-1944
-1939
-Care este cel mai estic oras al Romaniei?
-Bucuresti
-Tulcea
-Sulina
-Sulina
-Cine a inventat stiloul?
-Thomas Edison
-Petrache Poenaru
-Jons Jakob Berzelius
-Petrache Poenaru
-Care este capitala Islandei?
-Reykjavik
-Helsinki
-Copenhaga
-Reykjavik
-Cine a fost parintele psihanalizei?
-Immanuel Kant
-Georg Hegel
-Sigmund Freud
-Sigmund Freud
-Care este cea mai populata tara de pe Pamant?
-China
-Rusia
-Lituania
-Rusia
-Care este cea mai mare tara din lume?
-Romania
-Rusia
-SUA
-Rusia
+Care este tara care forma unei cizme?;Italia;Austria;Elvetia;Italia
+Cate culori are steagul Suediei?;2;4;3;2
+Cate state are SUA?;50;49;48;50
+In ce an s-a scufundat Titanicul?;1913;1914;1912;1912
+Cate laturi are un hexagon?;6;5;7;6
+In ce an a inceput Al Doilea Razboi Mondial?;1945;1939;1944;1939
+Care este cel mai estic oras al Romaniei?;Bucuresti;Tulcea;Sulina;Sulina
+Cine a inventat stiloul?;Thomas Edison;Petrache Poenaru;Jons Jakob Berzelius;Petrache Poenaru
+Care este capitala Islandei?;Reykjavik;Helsinki;Copenhaga;Reykjavik
+Cine a fost parintele psihanalizei?;Immanuel Kant;Georg Hegel;Sigmund Freud;Sigmund Freud
+Care este cea mai populata tara de pe Pamant?;China;Rusia;Lituania;Rusia
+Care este cea mai mare tara din lume?;Romania;Rusia;SUA;Rusia
+In ce tari se afla Everestul?;Nepal si China;China si India;India si Nepal;Nepal si China
+In ce an a fost creata ONU?;1944;1945;1946;1945
+In ce an a fost asasinat John F. Kennedy?;1964;1965;1963;1963
+In ce an a intrat Romania in Primul Razboi Mondial?;1917;1920;1916;1916

@@ -5,7 +5,7 @@ void opadmin();
 void paginaPrincipala(char* clasament, char* intrebariScurte, char* intrebariGrila, char *parolaAdmin);
 void adaugareIntrebareInFisier(char* intrebariScurte);
 void opprinicipala();
-int verificareAdministrator(char *parolaAdmin);
+int verificareParolaAdministrator(char *parolaAdmin);
 void stocareIntrebari(int* contorIntrebariScurt, int* contorIntrebariGrila, char* clasament, char* intrebariScurte, char* intrebariGrila);
 void adaugareIntrebariRaspScurt(char listaIntrebari[][150], int t, char listaRaspunsuri[][150], int n);
 void incepeQuiz(int contorIntrebariScurt, int contorIntrebariGrila, char* clasament, char* intrebariScurte, char* intrebariGrila);

@@ -143,10 +143,12 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="clasament.txt" />
-    <Text Include="listaIntrebari.txt" />
+    <Text Include="parolaAdmin.txt" />
+    <Text Include="scurtraspIntrebari.txt" />
     <Text Include="mulraspIntrebari.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="optiuni.h" />
     <ClInclude Include="prototipuri.h" />
     <ClInclude Include="structuri.h" />
   </ItemGroup>

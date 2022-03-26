@@ -23,10 +23,13 @@
     <Text Include="clasament.txt">
       <Filter>Source Files</Filter>
     </Text>
-    <Text Include="listaIntrebari.txt">
+    <Text Include="scurtraspIntrebari.txt">
       <Filter>Source Files</Filter>
     </Text>
     <Text Include="mulraspIntrebari.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="parolaAdmin.txt">
       <Filter>Source Files</Filter>
     </Text>
   </ItemGroup>
@@ -35,6 +38,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="structuri.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="optiuni.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

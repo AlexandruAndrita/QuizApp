@@ -5,7 +5,8 @@
 
 #include "prototipuri.h"
 #include "structuri.h"
-
+#include "optiuni.h"
+#include "admin.h"
 
 
 
@@ -135,13 +136,6 @@ void numarareIntrebariGrila(int *contorIntrebariGrila)
     }
 }
 
-void optiuniQuiz()
-{
-    printf("1. Incepe quiz (tasta 1)\n");
-    printf("2. Mergi la pagina principala (tasta 2)\n");
-    printf("3. Vezi clasament (tasta 3)\n");
-    printf("4. Paraseste jocul (tasta 4)\n");
-}
 
 void transformaDinLitereMari(char s[])
 {
@@ -671,7 +665,7 @@ void afisareClasament()
     }
 }
 
-void optiuniUser(char* clasament, char* intrebariScurte, char* intrebariGrila)
+void optiuniUser(char* clasament, char* intrebariScurte, char* intrebariGrila,char *parolaAdmin)
 {
     opuser();
     while (1)
@@ -699,7 +693,7 @@ void optiuniUser(char* clasament, char* intrebariScurte, char* intrebariGrila)
                     incepeQuiz(contorIntrebariScurt,contorIntrebariGrila,clasament,intrebariScurte,intrebariGrila);
                     break;
                 case 3:
-                    paginaPrincipala(clasament,intrebariScurte,intrebariGrila);
+                    paginaPrincipala(clasament,intrebariScurte,intrebariGrila,parolaAdmin);
                     break;
                 default:
                     printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
@@ -710,115 +704,6 @@ void optiuniUser(char* clasament, char* intrebariScurte, char* intrebariGrila)
             printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
         }
         opuser();
-    }
-}
-
-void opuser()
-{
-    printf("1. Vizualizare clasament (tasta 1).\n");
-    printf("2. Incepe quiz (tasta 2)\n");
-    printf("3. Pagina principala (tasta 3)\n");
-    printf("4. Paraseste jocul (tasta 4)\n");
-}
-
-void opadmin()
-{
-    printf("1. Adauga intrebare noua (tasta 1).\n");
-    printf("2. Stergere intrebare (tasta2).\n");
-    printf("3. Pagina principala (tasta 3)\n");
-    printf("4. Paraseste jocul (tasta 4)\n");
-}
-
-void optiuniAdministrator(char *clasament,char *intrebariScurte, char *intrebariGrila)
-{
-    FILE* fptr;
-    FILE* multiplu;
-    fptr = fopen(intrebariScurte, "a");
-    multiplu = fopen(intrebariGrila, "a");
-    if (fptr == NULL)
-    {
-        printf("Eroare! Fisierul nu poate fi accesat");
-        exit(1);
-    }
-    if (multiplu == NULL)
-    {
-        printf("Eroare! Fisierul nu poate fi accesat");
-        exit(1);
-    }
-    opadmin();
-    while (1)
-    {
-        char optiune[256];
-        gets(optiune);
-        if (validareInput(optiune) == 1) {
-            int numar = atoi(optiune);
-            switch (numar)
-            {
-                case 4:
-                    printf("Ai parasit jocul");
-                    fclose(fptr);
-                    fclose(multiplu);
-                    exit(0);
-                case 1:
-                    printf("Adaugare intrebare noua\n");
-                    tipIntrebare(clasament,intrebariScurte,intrebariGrila);
-                    break;
-                    //adaugareIntrebareInFisier();
-                case 2:
-                    printf("Doriti sa stergeti intrebari cu raspuns scurt sau intrebari tip grila?\n");
-                    printf("1. Intrebare cu raspuns scurt (tasta 1)\n2. Intrebare tip grila (tasta2)\n");
-                    char* optiune = (char*)calloc(10, sizeof(char));
-                    int numarOptiune = 0;
-                    while (1)
-                    {
-                        scanf("%s", optiune);
-                        
-                        if (validareInput(optiune) == 1)
-                        {
-                            numarOptiune = atoi(optiune);
-                            if (numarOptiune == 1 || numarOptiune == 2) {
-                                
-                                break;
-                            }
-                            else
-                            {
-                                printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
-                                printf("1. Intrebare cu raspuns scurt (tasta 1)\n2. Intrebare tip grila (tasta2)\n");
-                            }
-                        }
-                        else
-                        {
-                            printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
-                            printf("1. Intrebare cu raspuns scurt (tasta 1)\n2. Intrebare tip grila (tasta2)\n");
-                        }
-                    }
-                    free(optiune);
-                    if (numarOptiune == 1)
-                    {
-                        getchar();
-                        stergereIntrebareScurt(intrebariScurte);
-                    }
-                    else 
-                    {
-                        if (numarOptiune == 2) 
-                        {
-                            getchar();
-                            stergereIntrebareGrila(intrebariGrila);
-                        }
-                    }
-                    break;
-                case 3:
-                    paginaPrincipala(clasament,intrebariScurte,intrebariGrila);
-                    break;
-                default:
-                    printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
-            }
-        }
-        else
-        {
-            printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
-        }
-        opadmin();
     }
 }
 
@@ -1106,14 +991,7 @@ void completareInFisier(int *ind,int k,char **matrice,int index,char *intrebariS
     fclose(fptr);
 }
 
-void tipIntrebareQ()
-{
-    printf("1. Introducere intrebare cu raspuns scurt (tasta 1)\n");
-    printf("2. Introducere intrebare cu raspuns multiplu (tasta 2)\n");
-    printf("3. Intoarce-te la meniul de administrator(tasta 3)\n");
-}
-
-void tipIntrebare(char* clasament, char* intrebariScurte, char* intrebariGrila)
+void tipIntrebare(char* clasament, char* intrebariScurte, char* intrebariGrila,char *parolaAdmin)
 {
     tipIntrebareQ();
     while (1)
@@ -1126,7 +1004,7 @@ void tipIntrebare(char* clasament, char* intrebariScurte, char* intrebariGrila)
             switch (numar)
             {
             case 3:
-                optiuniAdministrator(clasament,intrebariScurte,intrebariGrila);
+                optiuniAdministrator(clasament,intrebariScurte,intrebariGrila,parolaAdmin);
                 break;
             case 1:
                 adaugareIntrebareInFisier(intrebariScurte);
@@ -1255,15 +1133,6 @@ void adaugareRaspunsMultiplu(char *intrebariGrila) {
     free(corect);
 }
 
-void opprinicipala()
-{
-    printf("1. Sunt utilizator, nu administrator (tasta 1)\n");
-    printf("2. Sunt administrator (tasta 2)\n");
-    printf("3. Reguli (tasta 3)\n");
-    printf("4. Paraseste jocul (tasta 4)\n");
-    
-}
-
 int validareInput(char optiune[])
 {
     int n = strlen(optiune);
@@ -1275,17 +1144,7 @@ int validareInput(char optiune[])
     return 1;
 }
 
-void reguli()
-{
-    printf("\n");
-    printf("1.Pentru intrebariel cu raspuns scurt, va fi introdus doar raspunsul care este considerat corect de catre utilizator.\n");
-    printf("2.Pentru intrebarile de tip grila, se va raspunde cu 1 (adica a) ),2 (adica b) ) sau 3 (adica c) ).\n  Orice alt raspuns va fi considerat gresit.\n");
-    printf("3.Scorul va fi afisat la final, iar numele si scorul vor fi puse intr-un clasament.\n  Clasamentul poate fi vizuzalizat de catre utilizator daca se doreste acest lucru.\n");
-    printf("4.Pentru stergerea de intrebari vor fi introdusi indecsii intrebarilor ce vor fi a sterse separati printr-un spatiu.\n");
-    printf("\n");
-}
-
-void paginaPrincipala(char *clasament,char* intrebariScurte, char *intrebariGrila)
+void paginaPrincipala(char *clasament,char* intrebariScurte, char *intrebariGrila, char *parolaAdmin)
 {
     opprinicipala();
     while (1)
@@ -1297,19 +1156,25 @@ void paginaPrincipala(char *clasament,char* intrebariScurte, char *intrebariGril
             switch (numar)
             {
                 case 1:
-                    optiuniUser(clasament,intrebariScurte,intrebariGrila);
+                    //system("cls");
+                    optiuniUser(clasament,intrebariScurte,intrebariGrila,parolaAdmin);
                     break;
                 case 2:
-                    if (verificareAdministrator() == 1) {
-                        optiuniAdministrator(clasament,intrebariScurte,intrebariGrila);
+                    if (verificareAdministrator(parolaAdmin) == 1) {
+                        //system("cls");
+                        optiuniAdministrator(clasament,intrebariScurte,intrebariGrila,parolaAdmin);
                     }
-                    else
-                        printf("Parola gresita. Nu aveti permisiunea de a va loga ca administrator\n");
+                    else {
+                        //system("cls");
+                        printf("Parola gresita. Nu aveti permisiunea de a va loga ca administrator\n\n");
+                    }
                     break;
                 case 4:
+                    system("cls");
                     printf("Ai parasit jocul");
                     exit(0);
                 case 3:
+                    system("cls");
                     reguli();
                     break;
                 default:
@@ -1325,17 +1190,6 @@ void paginaPrincipala(char *clasament,char* intrebariScurte, char *intrebariGril
 
 }
 
-int verificareAdministrator()
-{
-    char parola[50];
-    memset(parola, 0, 50);
-    printf("Introduceti parola\n");
-    gets(parola);
-    if (strcmp(parola, "admin") != 0)
-        return 0;
-    return 1;
-}
-
 char* initializare()
 {
     char* numeFisier = (char*)malloc(20* sizeof(char));
@@ -1346,11 +1200,12 @@ char* initializare()
     return numeFisier;
 }
 
-void numeFisiere(char* clasament, char* intrebariScurte, char* intrebariGrila)
+void numeFisiere(char* clasament, char* intrebariScurte, char* intrebariGrila, char *parolaAdmin)
 {
     strcpy(clasament, "clasament.txt");
-    strcpy(intrebariScurte, "listaIntrebari.txt");
+    strcpy(intrebariScurte, "scurtraspIntrebari.txt");
     strcpy(intrebariGrila, "mulraspIntrebari.txt");
+    strcpy(parolaAdmin, "parolaAdmin.txt");
 }
 
 int main() {
@@ -1359,11 +1214,13 @@ int main() {
     char* clasament = initializare();
     char* intrebariScurte = initializare();
     char* intrebariGrila = initializare();
-    numeFisiere(clasament, intrebariScurte, intrebariGrila);
-    paginaPrincipala(clasament,intrebariScurte,intrebariGrila);
+    char* parolaAdmin = initializare();
+    numeFisiere(clasament, intrebariScurte, intrebariGrila,parolaAdmin);
+    paginaPrincipala(clasament,intrebariScurte,intrebariGrila,parolaAdmin);
     free(clasament);
     free(intrebariScurte);
     free(intrebariGrila);
+    free(parolaAdmin);
 
     return 0;
 }

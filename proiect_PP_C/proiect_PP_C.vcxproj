@@ -146,6 +146,10 @@
     <Text Include="listaIntrebari.txt" />
     <Text Include="mulraspIntrebari.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="prototipuri.h" />
+    <ClInclude Include="structuri.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

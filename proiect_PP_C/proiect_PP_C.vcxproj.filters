@@ -30,4 +30,12 @@
       <Filter>Source Files</Filter>
     </Text>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="prototipuri.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="structuri.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>

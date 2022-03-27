@@ -143,15 +143,17 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="clasament.txt" />
+    <Text Include="mulraspIntrebari.txt" />
     <Text Include="parolaAdmin.txt" />
     <Text Include="scurtraspIntrebari.txt" />
-    <Text Include="mulraspIntrebari.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="adaugareInFisier.h" />
+    <ClInclude Include="adaugareInFisierIntrebari.h" />
     <ClInclude Include="admin.h" />
     <ClInclude Include="optiuni.h" />
     <ClInclude Include="prototipuri.h" />
+    <ClInclude Include="quiz.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="stocareIntrebari.h" />
     <ClInclude Include="structuri.h" />
   </ItemGroup>

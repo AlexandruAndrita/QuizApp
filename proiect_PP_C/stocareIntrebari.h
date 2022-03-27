@@ -1,4 +1,4 @@
-void adaugareIntrebariScurte(char* intrebariScurt)
+void adaugareIntrebariScurte(char* intrebariScurt,int * contorIntrebariScurt)
 {
     FILE* pointerFis;
     pointerFis = fopen(intrebariScurt, "r");
@@ -37,12 +37,13 @@ void adaugareIntrebariScurte(char* intrebariScurt)
             }
             aux->next = elem;
         }
+        (*contorIntrebariScurt)++;
     }
     free(linie);
     fclose(pointerFis);
 }
 
-void adaugareIntrebariGrila(char* intrebariGrila)
+void adaugareIntrebariGrila(char* intrebariGrila,int *contorIntrebariGrila)
 {
     FILE* pointerFis;
     pointerFis = fopen(intrebariGrila, "r");
@@ -86,13 +87,14 @@ void adaugareIntrebariGrila(char* intrebariGrila)
             aux->urm = elem;
         }
         memset(variante, 0, 256);
+        (*contorIntrebariGrila)++;
     }
     fclose(pointerFis);
 }
 
 void stocareIntrebari(int* contorIntrebariScurt, int* contorIntrebariGrila, char* clasament, char* intrebariScurte, char* intrebariGrila)
 {
-    adaugareIntrebariScurte(intrebariScurte);
-    adaugareIntrebariGrila(intrebariGrila);
+    adaugareIntrebariScurte(intrebariScurte,contorIntrebariScurt);
+    adaugareIntrebariGrila(intrebariGrila,contorIntrebariGrila);
 }
 

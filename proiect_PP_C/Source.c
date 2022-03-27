@@ -8,306 +8,10 @@
 #include "optiuni.h"
 #include "admin.h"
 #include "stocareIntrebari.h"
-#include "adaugareInFisier.h"
+#include "adaugareInFisierIntrebari.h"
+#include "quiz.h"
 
 
-
-
-void extrageRaspuns(char rasp[],char variante[],int *k)
-{
-    memset(variante, 0, 150);
-    int i = 0, poz = 0;
-    i = strlen(rasp) - 2;
-    while (1)
-    {
-        if (rasp[i] == '\n')
-            break;
-        i--;
-        poz = i;
-    }
-    for (int j = 0; j <= poz; j++)
-    {
-        variante[(*k)++] = rasp[j];
-    }
-    variante[(*k) - 1] = '\0';
-    variante[(*k)] = '\0';
-}
-
-void numarareIntrebariGrila(int *contorIntrebariGrila)
-{
-    struct grila* elemGrila = cap;
-
-    while (elemGrila != NULL)
-    {
-        (*contorIntrebariGrila)++;
-        elemGrila = (*elemGrila).urm;
-    }
-}
-
-void transformaDinLitereMari(char s[])
-{
-    int n = strlen(s);
-    for (int i = 0; i < n; i++)
-        s[i] = tolower(s[i]);
-}
-
-void extrageRaspunsCorect(char d[], char s[], int* k)
-{
-    memset(s, 0, 150);
-    int i = strlen(d) - 2;
-    while (1)
-    {
-        if (d[i] == '\n')
-            break;
-        else
-            s[(*k)++] = d[i];
-        i--;
-    }
-    s[(*k)] = '\0';
-    for (int i = 0; i < (*k) / 2; i++)
-    {
-        char aux = s[i];
-        s[i] = s[(*k) - i - 1];
-        s[(*k) - i - 1] = aux;
-    }
-}
-
-void afisareVariante(char auxx[])
-{
-    int ok1 = 0, ok2 = 0;
-    int i = 0, caractereNewLine=0;
-    while (i < strlen(auxx))
-    {
-        if (i == 0)
-            printf("a)");
-        if ((auxx[i] >= '0' && auxx[i] <= '9') || (auxx[i] >= 'a' && auxx[i] <= 'z') || (auxx[i] >= 'A' && auxx[i] <= 'Z'))
-            printf("%c", auxx[i]);
-        if (auxx[i] == '\n') {
-            printf("\n");
-            caractereNewLine++;
-        }
-        if (auxx[i] == '\n' && caractereNewLine == 3)
-        {
-            break;
-        }
-        if (auxx[i] == ' ')
-            printf(" ");
-        if (auxx[i] == '\n' && ok1 == 0)
-        {
-            ok1 = 1;
-            printf("b)");
-        }
-        else
-        {
-            if (auxx[i] == '\n' && ok1 == 1 && ok2 == 0)
-            {
-                ok2 = 0;
-                printf("c)");
-            }
-        }
-        i += 1;
-    }
-    printf("\n");
-}
-
-int transformaInNumar(char rasp[])
-{
-    int n = strlen(rasp), nr = 0, i = 0;
-    while (i < n)
-    {
-        if (rasp[i] >= '0' && rasp[i] <= '9')
-            nr = nr * 10 + rasp[i] - '0';
-        i++;
-    }
-    return nr;
-}
-
-void extrageGrila(char variante[], char grila[],char rasp[],int *m)
-{
-    int n = strlen(variante),nr = 0;
-    int varUser = transformaInNumar(rasp);
-    if (varUser == 1)
-    {
-        for (int i = 0; i < n; i++)
-        {
-            if (variante[i] == '\n')
-                nr += 1;
-            if (nr == 0 && variante[i]!='\n')
-            {
-                grila[(*m)++] = variante[i];
-            }
-            else
-            {
-                break;
-            }
-        }
-    }
-    else
-    {
-        if (varUser == 2)
-        {
-            for (int i = 0; i < n; i++)
-            {
-                if (variante[i] == '\n')
-                    nr += 1;
-                if (nr == 1 && variante[i]!='\n')
-                {
-                    grila[(*m)++] = variante[i];
-                }
-                else
-                {
-                    if (nr > 1)
-                        break;
-                }
-            }
-        }
-        else
-        {
-            if (varUser == 3)
-            {
-                for (int i = 0; i < n; i++)
-                {
-                    if (variante[i] == '\n')
-                        nr += 1;
-                    if (nr == 2 && variante[i]!='\n')
-                    {
-                        grila[(*m)++] = variante[i];
-                    }
-                }
-            }
-        }
-    }
-    grila[(*m)] = '\0';
-}
-
-void stergeLista()
-{
-    struct ranking* prev = primul;
-    struct ranking* cur=(struct ranking*)malloc(sizeof(struct ranking));
-    while (prev != NULL)
-    {
-        cur = prev->urmator;
-        free(prev);
-        prev = cur;
-    }
-    primul = NULL;
-}
-
-int verificaAparitii(int aparitii[],int maxNrIntrebari)
-{
-    int cateNumere = 0;
-    for (int i = 0; i < maxNrIntrebari; i++)
-    {
-        if (aparitii[i] != 0)
-            cateNumere++;
-    }
-    if (cateNumere != 5) //pentru ca vreau sa am 5 intrebari la fiecare quiz
-        return 0;
-    return 1;
-}
-
-void generareNumere(int aparitii[],int maxNrIntrebari)
-{
-    while (1)
-    {
-        if (verificaAparitii(aparitii,maxNrIntrebari) == 1)
-            break;
-        int val =(rand() % maxNrIntrebari)+1;
-        if (aparitii[val] == 0)
-        {
-            aparitii[val]++;
-        }
-    }
-}
-
-int quizScurt(int contorIntrebariScurt)
-{
-    getchar();
-    struct questions* a = head;
-    int contor = 0, j = 0, i = 0;
-    int* aparitii = (int*)calloc(contorIntrebariScurt, sizeof(int));
-    generareNumere(aparitii,contorIntrebariScurt);
-    
-    while (a != NULL)
-    {
-        char rasp[150], aux[150];
-        if (i == 5)
-            break;
-        if (aparitii[j]!=0)
-        {
-            printf("%s\n", (*a).intrebare);
-
-            gets(rasp); //raspunsul userului
-            char auxx[150], grila[150];
-            int n = 0, m = 0;
-            memset(auxx, 0, 150);
-            memset(grila, 0, 150);
-
-            strcpy(aux, (*a).raspuns);
-            transformaDinLitereMari(aux);
-
-            transformaDinLitereMari(rasp);
-
-            if (strcmp(aux, rasp) == 0)
-                contor += 1;
-            i++;
-        }
-
-        a = (*a).next;
-        j++;
-    }
-    free(aparitii);
-    return contor;
-}
-
-int quizGrila(int contorIntrebariGrila)
-{
-    getchar();
-    struct grila* c = cap;
-    int contor = 0, j = 0, i = 0;
-    int* aparitii = (int*)calloc(contorIntrebariGrila, sizeof(int));
-    generareNumere(aparitii, contorIntrebariGrila);
-       
-    while (c != NULL)
-    {
-        char rasp[150], aux[150];
-        if (i == 5)
-            break;
-        if (aparitii[j] != 0) 
-        {
-            printf("%s\n", (*c).intrebare);
-            char auxx[150];
-            memset(auxx, 0, 150);
-            strcpy(auxx, (*c).raspuns);
-            afisareVariante(auxx);
-
-            gets(rasp); //raspunsul userului
-            char grila[150];
-            int n = 0, m = 0;
-            memset(auxx, 0, 150);
-            memset(grila, 0, 150);
-            extrageRaspunsCorect((*c).raspuns, auxx, &n);
-
-            char variante[150];
-            memset(variante, 0, 150);
-            strcpy(variante, (*c).raspuns);
-            extrageGrila(variante, grila, rasp, &m);
-
-            transformaDinLitereMari(auxx);
-            transformaDinLitereMari(grila);
-
-            if (strcmp(auxx, grila) == 0)
-            {
-                contor += 1;
-            }
-            i++;
-        }
-        c = (*c).urm;
-        j++;
-    }
-    free(aparitii);
-    return contor;
-}
 
 void incepeQuiz(int contorIntrebariScurt,int contorIntrebariGrila,char* clasament, char* intrebariScurte, char* intrebariGrila)
 {
@@ -421,7 +125,6 @@ void incepeQuiz(int contorIntrebariScurt,int contorIntrebariGrila,char* clasamen
                     stergeLista();
                     alcatuireClasament(clasament);
                     afisareClasament();
-                    //break;
                 }
             }
         }
@@ -431,6 +134,19 @@ void incepeQuiz(int contorIntrebariScurt,int contorIntrebariGrila,char* clasamen
         }
         optiuniQuiz();
     }
+}
+
+void stergeLista()
+{
+    struct ranking* prev = primul;
+    struct ranking* cur = (struct ranking*)malloc(sizeof(struct ranking));
+    while (prev != NULL)
+    {
+        cur = prev->urmator;
+        free(prev);
+        prev = cur;
+    }
+    primul = NULL;
 }
 
 int cautare(char s[],char *clasament)

@@ -1,4 +1,10 @@
-void adaugareIntrebariScurte(char* intrebariScurt,int * contorIntrebariScurt)
+void stocareIntrebari(int* contorIntrebariScurt, int* contorIntrebariGrila, char* clasament, char* intrebariScurte, char* intrebariGrila, struct lista* scurte, struct lista* grila)
+{
+    adaugareIntrebariScurte(intrebariScurte, contorIntrebariScurt,scurte);
+    adaugareIntrebariGrila(intrebariGrila, contorIntrebariGrila,grila);
+}
+
+void adaugareIntrebariScurte(char* intrebariScurt,int * contorIntrebariScurt, struct lista *scurte)
 {
     FILE* pointerFis;
     pointerFis = fopen(intrebariScurt, "r");
@@ -24,13 +30,13 @@ void adaugareIntrebariScurte(char* intrebariScurt,int * contorIntrebariScurt)
             p = strtok(NULL, ";");
         }
         elem->next = NULL;
-        if (head == NULL)
+        if (scurte->head == NULL)
         {
-            head = elem;
+            scurte->head = elem;
         }
         else
         {
-            struct questions* aux = head;
+            struct questions* aux = scurte->head;
             while (aux->next != NULL)
             {
                 aux = aux->next;
@@ -43,7 +49,7 @@ void adaugareIntrebariScurte(char* intrebariScurt,int * contorIntrebariScurt)
     fclose(pointerFis);
 }
 
-void adaugareIntrebariGrila(char* intrebariGrila,int *contorIntrebariGrila)
+void adaugareIntrebariGrila(char* intrebariGrila,int *contorIntrebariGrila, struct lista *grila)
 {
     FILE* pointerFis;
     pointerFis = fopen(intrebariGrila, "r");
@@ -73,13 +79,13 @@ void adaugareIntrebariGrila(char* intrebariGrila,int *contorIntrebariGrila)
         }
         strcpy(elem->raspuns, variante);
         elem->urm = NULL;
-        if (cap == NULL)
+        if (grila->cap == NULL)
         {
-            cap = elem;
+            grila->cap = elem;
         }
         else
         {
-            struct grila* aux = cap;
+            struct grila* aux = grila->cap;
             while (aux->urm != NULL)
             {
                 aux = aux->urm;
@@ -91,10 +97,3 @@ void adaugareIntrebariGrila(char* intrebariGrila,int *contorIntrebariGrila)
     }
     fclose(pointerFis);
 }
-
-void stocareIntrebari(int* contorIntrebariScurt, int* contorIntrebariGrila, char* clasament, char* intrebariScurte, char* intrebariGrila)
-{
-    adaugareIntrebariScurte(intrebariScurte,contorIntrebariScurt);
-    adaugareIntrebariGrila(intrebariGrila,contorIntrebariGrila);
-}
-

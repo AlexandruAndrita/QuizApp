@@ -1,19 +1,34 @@
-void optiuniAdministrator(char* clasament, char* intrebariScurte, char* intrebariGrila, char* parolaAdmin)
+void confirmareStergere(int contor,int *aparitii,int *numar)
 {
-    FILE* fptr;
-    FILE* multiplu;
-    fptr = fopen(intrebariScurte, "a");
-    multiplu = fopen(intrebariGrila, "a");
-    if (fptr == NULL)
+    printf("Doriti sa stergeti intrebarile numerotate cu ");
+    for (int i = 1; i <= contor; i++)
     {
-        printf("Eroare! Fisierul nu poate fi accesat");
-        exit(1);
+        if (aparitii[i] != 0)
+            printf("%d ", i);
     }
-    if (multiplu == NULL)
+    printf("?\n");
+    char optiune[5];
+    (*numar) = 0;
+    printf("1. Da (tasta 1)\n");
+    printf("2. Nu (tasta 2)\n");
+    while (1)
     {
-        printf("Eroare! Fisierul nu poate fi accesat");
-        exit(1);
+        scanf("%s", optiune);
+        if (validareInput(optiune) == 1)
+        {
+            (*numar) = atoi(optiune);
+            if ((*numar) == 1 || (*numar) == 2)
+                break;
+        }
+        else
+        {
+            printf("Caracterele introduse nu sunt conform cerintei.\nIncercati din nou.\n");
+        }
     }
+}
+
+void optiuniAdministrator(char* clasament, char* intrebariScurte, char* intrebariGrila, char* parolaAdmin,struct lista* scurte, struct lista* grila, struct lista* rank)
+{
     opadmin();
     while (1)
     {
@@ -25,12 +40,10 @@ void optiuniAdministrator(char* clasament, char* intrebariScurte, char* intrebar
             {
             case 5:
                 printf("Ai parasit jocul");
-                fclose(fptr);
-                fclose(multiplu);
                 exit(0);
             case 1:
                 printf("Adaugare intrebare noua\n");
-                tipIntrebare(clasament, intrebariScurte, intrebariGrila, parolaAdmin);
+                tipIntrebare(clasament, intrebariScurte, intrebariGrila, parolaAdmin,scurte,grila,rank);
                 break;
             case 2:
                 printf("Doriti sa stergeti intrebari cu raspuns scurt sau intrebari tip grila?\n");
@@ -64,19 +77,67 @@ void optiuniAdministrator(char* clasament, char* intrebariScurte, char* intrebar
                 if (numarOptiune == 1)
                 {
                     getchar();
-                    stergereIntrebareScurt(intrebariScurte);
+                    int contor = 0,numar=0;
+                    afisareIntrebari(scurte, grila, 1, &contor);
+                    int* aparitii = (int*)calloc(contor, sizeof(aparitii));
+                    citireIndecsi(aparitii,contor);
+                    confirmareStergere(contor, aparitii, &numar);
+
+                    if (numar == 1) {
+                        stergereIntrebari(scurte, grila, aparitii, contor, 1);
+                        printf("Intrebarile numerotate cu ");
+                        for (int i = 1; i <= contor; i++)
+                        {
+                            if (aparitii[i] != 0)
+                                printf("%d ", i);
+                        }
+                        printf("au fost sterse.\n\n");
+                        //exit(0);
+                    }
+                    else
+                    {
+                        printf("Nu a fost stearsa nicio intrebare.\n");
+                        //exit(0);
+                    }
                 }
                 else
                 {
                     if (numarOptiune == 2)
                     {
                         getchar();
-                        stergereIntrebareGrila(intrebariGrila);
+                        int contor = 0,numar=0;
+                        afisareIntrebari(scurte, grila, 2, &contor);
+                        int* aparitii = (int*)calloc(contor, sizeof(aparitii));
+                        citireIndecsi(aparitii, contor);
+                        confirmareStergere(contor, aparitii, &numar);
+
+                        if (numar == 1) {
+                            stergereIntrebari(scurte, grila, aparitii, contor, 2);
+                            printf("Intrebarile numerotate cu ");
+                            for (int i = 1; i <= contor; i++)
+                            {
+                                if (aparitii[i] != 0)
+                                    printf("%d ", i);
+                            }
+                            printf("au fost sterse.\n\n");
+                            /*struct grila* c = grila->cap;
+                            while (c != NULL)
+                            {
+                                printf("%s %s\n", c->intrebare, c->raspuns);
+                                c = c->urm;
+                            }*/
+                            //exit(0);
+                        }
+                        else
+                        {
+                            printf("Nu a fost stearsa nicio intrebare.\n");
+                            //exit(0);
+                        }
                     }
                 }
                 break;
             case 3:
-                paginaPrincipala(clasament, intrebariScurte, intrebariGrila, parolaAdmin);
+                paginaPrincipala(clasament, intrebariScurte, intrebariGrila, parolaAdmin,scurte,grila,rank);
                 break;
             case 4:
                 schimbareParolaAdmin(parolaAdmin);

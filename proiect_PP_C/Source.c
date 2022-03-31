@@ -10,10 +10,11 @@
 #include "stocareIntrebari.h"
 #include "adaugareInFisierIntrebari.h"
 #include "quiz.h"
+#include "stergereIntrebari.h"
 
 
 
-void incepeQuiz(int contorIntrebariScurt,int contorIntrebariGrila,char* clasament, char* intrebariScurte, char* intrebariGrila)
+void incepeQuiz(int contorIntrebariScurt,int contorIntrebariGrila,char* clasament, char* intrebariScurte, char* intrebariGrila, struct lista *scurte, struct lista *grila, struct lista *rank)
 {
     char numeJucator[50];
     memset(numeJucator, 0, 50);
@@ -81,7 +82,7 @@ void incepeQuiz(int contorIntrebariScurt,int contorIntrebariGrila,char* clasamen
                     }
                     if (numarOptiune == 1)
                     {
-                        catePuncte = quizGrila(contorIntrebariGrila);
+                        catePuncte = quizGrila(contorIntrebariGrila,grila);
                         printf("Scorul tau este: %d / %d\n", catePuncte, 5);
                         FILE* cls;
                         cls = fopen(clasament, "a");
@@ -95,7 +96,7 @@ void incepeQuiz(int contorIntrebariScurt,int contorIntrebariGrila,char* clasamen
                         printf("\n");
                     }
                     else {
-                        catePuncte = quizScurt(contorIntrebariScurt);
+                        catePuncte = quizScurt(contorIntrebariScurt,scurte);
                         printf("Scorul tau este: %d / %d\n", catePuncte, 5);
                         FILE* cls;
                         cls = fopen(clasament, "a");
@@ -122,9 +123,9 @@ void incepeQuiz(int contorIntrebariScurt,int contorIntrebariGrila,char* clasamen
                 }
                 if (numar == 3)
                 {
-                    stergeLista();
-                    alcatuireClasament(clasament);
-                    afisareClasament();
+                    stergeLista(rank);
+                    alcatuireClasament(clasament,rank);
+                    afisareClasament(rank);
                 }
             }
         }
@@ -136,9 +137,11 @@ void incepeQuiz(int contorIntrebariScurt,int contorIntrebariGrila,char* clasamen
     }
 }
 
-void stergeLista()
+
+/*partea de clasament*/
+void stergeLista(struct lista *rank)
 {
-    struct ranking* prev = primul;
+    struct ranking* prev = rank->primul;
     struct ranking* cur = (struct ranking*)malloc(sizeof(struct ranking));
     while (prev != NULL)
     {
@@ -146,7 +149,7 @@ void stergeLista()
         free(prev);
         prev = cur;
     }
-    primul = NULL;
+    rank->primul = NULL;
 }
 
 int cautare(char s[],char *clasament)
@@ -201,7 +204,7 @@ int extrageScor(char s[])
     return numar;
 }
 
-void alcatuireClasament(char *clasament)
+void alcatuireClasament(char *clasament, struct lista *rank)
 {
     FILE* cls;
     cls = fopen(clasament, "r");
@@ -247,18 +250,18 @@ void alcatuireClasament(char *clasament)
         (*elemNou).urmator = NULL;
         char p[50];
         memset(p, 0,50);
-        if (primul != NULL) {
-            strcpy(p, (*primul).punctaj);
+        if (rank->primul != NULL) {
+            strcpy(p, rank->primul->punctaj);
             anterior = extrageScor(p);
         }
-        if (primul == NULL || curent>anterior)
+        if (rank->primul == NULL || curent>anterior)
         {
-            (*elemNou).urmator = primul;
-            primul = elemNou;
+            (*elemNou).urmator = rank->primul;
+            rank->primul = elemNou;
         }
         else
         {
-            struct ranking* aux = primul;
+            struct ranking* aux = rank->primul;
             strcpy(p, (*(*aux).urmator).punctaj);
             anterior = extrageScor(p);
             while ((*aux).urmator != NULL)
@@ -278,9 +281,9 @@ void alcatuireClasament(char *clasament)
     fclose(cls);
 }
 
-void afisareClasament()
+void afisareClasament(struct lista *rank)
 {
-    struct ranking* elem = primul;
+    struct ranking* elem = rank->primul;
     while (elem != NULL)
     {
         printf("%s %s\n", (*elem).nume, (*elem).punctaj);
@@ -288,333 +291,17 @@ void afisareClasament()
     }
 }
 
-void optiuniUser(char* clasament, char* intrebariScurte, char* intrebariGrila,char *parolaAdmin)
-{
-    opuser();
-    while (1)
-    {
-        char optiune[256];
-        gets(optiune);
-        if (validareInput(optiune) == 1) {
-            int numar = atoi(optiune);
-            int contorIntrebariScurt = 0;
-            int contorIntrebariGrila = 0;
-            switch (numar)
-            {
-                case 4:
-                    printf("Ai parasit jocul");
-                    exit(0);
-                case 1:
-                    stergeLista(clasament);
-                    alcatuireClasament(clasament);
-                    afisareClasament();
-                    break;
-                case 2:
-                    contorIntrebariScurt = 0;
-                    contorIntrebariGrila = 0;
-                    stocareIntrebari(&contorIntrebariScurt,&contorIntrebariGrila,clasament,intrebariScurte,intrebariGrila);
-                    incepeQuiz(contorIntrebariScurt,contorIntrebariGrila,clasament,intrebariScurte,intrebariGrila);
-                    break;
-                case 3:
-                    paginaPrincipala(clasament,intrebariScurte,intrebariGrila,parolaAdmin);
-                    break;
-                default:
-                    printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
-            }
-        }
-        else
-        {
-            printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
-        }
-        opuser();
-    }
-}
 
-void afisareIntrebariGrila(char** matrice, int index)
-{
-    printf("Pe care intrebari doriti sa le stergeti?\n\n");
-    int i = 0;
-    while(i<index)
-    {
-        int aux = (i + 1) / 5 + 1;
-        printf("Intrebarea cu indexul=%d: %s", aux, matrice[i]);
-        i++;
-        printf("Variantele de raspuns ale intrebarii cu indexul=%d:\n",aux);
-        printf("a)%s", matrice[i]);
-        i++;
-        printf("b)%s", matrice[i]);
-        i++;
-        printf("c)%s", matrice[i]);
-        i++;
-        printf("Raspuns corect de la intrebarea cu indexul=%d: %s\n", aux,matrice[i]);
-        i++;
-    }
-}
 
-void completareInFisierGrila(int *ind,int k,char **matrice,int index,char *intrebariGrila)
-{
-    FILE* multiplu;
-    multiplu = fopen(intrebariGrila, "w");
-    if (multiplu == NULL)
-    {
-        printf("Fisierul nu exista");
-        exit(1);
-    }
-    else
-    {
-        int i = 0, j = 1;
-        while (i < index)
-        {
-            if (cautareBinara(j, ind, k) == -1)
-            {
-                fprintf(multiplu, "%s", matrice[i]);
-                i++;
-                fprintf(multiplu, "%s", matrice[i]);
-                i++;
-                fprintf(multiplu, "%s", matrice[i]);
-                i++;
-                fprintf(multiplu, "%s", matrice[i]);
-                i++;
-                fprintf(multiplu, "%s", matrice[i]);
-                i++;
-                j++;
-            }
-            else
-            {
-                if (cautareBinara(j, ind, k) == 1)
-                {
-                    i += 5;
-                    j++;
-                }
-            }
-        }
-    }
-    fclose(multiplu);
-}
 
-void stergereIntrebareGrila(char *intrebariGrila)
-{
-    char** matrice;
-    matrice = initializareMatrice();
-    char* spare = (char*)calloc(150, sizeof(char));
-    int index = 0;
+/*stergere intrebari*/
 
-    FILE* multiplu;
-    multiplu = fopen(intrebariGrila, "r");
-    if (multiplu == NULL)
-    {
-        printf("Fisierul nu poate fi accesat.");
-        exit(1);
-    }
-    else {
-        while (fgets(spare, 150, multiplu))
-        {
-            strcpy(matrice[index], spare);
-            index++;
-        }
-    }
-    fclose(multiplu);
 
-    free(spare);
-    afisareIntrebariGrila(matrice, index);
-    int k = 0;
-    int* ind = (int*)calloc(150, sizeof(int));
-    citireIndecsi(ind, &k, index);
-    sortare(ind, k);
-    getchar();
-    completareInFisierGrila(ind, k, matrice, index,intrebariGrila);
-    free(ind);
-    for (int i = 0; i < 150; i++)
-        free(matrice[i]);
-    free(matrice);
-}
 
-void afisareIntrebari(char** mat, int n)
-{
-    printf("Pe care intrebari doriti sa le stergeti?\n\n");
-    for (int i = 0; i < n; i++)
-    {
-        if (i % 2 == 0) {
-            printf("Intrebarea cu indexul=%d: %s", (i+1)/2+1, mat[i]);
-        }
-        else
-        {
-            printf("Raspunsul intrebarii cu indexul=%d: %s\n", (i+1)/2, mat[i]);
-        }
-    }
-    printf("Introduceti indecsii intrebarilor pe care doriti sa le stergeti:\n");
-}
 
-char** initializareMatrice()
-{
-    char** matrice = (char**)malloc(150 * sizeof(char*));
-    if (matrice != NULL)
-    {
-        for (int i = 0; i < 150; i++)
-        {
-            matrice[i] = (char*)calloc(150, sizeof(char));
-        }
-    }
-    return matrice;
-}
 
-void citireIndecsi(int* ind, int* k,int index)
-{
-    char* optiune = (char*)calloc(150, sizeof(char));
-    scanf("%[^\n]s", optiune);
-    int n = strlen(optiune), numar = 0;
-    for(int i=0;i<n;i++)
-    {
-        if (optiune[i] >= '0' && optiune[i] <= '9')
-        {
-            numar = numar * 10 + optiune[i] - '0';
-        }
-        if (optiune[i] == ' ')
-        {
-            if (numar <= index)
-            {
-                ind[(*k)++] = numar;
-            }
-            numar = 0;
-        }
-        else {
-            if ((optiune[i] >= '0' && optiune[i] <= '9') && (strchr("0123456789\n ",optiune[i+1])==0))
-            {
-                numar = 0;
-                continue;
-            }
-            else
-            {
-                if ((optiune[i] >= '0' && optiune[i] <= '9') && (strchr("0123456789\n ", optiune[i-1]) == 0) && i>0)
-                {
-                    numar = 0;
-                    continue;
-                }
-            }
-        }
-    }
-    //if (optiune[n - 1] >= '0' && optiune[n - 1] <= '9')
-    //{
-    if (numar <= index)
-    {
-        ind[(*k)++] = numar;
-    }
-    //}
-    free(optiune);
-}
 
-void sortare(int* ind, int k)
-{
-    for (int i = 0; i < k; i++)
-    {
-        int elem = ind[i],indice=i;
-        for (int j = i + 1; j < k; j++)
-        {
-            if (elem > ind[j])
-            {
-                elem = ind[j];
-                indice = j;
-            }
-        }
-        ind[indice] = ind[i];
-        ind[i] = elem;
-    }
-}
-
-void stergereIntrebareScurt(char *intreabariScurt)
-{
-    char** matrice = initializareMatrice();
-    char* spare = (char*)malloc(150 * sizeof(char));
-    int index = 0;
-    
-    FILE* fptr;
-    fptr = fopen(intreabariScurt, "r");
-    if (fptr == NULL)
-    {
-        printf("Fisierul nu poate fi accesat");
-        exit(1);
-    }
-    else
-    {
-        while (fgets(spare, 150, fptr))
-        {
-            strcpy(matrice[index], spare);
-            index++;
-        }
-    }
-    fclose(fptr);
-
-    free(spare);
-    afisareIntrebari(matrice,index);
-    int k = 0;
-    int* ind = (int*)calloc(150, sizeof(int));
-    citireIndecsi(ind, &k,index);
-    sortare(ind, k);
-    
-    getchar();
-
-    completareInFisier(ind, k,matrice,index,intreabariScurt);
-    free(ind);
-    for (int i = 0; i < 150; i++)
-        free(matrice[i]);
-    free(matrice);
-}
-
-int cautareBinara(int val, int* ind, int k)
-{
-    int st = 0, dr = k - 1;
-    while (st <= dr)
-    {
-        int mij = (st + dr) / 2;
-        if (ind[mij] == val)
-            return 1;
-        if (val > ind[mij])
-        {
-            st = mij + 1;
-        }
-        else
-        {
-            dr = mij - 1;
-        }
-    }
-    return -1;
-}
-
-void completareInFisier(int *ind,int k,char **matrice,int index,char *intrebariScurt)
-{
-    FILE* fptr;
-    fptr = fopen(intrebariScurt, "w");
-    if (fptr == NULL)
-    {
-        printf("Fisierul nu exista");
-        exit(1);
-    }
-    else {
-        int i = 0, j = 1;
-        while(i<index)
-        {
-            if (cautareBinara(j, ind, k) == -1) {
-                fprintf(fptr, "%s", matrice[i]);
-                i++;
-                fprintf(fptr, "%s", matrice[i]);
-                i++;
-                j++;
-            }
-            else
-            {
-                if (cautareBinara(j, ind, k) == 1)
-                {
-                    i += 2;
-                    j++;
-                }
-            }
-        }
-        
-    }
-    fclose(fptr);
-}
-
-void tipIntrebare(char* clasament, char* intrebariScurte, char* intrebariGrila,char *parolaAdmin)
+void tipIntrebare(char* clasament, char* intrebariScurte, char* intrebariGrila,char *parolaAdmin,struct lista* scurte, struct lista* grila, struct lista* rank)
 {
     tipIntrebareQ();
     while (1)
@@ -627,7 +314,7 @@ void tipIntrebare(char* clasament, char* intrebariScurte, char* intrebariGrila,c
             switch (numar)
             {
             case 3:
-                optiuniAdministrator(clasament,intrebariScurte,intrebariGrila,parolaAdmin);
+                optiuniAdministrator(clasament,intrebariScurte,intrebariGrila,parolaAdmin,scurte,grila,rank);
                 break;
             case 1:
                 adaugareRaspunsScurt(intrebariScurte);
@@ -647,21 +334,9 @@ void tipIntrebare(char* clasament, char* intrebariScurte, char* intrebariGrila,c
     }
 }
 
-
-int validareInput(char optiune[])
+void optiuniUser(char* clasament, char* intrebariScurte, char* intrebariGrila, char* parolaAdmin,int contorIntrebariScurt,int contorIntrebariGrila, struct lista *scurte, struct lista *grila, struct lista *rank)
 {
-    int n = strlen(optiune);
-    for (int i = 0; i < n; i++)
-    {
-        if (strchr("1234567890", optiune[i]) == 0)
-            return 0;
-    }
-    return 1;
-}
-
-void paginaPrincipala(char *clasament,char* intrebariScurte, char *intrebariGrila, char *parolaAdmin)
-{
-    opprinicipala();
+    opuser();
     while (1)
     {
         char optiune[256];
@@ -670,12 +345,66 @@ void paginaPrincipala(char *clasament,char* intrebariScurte, char *intrebariGril
             int numar = atoi(optiune);
             switch (numar)
             {
+            case 4:
+                printf("Ai parasit jocul");
+                exit(0);
+            case 1:
+                stergeLista(clasament);
+                alcatuireClasament(clasament,rank);
+                afisareClasament(rank);
+                break;
+            case 2:
+                incepeQuiz(contorIntrebariScurt, contorIntrebariGrila, clasament, intrebariScurte, intrebariGrila,scurte,grila,rank);
+                break;
+            case 3:
+                //paginaPrincipala(clasament, intrebariScurte, intrebariGrila, parolaAdmin);
+                break;
+            default:
+                printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
+            }
+        }
+        else
+        {
+            printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
+        }
+        opuser();
+    }
+}
+
+void paginaPrincipala(char *clasament,char* intrebariScurte, char *intrebariGrila, char *parolaAdmin, struct lista* scurte, struct lista* grila, struct lista* rank)
+{
+    opprinicipala();
+    while (1)
+    {
+        char optiune[256];
+        gets(optiune);
+
+        /*preia intrebarile din fisier la inceput, cand se deschide aplicatie*/
+        /*
+        Chiar daca adminul adauga intrebari, dupa cand rejoci in aceiasi tura o sa ajunga sa reincarce intrebarile.
+        Astfel nu o sa fie intrebari adaugate care sa fie pierdute daca in aceiasi runda sunt si adaugate
+        */
+        int contorIntrebariScurt = 0;
+        int contorIntrebariGrila = 0;
+        stocareIntrebari(&contorIntrebariScurt, &contorIntrebariGrila, clasament, intrebariScurte, intrebariGrila,scurte,grila);
+        /*struct questions* a = scurte->head;
+        while (a != NULL)
+        {
+            printf("%s %s\n", a->intrebare, a->raspuns);
+            a = a->next;
+        }
+        exit(0);*/
+
+        if (validareInput(optiune) == 1) {
+            int numar = atoi(optiune);
+            switch (numar)
+            {
                 case 1:
-                    optiuniUser(clasament,intrebariScurte,intrebariGrila,parolaAdmin);
+                    optiuniUser(clasament,intrebariScurte,intrebariGrila,parolaAdmin, contorIntrebariScurt, contorIntrebariGrila,scurte,grila,rank);
                     break;
                 case 2:
                     if (verificareParolaAdministrator(parolaAdmin) == 1) {
-                        optiuniAdministrator(clasament,intrebariScurte,intrebariGrila,parolaAdmin);
+                        optiuniAdministrator(clasament,intrebariScurte,intrebariGrila,parolaAdmin,scurte,grila,rank);
                     }
                     else {
                         printf("Parola gresita. Nu aveti permisiunea de a va loga ca administrator\n\n");
@@ -702,6 +431,17 @@ void paginaPrincipala(char *clasament,char* intrebariScurte, char *intrebariGril
 
 }
 
+int validareInput(char optiune[])
+{
+    int n = strlen(optiune);
+    for (int i = 0; i < n; i++)
+    {
+        if (strchr("1234567890", optiune[i]) == 0)
+            return 0;
+    }
+    return 1;
+}
+
 char* initializare()
 {
     char* numeFisier = (char*)malloc(20* sizeof(char));
@@ -723,12 +463,22 @@ void numeFisiere(char* clasament, char* intrebariScurte, char* intrebariGrila, c
 int main() {
     printf("QuizApp\n");
     srand(time(0));
+
+    struct lista scurte;
+    struct lista grila;
+    struct lista rank;
+    scurte.head = NULL;
+    grila.cap = NULL;
+    rank.primul = NULL;
+
     char* clasament = initializare();
     char* intrebariScurte = initializare();
     char* intrebariGrila = initializare();
     char* parolaAdmin = initializare();
+
     numeFisiere(clasament, intrebariScurte, intrebariGrila,parolaAdmin);
-    paginaPrincipala(clasament,intrebariScurte,intrebariGrila,parolaAdmin);
+    paginaPrincipala(clasament,intrebariScurte,intrebariGrila,parolaAdmin,&scurte,&grila,&rank);
+
     free(clasament);
     free(intrebariScurte);
     free(intrebariGrila);

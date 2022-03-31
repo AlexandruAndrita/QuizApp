@@ -2,21 +2,22 @@ struct questions {
     char intrebare[150];
     char raspuns[150];
     struct questions* next;
-};
-struct questions* head = NULL;
-
+}questions;
 
 struct grila {
     char intrebare[150];
     char raspuns[150];
     struct grila* urm;
-};
-struct grila* cap = NULL;
-
+}grila;
 
 struct ranking {
     char nume[50];
     char punctaj[50];
     struct ranking* urmator;
-};
-struct ranking* primul = NULL;
+}ranking;
+
+struct lista {
+    struct questions* head;
+    struct grila* cap;
+    struct ranking* primul;
+}lista;

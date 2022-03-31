@@ -52,10 +52,10 @@
     <ClInclude Include="structuri.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
+    <ClInclude Include="quiz.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="quiz.h">
+    <ClInclude Include="stergereIntrebari.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

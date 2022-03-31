@@ -153,7 +153,7 @@
     <ClInclude Include="optiuni.h" />
     <ClInclude Include="prototipuri.h" />
     <ClInclude Include="quiz.h" />
-    <ClInclude Include="resource.h" />
+    <ClInclude Include="stergereIntrebari.h" />
     <ClInclude Include="stocareIntrebari.h" />
     <ClInclude Include="structuri.h" />
   </ItemGroup>

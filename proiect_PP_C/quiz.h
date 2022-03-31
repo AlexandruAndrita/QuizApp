@@ -32,10 +32,10 @@ void generareNumere(int aparitii[], int maxNrIntrebari)
     }
 }
 
-int quizScurt(int contorIntrebariScurt)
+int quizScurt(int contorIntrebariScurt, struct lista *scurte)
 {
     getchar();
-    struct questions* a = head;
+    struct questions* a = scurte->head;
     int contor = 0, j = 0, i = 0;
     int* aparitii = (int*)calloc(contorIntrebariScurt, sizeof(int));
     generareNumere(aparitii, contorIntrebariScurt);
@@ -145,10 +145,10 @@ void preluareRaspuns(char rasp[], char auxx[])
     }
 }
 
-int quizGrila(int contorIntrebariGrila)
+int quizGrila(int contorIntrebariGrila, struct lista* grila)
 {
     getchar();
-    struct grila* c = cap;
+    struct grila* c = grila->cap;
     int contor = 0, j = 0, i = 0;
     int* aparitii = (int*)calloc(contorIntrebariGrila, sizeof(int));
     generareNumere(aparitii, contorIntrebariGrila);

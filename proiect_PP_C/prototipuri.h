@@ -26,6 +26,7 @@ void opadmin();
 void tipIntrebareQ();
 void opprinicipala();
 void reguli();
+void optiuniReguli();
 
 //quiz
 void transformaDinLitereMari(char []);
@@ -59,5 +60,5 @@ void paginaPrincipala(char* , char* , char* , char *,struct lista* ,struct lista
 int validareInput(char []);
 char* initializare();
 void numeFisiere(char* , char* , char* , char *);
-
+void meniuReguli(char*, char*, char*, char*, struct lista*, struct lista*, struct lista*, int*);
 

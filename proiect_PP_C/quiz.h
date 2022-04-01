@@ -47,8 +47,9 @@ int quizScurt(int contorIntrebariScurt, struct lista *scurte)
             break;
         if (aparitii[j] != 0)
         {
-            printf("%s\n", a->intrebare);
+            printf("\t%s\n", a->intrebare);
 
+            printf("\t");
             gets(rasp);
 
             strcpy(aux, a->raspuns);
@@ -76,21 +77,21 @@ void afisareVariante(char auxx[], char corect[])
     {
         if (nr == 0)
         {
-            printf("a) %s\n", p);
+            printf("\ta) %s\n", p);
             nr++;
         }
         else
         {
             if (nr == 1)
             {
-                printf("b) %s\n", p);
+                printf("\tb) %s\n", p);
                 nr++;
             }
             else
             {
                 if (nr == 2)
                 {
-                    printf("c) %s\n", p);
+                    printf("\tc) %s\n", p);
                     nr++;
                 }
                 if (nr == 3)
@@ -159,13 +160,14 @@ int quizGrila(int contorIntrebariGrila, struct lista* grila)
             break;
         if (aparitii[j] != 0)
         {
-            printf("%s\n", c->intrebare);
+            printf("\t%s\n", c->intrebare);
             char auxx[150], varCorecta[150], rasp[150];
             memset(auxx, 0, 150);
             memset(varCorecta, 0, 150);
             strcpy(auxx, c->raspuns);
             afisareVariante(auxx, varCorecta);
 
+            printf("\t");
             gets(rasp);
             memset(auxx, 0, 150);
             strcpy(auxx, c->raspuns);

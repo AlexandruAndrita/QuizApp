@@ -10,7 +10,8 @@ void adaugareIntrebariScurte(char* intrebariScurt,int * contorIntrebariScurt, st
     pointerFis = fopen(intrebariScurt, "r");
     if (pointerFis == NULL)
     {
-        printf("Fisierul nu exista.\n");
+        system("cls");
+        printf("\tFisierul nu exista.\n");
         exit(1);
     }
     char* linie = (char*)calloc(256, sizeof(char));
@@ -55,7 +56,8 @@ void adaugareIntrebariGrila(char* intrebariGrila,int *contorIntrebariGrila, stru
     pointerFis = fopen(intrebariGrila, "r");
     if (pointerFis == NULL)
     {
-        printf("Fisierul nu exista.\n");
+        system("cls");
+        printf("\tFisierul nu exista.\n");
         exit(1);
     }
     char linie[256], variante[256];

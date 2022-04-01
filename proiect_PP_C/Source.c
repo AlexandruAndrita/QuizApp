@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <windows.h>
+
 
 #include "prototipuri.h"
 #include "structuri.h"
@@ -14,13 +16,13 @@
 #include "clasament.h"
 
 
-
 void incepeQuiz(int contorIntrebariScurt,int contorIntrebariGrila,char* parolaAdmin,char* clasament, char* intrebariScurte, char* intrebariGrila, struct lista *scurte, struct lista *grila, struct lista *rank,int* contor)
 {
     char numeJucator[50];
     int runda = 0;
     memset(numeJucator, 0, 50);
-    printf("Introduceti-va numele\n");
+    printf("\tIntroduceti-va numele:\n");
+    printf("\t");
     gets(numeJucator);
     
     while (1)
@@ -28,18 +30,19 @@ void incepeQuiz(int contorIntrebariScurt,int contorIntrebariGrila,char* parolaAd
         if (cautare(rank,numeJucator) == 1)
             break;
         else {
-            printf("Numele introdus este luat\n");
+            printf("\n\tNumele introdus este luat.\n\tIncercati sa introduceti alt nume.\n\n");
             memset(numeJucator, 0, 50);
+            printf("\t");
             gets(numeJucator);
         }
     }
-    
+    system("cls");
     int catePuncte = 0;
     int catePuncteGrila = 0, catePuncteScurt = 0;
     optiuniQuiz();
     while (1)
     {
-        
+        printf("\t");
         char optiune[256];
         scanf("%s", optiune);
        
@@ -48,30 +51,35 @@ void incepeQuiz(int contorIntrebariScurt,int contorIntrebariGrila,char* parolaAd
             int numar = atoi(optiune);
             if (numar != 4 && numar != 1 && numar != 2 && numar != 3)
             {
-                printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
+                system("cls");
+                printf("\tValoarea introdusa nu corespunde cerintelor. Incercati din nou.\n\n");
             }
             else {
                 if (numar == 4)
                 {
                     mutareDateInFisier(rank, clasament);
-                    printf("Ai parasit jocul");
+                    system("cls");
+                    printf("\tAi parasit jocul");
                     exit(0);
                 }
                 if (numar == 1)
                 {
                     if (runda >= 1)
                     {
-                        printf("Ati jucat deja o runda.\n\n");
+                        system("cls");
+                        printf("\tAti jucat deja o runda.\n\tPuteti rejuca cu alt nume\n");
                         getchar();
                         break;
                     }
                     runda++;
-                    printf("Doriti un test grila sau un test cu raspunsuri scurte?\n 1. Grila (Tasta 1)\n 2. Raspuns scurt (Tasta 2)\n");
+                    system("cls");
+                    printf("\n\tDoriti un test grila sau un test cu raspunsuri scurte?\n\t[1] Grila (Tasta 1)\n\t[2] Raspuns scurt (Tasta 2)\n\n");
                     char opt[10];
                     int numarOptiune = 0;
                     memset(opt, 0, 10);
                     while (1)
                     {
+                        printf("\t");
                         scanf("%s", opt);
                         if (validareInput(opt) == 1)
                         {
@@ -80,25 +88,29 @@ void incepeQuiz(int contorIntrebariScurt,int contorIntrebariGrila,char* parolaAd
                                 break;
                             else
                             {
-                                printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
-                                printf("Doriti un test grila sau un test cu raspunsuri scurte?\n 1. Grila (Tasta 1)\n 2. Raspuns scurt (Tasta 2)\n");
+                                system("cls");
+                                printf("\tValoarea introdusa nu corespunde cerintelor. Incercati din nou.\n\n");
+                                //printf("Doriti un test grila sau un test cu raspunsuri scurte?\n 1. Grila (Tasta 1)\n 2. Raspuns scurt (Tasta 2)\n");
                             }
                         }
                         else
                         {
-                            printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
-                            printf("Doriti un test grila sau un test cu raspunsuri scurte?\n 1. Grila (Tasta 1)\n 2. Raspuns scurt (Tasta 2)\n");
+                            system("cls");
+                            printf("\tValoarea introdusa nu corespunde cerintelor. Incercati din nou.\n\n");
+                            //printf("Doriti un test grila sau un test cu raspunsuri scurte?\n 1. Grila (Tasta 1)\n 2. Raspuns scurt (Tasta 2)\n");
                         }
                     }
                     if (numarOptiune == 1)
                     {
+                        system("cls");
                         catePuncte = quizGrila(contorIntrebariGrila,grila);
-                        printf("Scorul tau este: %d / %d\n", catePuncte, 5);
+                        printf("\n\tScorul tau este: %d / %d\n\n", catePuncte, 5);
                         adaugareJucatorNou(rank, numeJucator, catePuncte);
                     }
                     else {
+                        system("cls");
                         catePuncte = quizScurt(contorIntrebariScurt,scurte);
-                        printf("Scorul tau este: %d / %d\n", catePuncte, 5);
+                        printf("\n\tScorul tau este: %d / %d\n\n", catePuncte, 5);
                         adaugareJucatorNou(rank, numeJucator, catePuncte);
                     }
                     
@@ -112,14 +124,15 @@ void incepeQuiz(int contorIntrebariScurt,int contorIntrebariGrila,char* parolaAd
                 }
                 if (numar == 3)
                 {
+                    system("cls");
                     afisareClasament(rank);
-                    
                 }
             }
         }
         else
         {
-            printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
+            system("cls");
+            printf("\tValoarea introdusa nu corespunde cerintelor. Incercati din nou.\n\n");
         }
         optiuniQuiz();
     }
@@ -130,6 +143,7 @@ void tipIntrebare(char* clasament, char* intrebariScurte, char* intrebariGrila,c
     tipIntrebareQ();
     while (1)
     {
+        printf("\t");
         char optiune[256];
         gets(optiune);
         if (validareInput(optiune) == 1)
@@ -138,21 +152,26 @@ void tipIntrebare(char* clasament, char* intrebariScurte, char* intrebariGrila,c
             switch (numar)
             {
             case 3:
+                system("cls");
                 optiuniAdministrator(clasament,intrebariScurte,intrebariGrila,parolaAdmin,scurte,grila,rank,contor);
                 break;
             case 1:
+                system("cls");
                 adaugareRaspunsScurt(intrebariScurte);
                 break;
             case 2:
+                system("cls");
                 adaugareRaspunsMultiplu(intrebariGrila);
                 break;
             default:
-                printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
+                system("cls");
+                printf("\tValoarea introdusa nu corespunde cerintelor. Incercati din nou.\n\n");
             }
         }
         else
         {
-            printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
+            system("cls");
+            printf("\tValoarea introdusa nu corespunde cerintelor. Incercati din nou.\n\n");
         }
         tipIntrebareQ();
     }
@@ -163,6 +182,7 @@ void optiuniUser(char* clasament, char* intrebariScurte, char* intrebariGrila, c
     opuser();
     while (1)
     {
+        printf("\t");
         char optiune[256];
         gets(optiune);
         if (validareInput(optiune) == 1) {
@@ -171,24 +191,28 @@ void optiuniUser(char* clasament, char* intrebariScurte, char* intrebariGrila, c
             {
             case 4:
                 mutareDateInFisier(rank, clasament);
-                printf("Ai parasit jocul");
+                system("cls");
+                printf("\tAi parasit jocul");
                 exit(0);
             case 1:
                 afisareClasament(rank);
                 break;
             case 2:
+                system("cls");
                 incepeQuiz(contorIntrebariScurt, contorIntrebariGrila,parolaAdmin, clasament, intrebariScurte, intrebariGrila,scurte,grila,rank,contor);
                 break;
             /*case 3:
                 paginaPrincipala(clasament, intrebariScurte, intrebariGrila, parolaAdmin);
                 break;*/
             default:
-                printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
+                system("cls");
+                printf("\tValoarea introdusa nu corespunde cerintelor. Incercati din nou.\n\n");
             }
         }
         else
         {
-            printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
+            system("cls");
+            printf("\tValoarea introdusa nu corespunde cerintelor. Incercati din nou.\n\n");
         }
         opuser();
     }
@@ -200,6 +224,7 @@ void paginaPrincipala(char *clasament,char* intrebariScurte, char *intrebariGril
     while (1)
     {
         char optiune[256];
+        printf("\t");
         gets(optiune);
 
         /*preia intrebarile din fisier la inceput, cand se deschide aplicatie*/
@@ -216,6 +241,7 @@ void paginaPrincipala(char *clasament,char* intrebariScurte, char *intrebariGril
             switch (numar)
             {
                 case 1:
+                    system("cls");
                     if((*contor)==0)
                         preluareNumeDinFisier(rank, clasament);
                     (*contor)++;
@@ -223,32 +249,72 @@ void paginaPrincipala(char *clasament,char* intrebariScurte, char *intrebariGril
                     break;
                 case 2:
                     if (verificareParolaAdministrator(parolaAdmin) == 1) {
+                        system("cls");
                         optiuniAdministrator(clasament,intrebariScurte,intrebariGrila,parolaAdmin,scurte,grila,rank,contor);
                     }
                     else {
-                        printf("Parola gresita. Nu aveti permisiunea de a va loga ca administrator\n\n");
+                        system("cls");
+                        printf("\tParola gresita. Nu aveti permisiunea de a va loga ca administrator\n\n");
                     }
                     break;
                 case 4:
                     mutareDateInFisier(rank, clasament);
                     system("cls");
-                    printf("Ai parasit jocul");
+                    printf("\tAi parasit jocul");
                     exit(0);
                 case 3:
                     system("cls");
                     reguli();
+                    meniuReguli(clasament, intrebariScurte, intrebariGrila, parolaAdmin, scurte, grila, rank, contor);
                     break;
                 default:
-                    printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
+                    system("cls");
+                    printf("\tValoarea introdusa nu corespunde cerintelor. Incercati din nou.\n\n");
             }
         }
         else
         {
-            printf("Valoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
+            system("cls");
+            printf("\tValoarea introdusa nu corespunde cerintelor. Incercati din nou.\n\n");
         }
         opprinicipala();
     }
 
+}
+
+void meniuReguli(char* clasament, char* intrebariScurte, char* intrebariGrila, char* parolaAdmin, struct lista* scurte, struct lista* grila, struct lista* rank, int* contor)
+{
+    optiuniReguli();
+    while (1)
+    {
+        char optiune[256];
+        printf("\t");
+        gets(optiune);
+        if (validareInput(optiune) == 1)
+        {
+            int numar = atoi(optiune);
+            switch (numar)
+            {
+            case 1:
+                system("cls");
+                paginaPrincipala(clasament, intrebariScurte, intrebariGrila, parolaAdmin, scurte, grila, rank, contor);
+                break;
+            case 2:
+                system("cls");
+                printf("\tAti parasit jocul.");
+                exit(0);
+            default:
+                system("cls");
+                printf("\tValoarea introdusa nu corespunde cerintelor. Incercati din nou.\n\n");
+            }
+        }
+        else
+        {
+            system("cls");
+            printf("\tValoarea introdusa nu corespunde cerintelor. Incercati din nou.\n\n");
+        }
+        optiuniReguli();
+    }
 }
 
 int validareInput(char optiune[])
@@ -281,7 +347,7 @@ void numeFisiere(char* clasament, char* intrebariScurte, char* intrebariGrila, c
 }
 
 int main() {
-    printf("QuizApp\n");
+    printf("\t\tQuizApp\n\n");
     srand(time(0));
 
     struct lista scurte;

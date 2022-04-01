@@ -7,7 +7,7 @@ void afisareIntrebari(struct lista* scurte, struct lista* grila, int ok,int *con
         while (aux != NULL)
         {
             (*contor)++;
-            printf("Intrebarea cu numarul %d:\n%s\ncu raspunsul: %s\n\n", (*contor), aux->intrebare, aux->raspuns);
+            printf("\tIntrebarea cu numarul %d:\n\t%s\n\tcu raspunsul: %s\n\n", (*contor), aux->intrebare, aux->raspuns);
             aux = aux->next;
         }
     }
@@ -20,17 +20,17 @@ void afisareIntrebari(struct lista* scurte, struct lista* grila, int ok,int *con
             while (aux != NULL)
             {
                 (*contor)++;
-                printf("Intrebarea cu numarul %d:\n%s\ncu variantele de raspuns:\n", (*contor), aux->intrebare);
+                printf("\tIntrebarea cu numarul %d:\n\t%s\n\tcu variantele de raspuns:\n", (*contor), aux->intrebare);
                 char copie[150];
                 strcpy(copie, aux->raspuns);
                 char* p = strtok(copie, ";");
-                printf("a)%s\n", p);
+                printf("\ta)%s\n", p);
                 p = strtok(NULL, ";");
-                printf("b)%s\n", p);
+                printf("\tb)%s\n", p);
                 p = strtok(NULL, ";");
-                printf("c)%s\nsi cu raspunsul corect: ", p);
+                printf("\tc)%s\n\tsi cu raspunsul corect: ", p);
                 p = strtok(NULL, ";");
-                printf("%s\n\n", p);
+                printf("\t%s\n\n", p);
                 aux = aux->urm;
             }
         }
@@ -39,10 +39,11 @@ void afisareIntrebari(struct lista* scurte, struct lista* grila, int ok,int *con
 
 void citireIndecsi(int* aparitii,int contor,int* nrMax)
 {
-    printf("Introduceti indecsii ale caror intrebari doriti sa le stergeti:\n\n");
+    printf("\tIntroduceti indecsii ale caror intrebari doriti sa le stergeti:\n\n");
     (*nrMax) = -1;
     char optiune[150];
     memset(optiune, 0, 150);
+    printf("\t");
     gets(optiune);
     int numar = 0, n = strlen(optiune);
 
@@ -226,7 +227,8 @@ void completareInFisier(char* intrebariScurte,char* intrebariGrila,struct lista*
         pointerFis = fopen(intrebariScurte, "w");
         if (pointerFis == NULL)
         {
-            printf("Fisierul nu exista");
+            system("cls");
+            printf("\tFisierul nu exista");
             exit(1);
         }
         else
@@ -251,7 +253,8 @@ void completareInFisier(char* intrebariScurte,char* intrebariGrila,struct lista*
         pointerFile = fopen(intrebariGrila, "w");
         if (pointerFile == NULL)
         {
-            printf("Fisierul nu exista");
+            system("cls");
+            printf("\tFisierul nu exista");
             exit(1);
         }
         else

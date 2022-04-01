@@ -30,7 +30,8 @@ void preluareNumeDinFisier(struct lista* rank, char* clasament)
 	pointerFis = fopen(clasament, "r");
 	if (pointerFis == NULL)
 	{
-		printf("Fisierul nu exista");
+		system("cls");
+		printf("\tFisierul nu exista");
 		exit(1);
 	}
 	else
@@ -46,13 +47,14 @@ void preluareNumeDinFisier(struct lista* rank, char* clasament)
 
 void afisareClasament(struct lista* rank)
 {
-	printf("Clasament:\n\n");
+	system("cls");
+	printf("\tClasament:\n\n");
 	int pozitie = 0;
 	struct ranking* elem = rank->primul;
 	while (elem != NULL)
 	{
 		pozitie++;
-		printf("%d: %s %d\n", pozitie,elem->nume, elem->punctaj);
+		printf("\t%d: %s %d\n", pozitie,elem->nume, elem->punctaj);
 		elem = elem->urmator;
 	}
 	printf("\n");

@@ -5,43 +5,50 @@ void adaugareRaspunsScurt(char* intrebariScurte)
     fptr = fopen(intrebariScurte, "a");
     if (fptr == NULL)
     {
-        printf("Fisierul nu exista");
+        system("cls");
+        printf("\tFisierul nu exista");
         exit(1);
     }
     else {
-        printf("Introduceti intrebarea:\n");
+        printf("\tIntroduceti intrebarea:\n");
+        printf("\t");
         gets(intrebare);
-        printf("Introduceti raspunsul:\n");
+        printf("\tIntroduceti raspunsul:\n");
+        printf("\t");
         strcat(intrebare, ";");
         gets(raspuns);
         strcat(intrebare, raspuns);
         fprintf(fptr, "%s\n", intrebare);
-        printf("Intrebarea a fost adaugata\n");
+        printf("\n\tIntrebarea a fost adaugata\n\n");
     }
     fclose(fptr);
 }
 
 void citireVar(char* intrebare, char* raspuns1, char* raspuns2, char* raspuns3, char* corect)
 {
-    printf("Introduceti intrebarea\n");
+    printf("\tIntroduceti intrebarea\n");
+    printf("\t");
     gets(intrebare);
     strcat(intrebare, ";");
-    printf("Introduceti prima varianta de raspuns\n");
+    printf("\tIntroduceti prima varianta de raspuns\n");
+    printf("\t");
     gets(raspuns1);
     strcat(intrebare, raspuns1);
     strcat(intrebare, ";");
-    printf("Introduceti a doua varianta de raspuns\n");
+    printf("\tIntroduceti a doua varianta de raspuns\n");
+    printf("\t");
     gets(raspuns2);
     strcat(intrebare, raspuns2);
     strcat(intrebare, ";");
-    printf("Introduceti a treia varianta de raspuns\n");
+    printf("\tIntroduceti a treia varianta de raspuns\n");
+    printf("\t");
     gets(raspuns3);
     strcat(intrebare, raspuns3);
     strcat(intrebare, ";");
-    printf("Introduceti raspunsul corect\n");
+    printf("\tIntroduceti raspunsul corect\n");
 
     while (1) {
-
+        printf("\t");
         gets(corect);
         if (strcmp(raspuns1, corect) == 0 || strcmp(raspuns2, corect) == 0 || strcmp(raspuns3, corect) == 0) {
             strcat(intrebare, corect);
@@ -49,7 +56,7 @@ void citireVar(char* intrebare, char* raspuns1, char* raspuns2, char* raspuns3, 
         }
         else
         {
-            printf("Raspunsul corect nu coincide cu niciuna dintre variante.\nIntroduceti unul dintre raspunsurile introduse deja.\n");
+            printf("\tRaspunsul corect nu coincide cu niciuna dintre variante.\n\tIntroduceti unul dintre raspunsurile introduse deja.\n\n");
         }
 
     }
@@ -61,7 +68,8 @@ void adaugareRaspunsMultiplu(char* intrebariGrila) {
     multiplu = fopen(intrebariGrila, "a");
     if (multiplu == NULL)
     {
-        printf("Fisierul nu exista");
+        system("cls");
+        printf("\tFisierul nu exista");
         exit(1);
     }
     else {
@@ -75,7 +83,7 @@ void adaugareRaspunsMultiplu(char* intrebariGrila) {
         fprintf(multiplu, "%s\n", intrebare);
         
 
-        printf("Intrebarea a fost adaugata\n");
+        printf("\n\tIntrebarea a fost adaugata\n\n");
 
         free(intrebare);
         free(raspuns1);

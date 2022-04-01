@@ -27,6 +27,23 @@ void confirmareStergere(int contor,int *aparitii,int *numar)
     }
 }
 
+void afisareSterse(int nrMax, int* aparitii)
+{
+    printf("Intrebarile numerotate cu: ");
+    for (int i = 1; i <= nrMax; i++)
+    {
+        if (aparitii[i] != 0)
+        {
+            if (i != nrMax)
+                printf("%d, ", i);
+            else
+                printf("%d", i);
+        }
+            
+    }
+    printf(" au fost sterse.\n\n");
+}
+
 void optiuniAdministrator(char* clasament, char* intrebariScurte, char* intrebariGrila, char* parolaAdmin,struct lista* scurte, struct lista* grila, struct lista* rank)
 {
     opadmin();
@@ -77,27 +94,22 @@ void optiuniAdministrator(char* clasament, char* intrebariScurte, char* intrebar
                 if (numarOptiune == 1)
                 {
                     getchar();
-                    int contor = 0,numar=0;
+                    int contor = 0,numar=0,nrMax=-1;
                     afisareIntrebari(scurte, grila, 1, &contor);
                     int* aparitii = (int*)calloc(contor, sizeof(aparitii));
-                    citireIndecsi(aparitii,contor);
+                    citireIndecsi(aparitii,contor,&nrMax);
                     confirmareStergere(contor, aparitii, &numar);
 
                     if (numar == 1) {
                         stergereIntrebari(scurte, grila, aparitii, contor, 1);
-                        printf("Intrebarile numerotate cu ");
-                        for (int i = 1; i <= contor; i++)
-                        {
-                            if (aparitii[i] != 0)
-                                printf("%d ", i);
-                        }
-                        printf("au fost sterse.\n\n");
-                        //exit(0);
+                        afisareSterse(nrMax, aparitii);
                     }
                     else
                     {
-                        printf("Nu a fost stearsa nicio intrebare.\n");
-                        //exit(0);
+                        if (numar == 2)
+                        {
+                            printf("Nu a fost stearsa nicio intrebare.\n");
+                        }
                     }
                 }
                 else
@@ -105,36 +117,27 @@ void optiuniAdministrator(char* clasament, char* intrebariScurte, char* intrebar
                     if (numarOptiune == 2)
                     {
                         getchar();
-                        int contor = 0,numar=0;
+                        int contor = 0,numar=0,nrMax=-1;
                         afisareIntrebari(scurte, grila, 2, &contor);
                         int* aparitii = (int*)calloc(contor, sizeof(aparitii));
-                        citireIndecsi(aparitii, contor);
+                        citireIndecsi(aparitii, contor,&nrMax);
                         confirmareStergere(contor, aparitii, &numar);
 
                         if (numar == 1) {
                             stergereIntrebari(scurte, grila, aparitii, contor, 2);
-                            printf("Intrebarile numerotate cu ");
-                            for (int i = 1; i <= contor; i++)
-                            {
-                                if (aparitii[i] != 0)
-                                    printf("%d ", i);
-                            }
-                            printf("au fost sterse.\n\n");
-                            /*struct grila* c = grila->cap;
-                            while (c != NULL)
-                            {
-                                printf("%s %s\n", c->intrebare, c->raspuns);
-                                c = c->urm;
-                            }*/
-                            //exit(0);
+                            afisareSterse(nrMax, aparitii);
+                            
                         }
                         else
                         {
-                            printf("Nu a fost stearsa nicio intrebare.\n");
-                            //exit(0);
+                            if (numar == 2) 
+                            {
+                                printf("Nu a fost stearsa nicio intrebare.\n");
+                            }
                         }
                     }
                 }
+                getchar();
                 break;
             case 3:
                 paginaPrincipala(clasament, intrebariScurte, intrebariGrila, parolaAdmin,scurte,grila,rank);

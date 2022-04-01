@@ -37,10 +37,10 @@ void afisareIntrebari(struct lista* scurte, struct lista* grila, int ok,int *con
     }
 }
 
-void citireIndecsi(int* aparitii,int contor)
+void citireIndecsi(int* aparitii,int contor,int* nrMax)
 {
     printf("Introduceti indecsii ale caror intrebari doriti sa le stergeti:\n\n");
-
+    (*nrMax) = -1;
     char optiune[150];
     memset(optiune, 0, 150);
     gets(optiune);
@@ -56,6 +56,8 @@ void citireIndecsi(int* aparitii,int contor)
         {
             if (numar <= contor && numar!=0)
             {
+                if (numar > *nrMax)
+                    (*nrMax) = numar;
                 if(aparitii[numar]==0)
                     aparitii[numar]++;
             }
@@ -79,12 +81,14 @@ void citireIndecsi(int* aparitii,int contor)
     }
     if (numar <= contor && numar != 0)
     {
+        if (numar > *nrMax)
+            (*nrMax) = numar;
         if (aparitii[numar] == 0)
             aparitii[numar]++;
     }
 }
 
-int verifScurtNesterse(struct lista* scurte)
+int verifScurteNesterse(struct lista* scurte)
 {
     struct questions* elem = scurte->head;
     while (elem != NULL)
@@ -100,7 +104,7 @@ int verifScurtNesterse(struct lista* scurte)
 
 void stergeScurte(struct lista* scurte)
 {
-    while (verifScurtNesterse(scurte) == 1) {
+    while (verifScurteNesterse(scurte) == 1) {
         if (strcmp(scurte->head->intrebare, "0") == 0 && strcmp(scurte->head->raspuns, "0") == 0)
         {
             struct questions* elem = scurte->head;
@@ -123,7 +127,7 @@ void stergeScurte(struct lista* scurte)
     }
 }
 
-int verifGrilaNestearsa(struct lista* grila)
+int verifGrilaNesterse(struct lista* grila)
 {
     struct grila* elem = grila->cap;
     while (elem != NULL)
@@ -139,7 +143,7 @@ int verifGrilaNestearsa(struct lista* grila)
 
 void stergeGrile(struct lista* grila)
 {
-    while (verifGrilaNestearsa(grila) == 1) {
+    while (verifGrilaNesterse(grila) == 1) {
         if (strcmp(grila->cap->intrebare, "0") == 0 && strcmp(grila->cap->raspuns, "0") == 0)
         {
             struct grila* elem = grila->cap;

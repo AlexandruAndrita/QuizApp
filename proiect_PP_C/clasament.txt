@@ -1,5 +1,6 @@
-Matei 4 / 5
-Gheorghe 5 / 5
-Max 5 / 5
-ana maria 1 / 5
-denis matei 3 / 5
+denis matei;5
+ana;3
+george;3
+ana maria;2
+alex;1
+matei;1

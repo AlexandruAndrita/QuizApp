@@ -12,7 +12,7 @@ struct grila {
 
 struct ranking {
     char nume[50];
-    char punctaj[50];
+    int punctaj;
     struct ranking* urmator;
 }ranking;
 

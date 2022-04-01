@@ -150,6 +150,7 @@
   <ItemGroup>
     <ClInclude Include="adaugareInFisierIntrebari.h" />
     <ClInclude Include="admin.h" />
+    <ClInclude Include="clasament.h" />
     <ClInclude Include="optiuni.h" />
     <ClInclude Include="prototipuri.h" />
     <ClInclude Include="quiz.h" />

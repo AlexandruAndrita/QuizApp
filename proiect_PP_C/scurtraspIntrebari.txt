@@ -14,7 +14,7 @@ Cate continente exista pe Pamant?;7
 In ce an s-a nascut regele Mihai I?;1921
 Cine a scris romanul "Ion"?;Liviu Rebreanu
 In ce an a devenit fotbalul sport olimpic?;1900
-Ce culoare are cutia neagra a unui avion?;Portocalie
+Ce culoare are cutia neagra a unui avion?;Portocaliu
 Care este singurul continent pe care nu traiesc ursi?;Antarctica
 In ce oras ucrainean a avut loc dezastrul nuclear?;Pripeat
 In ce tara se afla Casa Rosada?;Argentina

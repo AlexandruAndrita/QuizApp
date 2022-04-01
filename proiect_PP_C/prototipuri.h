@@ -1,41 +1,63 @@
-void optiuniUser(char* , char* , char* , char *,int , int ,struct lista* ,struct lista* ,struct lista* );
-void opuser();
-void optiuniAdministrator(char* , char* , char* , char *, struct lista* , struct lista* , struct lista* );
-void opadmin();
-void paginaPrincipala(char* , char* , char* , char *,struct lista* ,struct lista* , struct lista* );
-void adaugareRaspunsScurt(char* );
-void opprinicipala();
-int verificareParolaAdministrator(char *);
-void stocareIntrebari(int* , int* , char* , char* , char* , struct lista* , struct lista* );
-void incepeQuiz(int , int , char* , char* , char* , struct lista* , struct lista* , struct lista* );
+//adaugare intrebari
+void adaugareRaspunsScurt(char*);
+void citireVar(char*, char*, char*, char*, char*);
+void adaugareRaspunsMultiplu(char*);
+
+//admin
+void confirmareStergere(int, int*, int*);
+void afisareIndecsiSterse(int, int*);
+void optiuniAdministrator(char*, char*, char*, char*, struct lista*, struct lista*, struct lista*, int*);
+void schimbareParolaAdmin(char*);
+int verificareParolaAdministrator(char*);
+
+//clasament
+void adaugareInLista(struct lista* , char* );
+void preluareNumeDinFisier(struct lista* , char* );
+void afisareClasament(struct lista*);
+int cautare(struct lista*, char*);
+struct ranking* creareJucator(char[], int);
+void adaugareJucatorNou(struct lista*, char[], int);
+void mutareDateInFisier(struct lista*, char*);
+
+//optiuni
 void optiuniQuiz();
-void transformaDinLitereMari(char s[]);
-void afisareClasament(struct lista *);
-int cautare(char s[], char*);
-void alcatuireClasament(char* ,struct lista *);
-void tipIntrebare(char* , char* , char* , char *, struct lista* , struct lista* , struct lista* );
+void opuser();
+void opadmin();
 void tipIntrebareQ();
-void adaugareRaspunsMultiplu(char* );
-void afisareVariante(char auxx[],char corect[]);
-int validareInput(char optiune[]);
-void stergeLista(struct lista *);
+void opprinicipala();
 void reguli();
-int quizScurt(int ,struct lista* );
-int quizGrila(int ,struct lista* );
-void generareNumere(int aparitii[], int );
-int verificaAparitii(int aparitii[], int );
-void afisareIntrebari(struct lista* , struct lista* , int , int* );
-void citireIndecsi(int* , int,int* );
-void stergeScurte(struct lista*);
-void stergeGrile(struct lista*);
+
+//quiz
+void transformaDinLitereMari(char []);
+int verificaAparitii(int [], int);
+void generareNumere(int [], int);
+int quizScurt(int, struct lista*);
+void afisareVariante(char [], char []);
+void preluareRaspuns(char [], char[]);
+int quizGrila(int, struct lista*);
+
+//stergere intrebari
+void afisareIntrebari(struct lista*, struct lista*, int, int*);
+void citireIndecsi(int*, int, int*);
 int verifScurteNesterse(struct lista*);
-int verifGrilaNesterse(struct lista* );
-void stergereIntrebari(struct lista* , struct lista* , int* , int ,int );
-void confirmareStergere(int , int* , int* );
-void afisareSterse(int , int* );
+void stergeScurte(struct lista*);
+int verifGrilaNesterse(struct lista*);
+void stergeGrile(struct lista*);
+void stergereIntrebari(struct lista*, struct lista*, int*, int, int);
+void completareInFisier(char*, char*, struct lista*, struct lista*, int);
+
+//stocare intrebari
+void stocareIntrebari(int* , int* , char* , char* , char* , struct lista* , struct lista* );
+void adaugareIntrebariScurte(char* ,int * ,struct lista* );
+void adaugareIntrebariGrila(char* ,int * ,struct lista* );
+
+//main
+void incepeQuiz(int, int, char*, char*, char*, char*, struct lista*, struct lista*, struct lista*, int*);
+void tipIntrebare(char*, char*, char*, char*, struct lista*, struct lista*, struct lista*, int*);
+void optiuniUser(char* , char* , char* , char *,int , int ,struct lista* ,struct lista* ,struct lista* ,int *);
+void paginaPrincipala(char* , char* , char* , char *,struct lista* ,struct lista* , struct lista* ,int*);
+int validareInput(char []);
 char* initializare();
 void numeFisiere(char* , char* , char* , char *);
-void schimbareParolaAdmin(char* );
-void adaugareIntrebariGrila(char* ,int * ,struct lista* );
-void adaugareIntrebariScurte(char* ,int * ,struct lista* );
-void citireVar(char* , char* , char* , char* , char* );
+
+

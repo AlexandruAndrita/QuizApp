@@ -27,7 +27,7 @@ void confirmareStergere(int contor,int *aparitii,int *numar)
     }
 }
 
-void afisareSterse(int nrMax, int* aparitii)
+void afisareIndecsiSterse(int nrMax, int* aparitii)
 {
     printf("Intrebarile numerotate cu: ");
     for (int i = 1; i <= nrMax; i++)
@@ -44,7 +44,7 @@ void afisareSterse(int nrMax, int* aparitii)
     printf(" au fost sterse.\n\n");
 }
 
-void optiuniAdministrator(char* clasament, char* intrebariScurte, char* intrebariGrila, char* parolaAdmin,struct lista* scurte, struct lista* grila, struct lista* rank)
+void optiuniAdministrator(char* clasament, char* intrebariScurte, char* intrebariGrila, char* parolaAdmin,struct lista* scurte, struct lista* grila, struct lista* rank,int *contor)
 {
     opadmin();
     while (1)
@@ -56,11 +56,12 @@ void optiuniAdministrator(char* clasament, char* intrebariScurte, char* intrebar
             switch (numar)
             {
             case 5:
+
                 printf("Ai parasit jocul");
                 exit(0);
             case 1:
                 printf("Adaugare intrebare noua\n");
-                tipIntrebare(clasament, intrebariScurte, intrebariGrila, parolaAdmin,scurte,grila,rank);
+                tipIntrebare(clasament, intrebariScurte, intrebariGrila, parolaAdmin,scurte,grila,rank,contor);
                 break;
             case 2:
                 printf("Doriti sa stergeti intrebari cu raspuns scurt sau intrebari tip grila?\n");
@@ -102,7 +103,8 @@ void optiuniAdministrator(char* clasament, char* intrebariScurte, char* intrebar
 
                     if (numar == 1) {
                         stergereIntrebari(scurte, grila, aparitii, contor, 1);
-                        afisareSterse(nrMax, aparitii);
+                        afisareIndecsiSterse(nrMax, aparitii);
+                        completareInFisier(intrebariScurte, intrebariGrila, scurte, grila, 1);
                     }
                     else
                     {
@@ -111,6 +113,7 @@ void optiuniAdministrator(char* clasament, char* intrebariScurte, char* intrebar
                             printf("Nu a fost stearsa nicio intrebare.\n");
                         }
                     }
+                    free(aparitii);
                 }
                 else
                 {
@@ -125,8 +128,8 @@ void optiuniAdministrator(char* clasament, char* intrebariScurte, char* intrebar
 
                         if (numar == 1) {
                             stergereIntrebari(scurte, grila, aparitii, contor, 2);
-                            afisareSterse(nrMax, aparitii);
-                            
+                            afisareIndecsiSterse(nrMax, aparitii);
+                            completareInFisier(intrebariScurte, intrebariGrila, scurte, grila, 2);
                         }
                         else
                         {
@@ -135,12 +138,13 @@ void optiuniAdministrator(char* clasament, char* intrebariScurte, char* intrebar
                                 printf("Nu a fost stearsa nicio intrebare.\n");
                             }
                         }
+                        free(aparitii);
                     }
                 }
                 getchar();
                 break;
             case 3:
-                paginaPrincipala(clasament, intrebariScurte, intrebariGrila, parolaAdmin,scurte,grila,rank);
+                paginaPrincipala(clasament, intrebariScurte, intrebariGrila, parolaAdmin,scurte,grila,rank,contor);
                 break;
             case 4:
                 schimbareParolaAdmin(parolaAdmin);

@@ -218,3 +218,57 @@ void stergereIntrebari(struct lista* scurte, struct lista* grila, int* aparitii,
         }
     }
 }
+
+void completareInFisier(char* intrebariScurte,char* intrebariGrila,struct lista* scurte, struct lista* grila,int ok)
+{
+    if (ok == 1) {
+        FILE* pointerFis;
+        pointerFis = fopen(intrebariScurte, "w");
+        if (pointerFis == NULL)
+        {
+            printf("Fisierul nu exista");
+            exit(1);
+        }
+        else
+        {
+            struct questions* aux = scurte->head;
+            char* linie = (char*)calloc(301, sizeof(char));
+            while (aux != NULL)
+            {
+                strcat(linie, aux->intrebare);
+                strcat(linie, ";");
+                strcat(linie, aux->raspuns);
+                fprintf(pointerFis, "%s\n", linie);
+                strcpy(linie, "");
+
+                aux = aux->next;
+            }
+        }
+        fclose(pointerFis);
+    }
+    else {
+        FILE* pointerFile;
+        pointerFile = fopen(intrebariGrila, "w");
+        if (pointerFile == NULL)
+        {
+            printf("Fisierul nu exista");
+            exit(1);
+        }
+        else
+        {
+            struct grila* aux = grila->cap;
+            char* linie = (char*)calloc(301, sizeof(char));
+            while (aux != NULL)
+            {
+                strcat(linie, aux->intrebare);
+                strcat(linie, ";");
+                strcat(linie, aux->raspuns);
+                fprintf(pointerFile, "%s\n", linie);
+                strcpy(linie, "");
+
+                aux = aux->urm;
+            }
+        }
+        fclose(pointerFile);
+    }
+}

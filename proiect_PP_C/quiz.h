@@ -39,7 +39,7 @@ int quizScurt(int contorIntrebariScurt, struct lista *scurte)
     int contor = 0, j = 0, i = 0;
     int* aparitii = (int*)calloc(contorIntrebariScurt, sizeof(int));
     generareNumere(aparitii, contorIntrebariScurt);
-
+    
     while (a != NULL)
     {
         char rasp[150], aux[150];
@@ -49,7 +49,7 @@ int quizScurt(int contorIntrebariScurt, struct lista *scurte)
         {
             printf("%s\n", a->intrebare);
 
-            gets(rasp); //raspunsul userului
+            gets(rasp);
 
             strcpy(aux, a->raspuns);
             transformaDinLitereMari(aux);
@@ -166,7 +166,7 @@ int quizGrila(int contorIntrebariGrila, struct lista* grila)
             strcpy(auxx, c->raspuns);
             afisareVariante(auxx, varCorecta);
 
-            gets(rasp); //raspunsul userului
+            gets(rasp);
             memset(auxx, 0, 150);
             strcpy(auxx, c->raspuns);
             preluareRaspuns(rasp, auxx);

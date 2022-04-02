@@ -1,6 +1,6 @@
 void afisareIntrebari(struct lista* scurte, struct lista* grila, int ok,int *contor)
 {
-    if (ok == 1) //afiseaza intrebari cu raspuns scurt
+    if (ok == 1)
     {
         (*contor) = 0;
         struct questions* aux = scurte->head;
@@ -13,7 +13,7 @@ void afisareIntrebari(struct lista* scurte, struct lista* grila, int ok,int *con
     }
     else
     {
-        if (ok == 2) //afiseaza intrebarile de tip grila
+        if (ok == 2)
         {
             (*contor) = 0;
             struct grila* aux = grila->cap;
@@ -169,7 +169,7 @@ void stergeGrile(struct lista* grila)
 
 void stergereIntrebari(struct lista* scurte, struct lista* grila, int* aparitii, int contor,int ok)
 {
-    if (ok == 1) //sterge intrebari cu raspuns scurt
+    if (ok == 1)
     {
         for (int i = 1; i <= contor; i++)
         {
@@ -194,7 +194,7 @@ void stergereIntrebari(struct lista* scurte, struct lista* grila, int* aparitii,
     }
     else
     {
-        if (ok == 2) //sterge intrebari de tip grila
+        if (ok == 2)
         {
             for (int i = 1; i <= contor; i++)
             {

@@ -61,5 +61,8 @@
     <ClInclude Include="clasament.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="afisareClasament.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

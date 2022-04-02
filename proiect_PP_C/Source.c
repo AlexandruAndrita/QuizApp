@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <windows.h>
+#include <Windows.h>
 
 
 #include "prototipuri.h"
@@ -14,6 +14,7 @@
 #include "quiz.h"
 #include "stergereIntrebari.h"
 #include "clasament.h"
+#include "afisareClasament.h"
 
 
 void incepeQuiz(int contorIntrebariScurt,int contorIntrebariGrila,char* parolaAdmin,char* clasament, char* intrebariScurte, char* intrebariGrila, struct lista *scurte, struct lista *grila, struct lista *rank,int* contor)
@@ -67,7 +68,7 @@ void incepeQuiz(int contorIntrebariScurt,int contorIntrebariGrila,char* parolaAd
                     if (runda >= 1)
                     {
                         system("cls");
-                        printf("\tAti jucat deja o runda.\n\tPuteti rejuca cu alt nume\n");
+                        printf("\tAti jucat deja o runda.\n\tPuteti rejuca cu alt nume\n\n");
                         getchar();
                         break;
                     }
@@ -103,15 +104,29 @@ void incepeQuiz(int contorIntrebariScurt,int contorIntrebariGrila,char* parolaAd
                     if (numarOptiune == 1)
                     {
                         system("cls");
-                        catePuncte = quizGrila(contorIntrebariGrila,grila);
-                        printf("\n\tScorul tau este: %d / %d\n\n", catePuncte, 5);
-                        adaugareJucatorNou(rank, numeJucator, catePuncte);
+
+                        clock_t start_t, end_t, total_t;
+                        start_t = 0;
+                        end_t = 0;
+                        total_t = 0;
+                        catePuncte = quizGrila(contorIntrebariGrila,grila,&start_t,&end_t,&total_t);
+                        long timp = total_t;
+
+                        printf("\n\tScorul tau este: %d / %d\n\tAi completat quiz-ul in %ld secunde\n\n", catePuncte, 5,timp);
+                        adaugareJucatorNou(rank, numeJucator, catePuncte, timp);
                     }
                     else {
                         system("cls");
-                        catePuncte = quizScurt(contorIntrebariScurt,scurte);
-                        printf("\n\tScorul tau este: %d / %d\n\n", catePuncte, 5);
-                        adaugareJucatorNou(rank, numeJucator, catePuncte);
+
+                        clock_t start_t, end_t, total_t;
+                        start_t = 0;
+                        end_t = 0;
+                        total_t = 0;
+                        catePuncte = quizScurt(contorIntrebariScurt,scurte,&start_t,&end_t,&total_t);
+                        long timp = total_t;
+
+                        printf("\n\tScorul tau este: %d / %d\n\tAi completat quiz-ul in %ld secunde\n\n", catePuncte, 5,timp);
+                        adaugareJucatorNou(rank, numeJucator, catePuncte, timp);
                     }
                     
                 }
@@ -201,9 +216,10 @@ void optiuniUser(char* clasament, char* intrebariScurte, char* intrebariGrila, c
                 system("cls");
                 incepeQuiz(contorIntrebariScurt, contorIntrebariGrila,parolaAdmin, clasament, intrebariScurte, intrebariGrila,scurte,grila,rank,contor);
                 break;
-            /*case 3:
-                paginaPrincipala(clasament, intrebariScurte, intrebariGrila, parolaAdmin);
-                break;*/
+            case 3:
+                system("cls");
+                paginaPrincipala(clasament, intrebariScurte, intrebariGrila, parolaAdmin,scurte,grila,rank,contor);
+                break;
             default:
                 system("cls");
                 printf("\tValoarea introdusa nu corespunde cerintelor. Incercati din nou.\n\n");
@@ -279,7 +295,6 @@ void paginaPrincipala(char *clasament,char* intrebariScurte, char *intrebariGril
         }
         opprinicipala();
     }
-
 }
 
 void meniuReguli(char* clasament, char* intrebariScurte, char* intrebariGrila, char* parolaAdmin, struct lista* scurte, struct lista* grila, struct lista* rank, int* contor)

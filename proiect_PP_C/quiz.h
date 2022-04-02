@@ -32,14 +32,15 @@ void generareNumere(int aparitii[], int maxNrIntrebari)
     }
 }
 
-int quizScurt(int contorIntrebariScurt, struct lista *scurte)
+int quizScurt(int contorIntrebariScurt, struct lista *scurte, clock_t *start_t,clock_t *end_t,clock_t *total_t)
 {
     getchar();
     struct questions* a = scurte->head;
     int contor = 0, j = 0, i = 0;
     int* aparitii = (int*)calloc(contorIntrebariScurt, sizeof(int));
     generareNumere(aparitii, contorIntrebariScurt);
-    
+
+    *start_t = clock();
     while (a != NULL)
     {
         char rasp[150], aux[150];
@@ -65,6 +66,8 @@ int quizScurt(int contorIntrebariScurt, struct lista *scurte)
         a = a->next;
         j++;
     }
+    *end_t = clock();
+    *total_t= (double)((*end_t)-(*start_t)) / CLOCKS_PER_SEC;
     free(aparitii);
     return contor;
 }
@@ -146,7 +149,7 @@ void preluareRaspuns(char rasp[], char auxx[])
     }
 }
 
-int quizGrila(int contorIntrebariGrila, struct lista* grila)
+int quizGrila(int contorIntrebariGrila, struct lista* grila, clock_t* start_t, clock_t* end_t, clock_t* total_t)
 {
     getchar();
     struct grila* c = grila->cap;
@@ -154,6 +157,7 @@ int quizGrila(int contorIntrebariGrila, struct lista* grila)
     int* aparitii = (int*)calloc(contorIntrebariGrila, sizeof(int));
     generareNumere(aparitii, contorIntrebariGrila);
 
+    *start_t = clock();
     while (c != NULL)
     {
         if (i == 5)
@@ -186,6 +190,8 @@ int quizGrila(int contorIntrebariGrila, struct lista* grila)
         c = c->urm;
         j++;
     }
+    *end_t = clock();
+    *total_t = (double)((*end_t) - (*start_t)) / CLOCKS_PER_SEC;
     free(aparitii);
     return contor;
 }

@@ -20,12 +20,47 @@
 
 
 
-void paginaPrincipala(char *clasament,char* intrebariScurte, char *intrebariGrila, char *parolaAdmin, struct lista* scurte, struct lista* grila, struct lista* rank,int *contor)
+void verificareStatusUser(int *nou)
+{
+    optiuniStatusUser();
+    while (*nou==0)
+    {
+        printf("\t");
+        char optiune[15];
+        gets(optiune);
+        if (validareInput(optiune) == 1)
+        {
+            int numar = atoi(optiune);
+            switch(numar)
+            {
+            case 1:
+                system("cls");
+                *nou = 1;
+                break;
+            case 2:
+                system("cls");
+                *nou = 2;
+                break;
+            default:
+                system("cls");
+                printf("\tValoarea introdusa nu corespunde cerintelor. Incercati din nou.\n\n");
+            }
+        }
+        else
+        {
+            system("cls");
+            printf("\tValoarea introdusa nu corespunde cerintelor. Incercati din nou.\n\n");
+        }
+        optiuniStatusUser();
+    }
+}
+
+void paginaPrincipala(char *clasament,char* intrebariScurte, char *intrebariGrila, char *parolaAdmin, struct lista* scurte, struct lista* grila, struct lista* rank,int *contor,int* contorStocIntrebari)
 {
     opprinicipala();
     while (1)
     {
-        char optiune[256];
+        char optiune[15];
         printf("\t");
         gets(optiune);
 
@@ -36,7 +71,11 @@ void paginaPrincipala(char *clasament,char* intrebariScurte, char *intrebariGril
         */
         int contorIntrebariScurt = 0;
         int contorIntrebariGrila = 0;
-        stocareIntrebari(&contorIntrebariScurt, &contorIntrebariGrila, clasament, intrebariScurte, intrebariGrila,scurte,grila);
+        int statusUser = 0;
+        if ((*contorStocIntrebari) == 0) {
+            stocareIntrebari(&contorIntrebariScurt, &contorIntrebariGrila, clasament, intrebariScurte, intrebariGrila, scurte, grila, contorStocIntrebari);
+            (*contorStocIntrebari)++;
+        }
 
         if (validareInput(optiune) == 1) {
             int numar = atoi(optiune);
@@ -47,12 +86,14 @@ void paginaPrincipala(char *clasament,char* intrebariScurte, char *intrebariGril
                     if((*contor)==0)
                         preluareNumeDinFisier(rank, clasament);
                     (*contor)++;
-                    optiuniUser(clasament,intrebariScurte,intrebariGrila,parolaAdmin, contorIntrebariScurt, contorIntrebariGrila,scurte,grila,rank,contor);
+                    verificareStatusUser(&statusUser);
+                    system("cls");
+                    optiuniUser(clasament,intrebariScurte,intrebariGrila,parolaAdmin, contorIntrebariScurt, contorIntrebariGrila,scurte,grila,rank,contor,statusUser,contorStocIntrebari);
                     break;
                 case 2:
                     if (verificareParolaAdministrator(parolaAdmin) == 1) {
                         system("cls");
-                        optiuniAdministrator(clasament,intrebariScurte,intrebariGrila,parolaAdmin,scurte,grila,rank,contor);
+                        optiuniAdministrator(clasament,intrebariScurte,intrebariGrila,parolaAdmin,scurte,grila,rank,contor,contorStocIntrebari);
                     }
                     else {
                         system("cls");
@@ -67,7 +108,7 @@ void paginaPrincipala(char *clasament,char* intrebariScurte, char *intrebariGril
                 case 3:
                     system("cls");
                     reguli();
-                    meniuReguli(clasament, intrebariScurte, intrebariGrila, parolaAdmin, scurte, grila, rank, contor);
+                    meniuReguli(clasament, intrebariScurte, intrebariGrila, parolaAdmin, scurte, grila, rank, contor,contorStocIntrebari);
                     break;
                 default:
                     system("cls");
@@ -83,12 +124,12 @@ void paginaPrincipala(char *clasament,char* intrebariScurte, char *intrebariGril
     }
 }
 
-void meniuReguli(char* clasament, char* intrebariScurte, char* intrebariGrila, char* parolaAdmin, struct lista* scurte, struct lista* grila, struct lista* rank, int* contor)
+void meniuReguli(char* clasament, char* intrebariScurte, char* intrebariGrila, char* parolaAdmin, struct lista* scurte, struct lista* grila, struct lista* rank, int* contor,int *contorStocIntrebari)
 {
     optiuniReguli();
     while (1)
     {
-        char optiune[256];
+        char optiune[15];
         printf("\t");
         gets(optiune);
         if (validareInput(optiune) == 1)
@@ -98,7 +139,7 @@ void meniuReguli(char* clasament, char* intrebariScurte, char* intrebariGrila, c
             {
             case 1:
                 system("cls");
-                paginaPrincipala(clasament, intrebariScurte, intrebariGrila, parolaAdmin, scurte, grila, rank, contor);
+                paginaPrincipala(clasament, intrebariScurte, intrebariGrila, parolaAdmin, scurte, grila, rank, contor,contorStocIntrebari);
                 break;
             case 2:
                 system("cls");
@@ -149,7 +190,7 @@ void numeFisiere(char* clasament, char* intrebariScurte, char* intrebariGrila, c
 
 void progressBar()
 {
-    Beep(300, 1000);
+    //Beep(700, 1000); -->fara Beep la predare
     char var1 = 177, var2 = 219;
     printf("\tLoading...\n\n");
     printf("\t");
@@ -159,7 +200,7 @@ void progressBar()
     printf("\t");
     for (int i = 0; i < 20; i++) {
         printf("%c", var2);
-        Sleep(100);
+        Sleep(300);
     }
     system("cls");
 }
@@ -181,9 +222,9 @@ int main() {
     char* intrebariGrila = initializare();
     char* parolaAdmin = initializare();
 
-    int contor = 0;
+    int contor = 0,contorStocIntrebari=0;
     numeFisiere(clasament, intrebariScurte, intrebariGrila,parolaAdmin);
-    paginaPrincipala(clasament,intrebariScurte,intrebariGrila,parolaAdmin,&scurte,&grila,&rank,&contor);
+    paginaPrincipala(clasament,intrebariScurte,intrebariGrila,parolaAdmin,&scurte,&grila,&rank,&contor,&contorStocIntrebari);
 
     free(clasament);
     free(intrebariScurte);

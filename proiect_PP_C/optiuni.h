@@ -55,3 +55,10 @@ void optiuniReguli()
     printf("\t[2] Parasiti aplicatia\n");
 }
 
+void optiuniStatusUser()
+{
+    printf("\n\tSunteti un utilizator nou?\n");
+    printf("\t[1] Da\n");
+    printf("\t[2] Nu\n\n");
+}
+

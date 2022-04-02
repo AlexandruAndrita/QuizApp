@@ -18,7 +18,7 @@ Ce culoare are cutia neagra a unui avion?;Portocaliu
 Care este singurul continent pe care nu traiesc ursi?;Antarctica
 In ce oras ucrainean a avut loc dezastrul nuclear?;Pripeat
 In ce tara se afla Casa Rosada?;Argentina
-Care este cea mai mica tara din lume?;Vaticanul
+Care este cea mai mica tara din lume?;Vatican
 Care este cea mai vorbita limba din lume?;Chineza
 Care este cea mai mare insula din lume?;Groenlanda
 Cine a scris Odiseea?;Homer

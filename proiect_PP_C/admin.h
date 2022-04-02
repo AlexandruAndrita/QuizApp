@@ -8,7 +8,7 @@ void confirmareStergere(int contor,int *aparitii,int *numar)
             printf("%d ", i);
     }
     printf("?\n");
-    char optiune[5];
+    char optiune[15];
     (*numar) = 0;
     printf("\t[1] Da\n");
     printf("\t[2] Nu\n");

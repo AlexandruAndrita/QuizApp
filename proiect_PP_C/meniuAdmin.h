@@ -1,10 +1,10 @@
-void optiuniAdministrator(char* clasament, char* intrebariScurte, char* intrebariGrila, char* parolaAdmin, struct lista* scurte, struct lista* grila, struct lista* rank, int* contor)
+void optiuniAdministrator(char* clasament, char* intrebariScurte, char* intrebariGrila, char* parolaAdmin, struct lista* scurte, struct lista* grila, struct lista* rank, int* contor,int* contorStocIntrebari)
 {
     opadmin();
     while (1)
     {
         printf("\t");
-        char optiune[256];
+        char optiune[15];
         gets(optiune);
         if (validareInput(optiune) == 1) {
             int numar = atoi(optiune);
@@ -17,7 +17,7 @@ void optiuniAdministrator(char* clasament, char* intrebariScurte, char* intrebar
             case 1:
                 system("cls");
                 printf("\tAdaugare intrebare noua\n");
-                tipIntrebare(clasament, intrebariScurte, intrebariGrila, parolaAdmin, scurte, grila, rank, contor);
+                tipIntrebare(clasament, intrebariScurte, intrebariGrila, parolaAdmin, scurte, grila, rank, contor,contorStocIntrebari);
                 break;
             case 2:
                 system("cls");
@@ -103,7 +103,7 @@ void optiuniAdministrator(char* clasament, char* intrebariScurte, char* intrebar
                 break;
             case 3:
                 system("cls");
-                paginaPrincipala(clasament, intrebariScurte, intrebariGrila, parolaAdmin, scurte, grila, rank, contor);
+                paginaPrincipala(clasament, intrebariScurte, intrebariGrila, parolaAdmin, scurte, grila, rank, contor,contorStocIntrebari);
                 break;
             case 4:
                 system("cls");
@@ -123,13 +123,13 @@ void optiuniAdministrator(char* clasament, char* intrebariScurte, char* intrebar
     }
 }
 
-void tipIntrebare(char* clasament, char* intrebariScurte, char* intrebariGrila, char* parolaAdmin, struct lista* scurte, struct lista* grila, struct lista* rank, int* contor)
+void tipIntrebare(char* clasament, char* intrebariScurte, char* intrebariGrila, char* parolaAdmin, struct lista* scurte, struct lista* grila, struct lista* rank, int* contor,int* contorStocIntrebari)
 {
     tipIntrebareQ();
     while (1)
     {
         printf("\t");
-        char optiune[256];
+        char optiune[15];
         gets(optiune);
         if (validareInput(optiune) == 1)
         {
@@ -138,7 +138,7 @@ void tipIntrebare(char* clasament, char* intrebariScurte, char* intrebariGrila, 
             {
             case 3:
                 system("cls");
-                optiuniAdministrator(clasament, intrebariScurte, intrebariGrila, parolaAdmin, scurte, grila, rank, contor);
+                optiuniAdministrator(clasament, intrebariScurte, intrebariGrila, parolaAdmin, scurte, grila, rank, contor,contorStocIntrebari);
                 break;
             case 1:
                 system("cls");

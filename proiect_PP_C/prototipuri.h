@@ -12,21 +12,28 @@ int verificareParolaAdministrator(char*);
 
 
 //meniu admin
-void optiuniAdministrator(char*, char*, char*, char*, struct lista*, struct lista*, struct lista*, int*);
-void tipIntrebare(char*, char*, char*, char*, struct lista*, struct lista*, struct lista*, int*);
+void optiuniAdministrator(char*, char*, char*, char*, struct lista*, struct lista*, struct lista*, int*,int*);
+void tipIntrebare(char*, char*, char*, char*, struct lista*, struct lista*, struct lista*, int*,int*);
 
 
 //meniu user
-void incepeQuiz(int, int, char*, char*, char*, char*, struct lista*, struct lista*, struct lista*, int*);
-void optiuniUser(char*, char*, char*, char*, int, int, struct lista*, struct lista*, struct lista*, int*);
+void repetareJoc(int* );
+void incepeQuiz(int, int, char*, char*, char*, char*, struct lista*, struct lista*, struct lista*, int*, int,int*);
+void optiuniUser(char*, char*, char*, char*, int, int, struct lista*, struct lista*, struct lista*, int*, int,int*);
+void verificareStatusUser(int* );
 
 
 //clasament
 void adaugareInLista(struct lista* , char* );
 void preluareNumeDinFisier(struct lista* , char* );
+void verificareTipJoc(int*, int*, char[], struct lista*);
+void preluareNumeUser(char [], int* , struct lista* );
 int cautare(struct lista*, char*);
 struct ranking* creareJucator(char[], int, long);
-void adaugareJucatorNou(struct lista*, char[], int, long);
+void adaugareJucatorNou(struct lista*, char[], int, long,int );
+int verificareOrdine(struct lista* );
+void stergereJucator(char [], struct lista* );
+void actualizarePozitie(char [], long , int , struct lista* );
 void mutareDateInFisier(struct lista*, char*);
 
 
@@ -48,6 +55,7 @@ void tipIntrebareQ();
 void opprinicipala();
 void reguli();
 void optiuniReguli();
+void optiuniStatusUser();
 
 
 //quiz
@@ -78,8 +86,8 @@ void adaugareIntrebariGrila(char* ,int * ,struct lista* );
 
 
 //main
-void paginaPrincipala(char* , char* , char* , char *,struct lista* ,struct lista* , struct lista* ,int*);
-void meniuReguli(char*, char*, char*, char*, struct lista*, struct lista*, struct lista*, int*);
+void paginaPrincipala(char* , char* , char* , char *,struct lista* ,struct lista* , struct lista* ,int*,int*);
+void meniuReguli(char*, char*, char*, char*, struct lista*, struct lista*, struct lista*, int*,int*);
 int validareInput(char []);
 char* initializare();
 void numeFisiere(char* , char* , char* , char *);

@@ -83,3 +83,4 @@ void meniuReguli(char*, char*, char*, char*, struct lista*, struct lista*, struc
 int validareInput(char []);
 char* initializare();
 void numeFisiere(char* , char* , char* , char *);
+void progressBar();

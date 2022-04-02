@@ -20,8 +20,6 @@
 
 
 
-
-
 void paginaPrincipala(char *clasament,char* intrebariScurte, char *intrebariGrila, char *parolaAdmin, struct lista* scurte, struct lista* grila, struct lista* rank,int *contor)
 {
     opprinicipala();
@@ -149,8 +147,26 @@ void numeFisiere(char* clasament, char* intrebariScurte, char* intrebariGrila, c
     strcpy(parolaAdmin, "parolaAdmin.txt");
 }
 
+void progressBar()
+{
+    Beep(300, 1000);
+    char var1 = 177, var2 = 219;
+    printf("\tLoading...\n\n");
+    printf("\t");
+    for (int i = 0; i < 20; i++)
+        printf("%c", var1);
+    printf("\r");
+    printf("\t");
+    for (int i = 0; i < 20; i++) {
+        printf("%c", var2);
+        Sleep(100);
+    }
+    system("cls");
+}
+
 int main() {
-    printf("\t\tQuizApp\n\n");
+    printf("\t\tQuizApp\n\n\n");
+    progressBar();
     srand(time(0));
 
     struct lista scurte;

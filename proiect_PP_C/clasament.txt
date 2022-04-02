@@ -1,6 +1,0 @@
-gheorghe;5;2
-denis matei;5;14
-laur;3;8
-marcel;3;16
-diana;2;1
-ana maria;2;2

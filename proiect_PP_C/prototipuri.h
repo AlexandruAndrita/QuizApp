@@ -7,9 +7,18 @@ void adaugareRaspunsMultiplu(char*);
 //admin
 void confirmareStergere(int, int*, int*);
 void afisareIndecsiSterse(int, int*);
-void optiuniAdministrator(char*, char*, char*, char*, struct lista*, struct lista*, struct lista*, int*);
 void schimbareParolaAdmin(char*);
 int verificareParolaAdministrator(char*);
+
+
+//meniu admin
+void optiuniAdministrator(char*, char*, char*, char*, struct lista*, struct lista*, struct lista*, int*);
+void tipIntrebare(char*, char*, char*, char*, struct lista*, struct lista*, struct lista*, int*);
+
+
+//meniu user
+void incepeQuiz(int, int, char*, char*, char*, char*, struct lista*, struct lista*, struct lista*, int*);
+void optiuniUser(char*, char*, char*, char*, int, int, struct lista*, struct lista*, struct lista*, int*);
 
 
 //clasament
@@ -69,12 +78,8 @@ void adaugareIntrebariGrila(char* ,int * ,struct lista* );
 
 
 //main
-void incepeQuiz(int, int, char*, char*, char*, char*, struct lista*, struct lista*, struct lista*, int*);
-void tipIntrebare(char*, char*, char*, char*, struct lista*, struct lista*, struct lista*, int*);
-void optiuniUser(char* , char* , char* , char *,int , int ,struct lista* ,struct lista* ,struct lista* ,int *);
 void paginaPrincipala(char* , char* , char* , char *,struct lista* ,struct lista* , struct lista* ,int*);
+void meniuReguli(char*, char*, char*, char*, struct lista*, struct lista*, struct lista*, int*);
 int validareInput(char []);
 char* initializare();
 void numeFisiere(char* , char* , char* , char *);
-void meniuReguli(char*, char*, char*, char*, struct lista*, struct lista*, struct lista*, int*);
-

@@ -64,5 +64,11 @@
     <ClInclude Include="afisareClasament.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="meniuUser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="meniuAdmin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -49,46 +49,46 @@ void preluareNumeDinFisier(struct lista* rank, char* clasament)
 	fclose(pointerFis);
 }
 
-void verificareTipJoc(int *ok,int *statusUser,char numeJucator[],struct lista* rank)
+void verificareTipJoc(int *incercari,int *statusUser,struct lista* rank,char numeJucator[])
 {
 	printf("\n\tSunteti sigur ca ati mai jucat acest joc in trecut?\n");
-	printf("\t[1] Da");
-	printf("\n\t[2] Nu");
-	int contor = 0;
-	while (1)
+	printf("\t[1] Da\n");
+	printf("\t[2] Nu\n");
+	int valid = 0;
+	while (valid==0)
 	{
-		printf("\n\t");
-		char raspuns[10];
-		gets(raspuns);
-		if (validareInput(raspuns) == 1)
+		printf("\t");
+		char optiune[10];
+		gets(optiune);
+		if (validareInput(optiune) == 1)
 		{
-			int numar = atoi(raspuns);
-			switch (numar)
+			int numar = atoi(optiune);
+			switch(numar)
 			{
 			case 1:
-				*ok = 0;
-				preluareNumeUser(numeJucator, statusUser, rank);
-				contor++;
-				return;
+				*statusUser = 2;
+				*incercari = 1;
+				valid = 1;
+				numeJucator[0] = 0;
+				break;
 			case 2:
 				*statusUser = 1;
-				*ok = 1;
-				system("cls");
-				preluareNumeUser(numeJucator, statusUser, rank);
-				contor++;
+				valid = 1;
 				break;
 			default:
 				system("cls");
-				printf("\tValoarea introdusa nu corespunde cerintelor. Incercati din nou.\n\n");
+				printf("\tValoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
+				printf("\tSunteti sigur ca ati mai jucat acest joc in trecut?\n");
+				printf("\t[1] Da\n\t[2] Nu\n\n");
 			}
 		}
 		else
 		{
 			system("cls");
-			printf("\tValoarea introdusa nu corespunde cerintelor. Incercati din nou.\n\n");
+			printf("\tValoarea introdusa nu corespunde cerintelor. Incercati din nou.\n");
+			printf("\tSunteti sigur ca ati mai jucat acest joc in trecut?\n");
+			printf("\t[1] Da\n\t[2] Nu\n\n");
 		}
-		if (contor >= 1)
-			return;
 	}
 }
 
@@ -98,52 +98,60 @@ void preluareNumeUser(char numeJucator[], int *statusUser, struct lista* rank)
 	printf("\t");
 	gets(numeJucator);
 	int incercari = 1,validat=0;
-	while (1)
+	while (validat==0)
 	{
-		if (cautare(rank, numeJucator) == 1)
+		if (cautare(rank, numeJucator) == 0) //numele a fost gasit in structura
 		{
-			if (*statusUser == 1) {
-				validat = 1;
-				if (validat == 0)
-					printf("\n\tNumele a fost memorat.\n\n");
-			}
-			else
+			if (*statusUser == 1) //user nou
 			{
-				if (*statusUser == 2)
-				{
-					int ok = 0;
-					if (incercari == 2)
-					{
-						verificareTipJoc(&ok,statusUser,numeJucator,rank);
-					}
-					if (ok == 0) {
-						printf("\n\tNumele introdus nu se afla printre utilizatorii existenti.\n\tIncercati din nou.\n\n");
-						memset(numeJucator, 0, 50);
-						printf("\t");
-						gets(numeJucator);
-						incercari++;
-					}
-				}
-			}
-		}
-		else {
-			if (*statusUser == 1) {
-				printf("\n\tNumele introdus este luat.\n\tIncercati sa introduceti alt nume.\n\n");
-				memset(numeJucator, 0, 50);
+				printf("\n\tNumele introdus a fost deja folosit.\n\tIncercati din nou.\n\n");
 				printf("\t");
 				gets(numeJucator);
 			}
-			else
+			else //returning user
 			{
-				if (*statusUser == 2) {
-					printf("\n\tNumele a fost gasit.\n\n");
-					validat = 1;
-					break;
+				printf("\n\tNumele a fost gasit.\n\n");
+				validat = 1;
+			}
+		}
+		else //numele nu a fost gasit in structura
+		{
+			if (*statusUser == 1) //user nou
+			{
+				printf("\n\tNumele a fost memorat.\n\n");
+				validat = 1;
+			}
+			else //returning user
+			{
+				if (incercari == 2)
+				{
+					verificareTipJoc(&incercari, statusUser, rank,numeJucator);
+					if (*statusUser == 1)
+					{
+						system("cls");
+						printf("\n\tIntroduceti-va numele\n\n");
+						printf("\t");
+						gets(numeJucator);
+					}
+					else
+					{
+						if (numeJucator[0] == 0)
+						{
+							system("cls");
+							printf("\n\tIntroduceti-va numele\n\n");
+							printf("\t");
+							gets(numeJucator);
+						}
+					}
+				}
+				else {
+					printf("\n\tNumele introdus nu a fost gasit.\n\tIncercati din nou.\n\n");
+					printf("\t");
+					gets(numeJucator);
+					incercari++;
 				}
 			}
 		}
-		if (validat==1 && numeJucator[0] != 0)
-			return;
 	}
 }
 

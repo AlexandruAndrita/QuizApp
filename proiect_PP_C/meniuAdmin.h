@@ -1,23 +1,24 @@
-void optiuniAdministrator(char* clasament, char* intrebariScurte, char* intrebariGrila, char* parolaAdmin, struct lista* scurte, struct lista* grila, struct lista* rank, int* contor,int* contorStocIntrebari)
+void optiuniAdministrator(char* clasament, char* intrebariScurte, char* intrebariGrila, char* parolaAdmin, struct lista* scurte, struct lista* grila, struct lista* rank, int* contor,int* contorStocIntrebari,char parola[])
 {
     opadmin();
     while (1)
     {
         printf("\t");
-        char optiune[15];
+        char optiune[10];
         gets(optiune);
         if (validareInput(optiune) == 1) {
             int numar = atoi(optiune);
             switch (numar)
             {
             case 5:
+                plasareParolaNouaInFisier(parola, parolaAdmin);
                 system("cls");
                 printf("\tAi parasit jocul");
                 exit(0);
             case 1:
                 system("cls");
                 printf("\tAdaugare intrebare noua\n");
-                tipIntrebare(clasament, intrebariScurte, intrebariGrila, parolaAdmin, scurte, grila, rank, contor,contorStocIntrebari);
+                tipIntrebare(clasament, intrebariScurte, intrebariGrila, parolaAdmin, scurte, grila, rank, contor,contorStocIntrebari,parola);
                 break;
             case 2:
                 system("cls");
@@ -56,12 +57,13 @@ void optiuniAdministrator(char* clasament, char* intrebariScurte, char* intrebar
                     int contor = 0, numar = 0, nrMax = -1;
                     afisareIntrebari(scurte, grila, 1, &contor);
                     int* aparitii = (int*)calloc(contor, sizeof(aparitii));
+                    int cateNumere = 0;
                     citireIndecsi(aparitii, contor, &nrMax);
-                    confirmareStergere(contor, aparitii, &numar);
+                    confirmareStergere(contor, aparitii, &numar,&cateNumere);
 
                     if (numar == 1) {
                         stergereIntrebari(scurte, grila, aparitii, contor, 1);
-                        afisareIndecsiSterse(nrMax, aparitii);
+                        afisareIndecsiSterse(nrMax, aparitii,cateNumere);
                         completareInFisier(intrebariScurte, intrebariGrila, scurte, grila, 1);
                     }
                     else
@@ -81,12 +83,13 @@ void optiuniAdministrator(char* clasament, char* intrebariScurte, char* intrebar
                         int contor = 0, numar = 0, nrMax = -1;
                         afisareIntrebari(scurte, grila, 2, &contor);
                         int* aparitii = (int*)calloc(contor, sizeof(aparitii));
+                        int cateNumere = 0;
                         citireIndecsi(aparitii, contor, &nrMax);
-                        confirmareStergere(contor, aparitii, &numar);
+                        confirmareStergere(contor, aparitii, &numar,&cateNumere);
 
                         if (numar == 1) {
                             stergereIntrebari(scurte, grila, aparitii, contor, 2);
-                            afisareIndecsiSterse(nrMax, aparitii);
+                            afisareIndecsiSterse(nrMax, aparitii,cateNumere);
                             completareInFisier(intrebariScurte, intrebariGrila, scurte, grila, 2);
                         }
                         else
@@ -99,15 +102,15 @@ void optiuniAdministrator(char* clasament, char* intrebariScurte, char* intrebar
                         free(aparitii);
                     }
                 }
-                getchar();
+                //getchar();
                 break;
             case 3:
                 system("cls");
-                paginaPrincipala(clasament, intrebariScurte, intrebariGrila, parolaAdmin, scurte, grila, rank, contor,contorStocIntrebari);
+                paginaPrincipala(clasament, intrebariScurte, intrebariGrila, parolaAdmin, scurte, grila, rank, contor,contorStocIntrebari,parola);
                 break;
             case 4:
                 system("cls");
-                schimbareParolaAdmin(parolaAdmin);
+                schimbareParolaAdmin(parola);
                 break;
             default:
                 system("cls");
@@ -123,13 +126,13 @@ void optiuniAdministrator(char* clasament, char* intrebariScurte, char* intrebar
     }
 }
 
-void tipIntrebare(char* clasament, char* intrebariScurte, char* intrebariGrila, char* parolaAdmin, struct lista* scurte, struct lista* grila, struct lista* rank, int* contor,int* contorStocIntrebari)
+void tipIntrebare(char* clasament, char* intrebariScurte, char* intrebariGrila, char* parolaAdmin, struct lista* scurte, struct lista* grila, struct lista* rank, int* contor,int* contorStocIntrebari,char parola[])
 {
     tipIntrebareQ();
     while (1)
     {
         printf("\t");
-        char optiune[15];
+        char optiune[10];
         gets(optiune);
         if (validareInput(optiune) == 1)
         {
@@ -138,15 +141,15 @@ void tipIntrebare(char* clasament, char* intrebariScurte, char* intrebariGrila, 
             {
             case 3:
                 system("cls");
-                optiuniAdministrator(clasament, intrebariScurte, intrebariGrila, parolaAdmin, scurte, grila, rank, contor,contorStocIntrebari);
+                optiuniAdministrator(clasament, intrebariScurte, intrebariGrila, parolaAdmin, scurte, grila, rank, contor,contorStocIntrebari,parola);
                 break;
             case 1:
                 system("cls");
-                adaugareRaspunsScurt(intrebariScurte);
+                adaugareRaspunsScurt(intrebariScurte,scurte);
                 break;
             case 2:
                 system("cls");
-                adaugareRaspunsMultiplu(intrebariGrila);
+                adaugareRaspunsMultiplu(intrebariGrila,grila);
                 break;
             default:
                 system("cls");

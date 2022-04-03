@@ -70,5 +70,11 @@
     <ClInclude Include="meniuAdmin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="parolaAdmin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="initializareNumeFisiere.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

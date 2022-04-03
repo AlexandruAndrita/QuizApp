@@ -30,7 +30,7 @@ void afisareIntrebari(struct lista* scurte, struct lista* grila, int ok,int *con
                 p = strtok(NULL, ";");
                 printf("\tc)%s\n\tsi cu raspunsul corect: ", p);
                 p = strtok(NULL, ";");
-                printf("\t%s\n\n", p);
+                printf("%s\n\n", p);
                 aux = aux->urm;
             }
         }

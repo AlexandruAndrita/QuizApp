@@ -152,9 +152,11 @@
     <ClInclude Include="admin.h" />
     <ClInclude Include="afisareClasament.h" />
     <ClInclude Include="clasament.h" />
+    <ClInclude Include="initializareNumeFisiere.h" />
     <ClInclude Include="meniuAdmin.h" />
     <ClInclude Include="meniuUser.h" />
     <ClInclude Include="optiuni.h" />
+    <ClInclude Include="parolaAdmin.h" />
     <ClInclude Include="prototipuri.h" />
     <ClInclude Include="quiz.h" />
     <ClInclude Include="stergereIntrebari.h" />

@@ -1,6 +1,0 @@
-alexandru;5;9
-alexandru matei;5;10
-laurentiu;4;7
-denis;4;15
-mihai;3;13
-ana maria;3;13

@@ -150,7 +150,7 @@ void progressBar()
     printf("\t\t");
     for (int i = 0; i < 25; i++) {
         printf("%c", var2);
-        Sleep(30);
+        Sleep(90);
     }
     system("cls");
 }

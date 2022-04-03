@@ -14,3 +14,14 @@ In ce tari se afla Everestul?;Nepal si China;China si India;India si Nepal;Nepal
 In ce an a fost creata ONU?;1944;1945;1946;1945
 In ce an a fost asasinat John F. Kennedy?;1964;1965;1963;1963
 In ce an a intrat Romania in Primul Razboi Mondial?;1917;1920;1916;1916
+Cati jucatori exista intr-o echipa de Water Polo?;7;8;9;7
+Cati jucatori sunt la o echipa de curling?;5;4;6;4
+Cate inimi are o caracatita?;2;5;3;3
+In ce an Beatles a plecat prima data in SUA?;1964;1954;1800;1964
+Ce club a castigat finala Cupei FA din 1986?;FC Barcelona;Liverpool;Real Madrid;Liverpool
+In ce an a fost prima Universitate fondata la Bologna?;1088;1099;1100;1088
+Cand s-a sfarsit Primul Razboi Mondial?;1919;1918;1929;1918
+In ce tara se afla Colosseum-ul?;Austria;Italia;Germania;Italia
+Ce nationalitate avea artistul Henri Matisse?;Germana;Italiana;Franceza;Franceza
+Unde in lume (in ce tara) este expusa Mona Lisa a lui Leonardo da Vinci?;Italia;Franta;Romania;Franta
+Pe ce continent se afla Romania?;Europa;America;Asia;Europa

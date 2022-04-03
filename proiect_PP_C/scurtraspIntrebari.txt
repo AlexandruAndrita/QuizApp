@@ -22,3 +22,6 @@ Care este cea mai mica tara din lume?;Vatican
 Care este cea mai vorbita limba din lume?;Chineza
 Care este cea mai mare insula din lume?;Groenlanda
 Cine a scris Odiseea?;Homer
+In ce tara se afla Taj Mahal?;India
+Care este temperatura medie a suprafetei pe Venus? (in grade Celsius);460
+In ce an a fost produsul WD40 inventat de chimistul Norm Larsen?;1953

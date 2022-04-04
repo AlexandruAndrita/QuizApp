@@ -1,9 +1,9 @@
 //adaugare intrebari
 void adaugareScurtaInLista(struct lista* , char [], char []);
-void adaugareRaspunsScurt(char*,struct lista*);
+void adaugareRaspunsScurt(struct lista*);
 void adaugareGrilaInLista(struct lista* , char [], char []);
 void citireVar(char*, char*, char*, char*, char*,struct lista*);
-void adaugareRaspunsMultiplu(char*,struct lista*);
+void adaugareRaspunsMultiplu(struct lista*);
 
 
 //admin
@@ -20,8 +20,8 @@ void plasareParolaNouaInFisier(char [], char* );
 
 
 //meniu admin
-void optiuniAdministrator(char*, char*, char*, char*, struct lista*, struct lista*, struct lista*, int*,int*,char []);
-void tipIntrebare(char*, char*, char*, char*, struct lista*, struct lista*, struct lista*, int*,int*,char []);
+void optiuniAdministrator(char*, char*, char*, char*, struct lista*, struct lista*, struct lista*, int*,int*,char [],int*,int*);
+void tipIntrebare(char*, char*, char*, char*, struct lista*, struct lista*, struct lista*, int*,int*,char [],int*,int *);
 
 
 //meniu user
@@ -80,10 +80,10 @@ int quizGrila(int, struct lista*, clock_t*, clock_t*, clock_t*);
 void afisareIntrebari(struct lista*, struct lista*, int, int*);
 void citireIndecsi(int*, int, int*);
 int verifScurteNesterse(struct lista*);
-void stergeScurte(struct lista*);
+void stergeScurte(struct lista*,int*);
 int verifGrilaNesterse(struct lista*);
-void stergeGrile(struct lista*);
-void stergereIntrebari(struct lista*, struct lista*, int*, int, int);
+void stergeGrile(struct lista*,int*);
+void stergereIntrebari(struct lista*, struct lista*, int*, int, int,int*,int*);
 void completareInFisier(char*, char*, struct lista*, struct lista*, int);
 
 
@@ -99,7 +99,7 @@ void numeFisiere(char* , char* , char* , char *);
 
 
 //main
-void paginaPrincipala(char* , char* , char* , char *,struct lista* ,struct lista* , struct lista* ,int*,int*,char []);
-void meniuReguli(char*, char*, char*, char*, struct lista*, struct lista*, struct lista*, int*,int*,char []);
+void paginaPrincipala(char* , char* , char* , char *,struct lista* ,struct lista* , struct lista* ,int*,int*,char [],int*,int*);
+void meniuReguli(char*, char*, char*, char*, struct lista*, struct lista*, struct lista*, int*,int*,char [],int*,int*);
 int validareInput(char []);
 void progressBar();

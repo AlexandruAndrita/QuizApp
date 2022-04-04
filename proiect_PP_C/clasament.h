@@ -320,35 +320,6 @@ void actualizarePozitie(char numeJucator[], long timp, int catePuncte, struct li
 							ok = 1;
 							break;
 						}
-						/*if (c->punctaj == catePuncte && c->timp<timp)
-						{
-							p = p->urmator;
-							c = c->urmator;
-							elem->urmator = c;
-							p->urmator = elem;
-							ok = 1;
-							break;
-						}
-						else
-						{
-							if (c->punctaj == catePuncte && c->timp > timp)
-							{
-								elem->urmator = c;
-								p->urmator = elem;
-								ok = 1;
-								break;
-							}
-							else
-							{
-								if (c->punctaj == catePuncte && c->timp == timp)
-								{
-									elem->urmator = c;
-									p->urmator = elem;
-									ok = 1;
-									break;
-								}
-							}
-						}*/
 					}
 					p = p->urmator;
 					c = c->urmator;

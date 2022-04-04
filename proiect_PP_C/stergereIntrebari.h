@@ -103,13 +103,14 @@ int verifScurteNesterse(struct lista* scurte)
     return 0;
 }
 
-void stergeScurte(struct lista* scurte)
+void stergeScurte(struct lista* scurte,int* contorIntrebariScurt)
 {
     while (verifScurteNesterse(scurte) == 1) {
         if (strcmp(scurte->head->intrebare, "0") == 0 && strcmp(scurte->head->raspuns, "0") == 0)
         {
             struct questions* elem = scurte->head;
             scurte->head = scurte->head->next;
+            (*contorIntrebariScurt)--;
             free(elem);
         }
         struct questions* prev = scurte->head;
@@ -120,6 +121,7 @@ void stergeScurte(struct lista* scurte)
             {
                 prev->next = cur->next;
                 free(cur);
+                (*contorIntrebariScurt)--;
                 break;
             }
             prev = prev->next;
@@ -142,13 +144,14 @@ int verifGrilaNesterse(struct lista* grila)
     return 0;
 }
 
-void stergeGrile(struct lista* grila)
+void stergeGrile(struct lista* grila,int* contorIntrebariGrila)
 {
     while (verifGrilaNesterse(grila) == 1) {
         if (strcmp(grila->cap->intrebare, "0") == 0 && strcmp(grila->cap->raspuns, "0") == 0)
         {
             struct grila* elem = grila->cap;
             grila->cap = grila->cap->urm;
+            (*contorIntrebariGrila)--;
             free(elem);
         }
         struct grila* prev = grila->cap;
@@ -159,6 +162,7 @@ void stergeGrile(struct lista* grila)
             {
                 prev->urm = cur->urm;
                 free(cur);
+                (*contorIntrebariGrila)--;
                 break;
             }
             prev = prev->urm;
@@ -167,7 +171,7 @@ void stergeGrile(struct lista* grila)
     }
 }
 
-void stergereIntrebari(struct lista* scurte, struct lista* grila, int* aparitii, int contor,int ok)
+void stergereIntrebari(struct lista* scurte, struct lista* grila, int* aparitii, int contor,int ok,int* contorIntrebariScurt,int* contorIntrebariGrila)
 {
     if (ok == 1)
     {
@@ -190,7 +194,7 @@ void stergereIntrebari(struct lista* scurte, struct lista* grila, int* aparitii,
                 }
             }
         }
-        stergeScurte(scurte);
+        stergeScurte(scurte,contorIntrebariScurt);
     }
     else
     {
@@ -215,7 +219,7 @@ void stergereIntrebari(struct lista* scurte, struct lista* grila, int* aparitii,
                     }
                 }
             }
-            stergeGrile(grila);
+            stergeGrile(grila,contorIntrebariGrila);
         }
     }
 }
@@ -234,14 +238,14 @@ void completareInFisier(char* intrebariScurte,char* intrebariGrila,struct lista*
         else
         {
             struct questions* aux = scurte->head;
-            char* linie = (char*)calloc(301, sizeof(char));
+            char linie[301];
             while (aux != NULL)
             {
+                memset(linie, 0, 301);
                 strcat(linie, aux->intrebare);
                 strcat(linie, ";");
                 strcat(linie, aux->raspuns);
                 fprintf(pointerFis, "%s\n", linie);
-                strcpy(linie, "");
 
                 aux = aux->next;
             }
@@ -260,14 +264,16 @@ void completareInFisier(char* intrebariScurte,char* intrebariGrila,struct lista*
         else
         {
             struct grila* aux = grila->cap;
-            char* linie = (char*)calloc(301, sizeof(char));
+            char linie[301];
             while (aux != NULL)
             {
+                memset(linie, 0, 301);
                 strcat(linie, aux->intrebare);
                 strcat(linie, ";");
+                if (aux->raspuns[strlen(aux->raspuns) - 1] == ';')
+                    aux->raspuns[strlen(aux->raspuns) - 1] == '\0';
                 strcat(linie, aux->raspuns);
                 fprintf(pointerFile, "%s\n", linie);
-                strcpy(linie, "");
 
                 aux = aux->urm;
             }

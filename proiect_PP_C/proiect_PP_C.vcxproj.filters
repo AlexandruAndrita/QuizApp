@@ -34,7 +34,7 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="adaugareInFisierIntrebari.h">
+    <ClInclude Include="adaugareInStructuriIntrebari.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="admin.h">

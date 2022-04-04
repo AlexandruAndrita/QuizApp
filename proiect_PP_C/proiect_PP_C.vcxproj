@@ -148,7 +148,7 @@
     <Text Include="scurtraspIntrebari.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="adaugareInFisierIntrebari.h" />
+    <ClInclude Include="adaugareInStructuriIntrebari.h" />
     <ClInclude Include="admin.h" />
     <ClInclude Include="afisareClasament.h" />
     <ClInclude Include="clasament.h" />

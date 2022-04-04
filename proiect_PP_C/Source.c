@@ -10,7 +10,7 @@
 #include "optiuni.h"
 #include "admin.h"
 #include "stocareIntrebari.h"
-#include "adaugareInFisierIntrebari.h"
+#include "adaugareInStructuriIntrebari.h"
 #include "quiz.h"
 #include "stergereIntrebari.h"
 #include "clasament.h"
@@ -22,7 +22,7 @@
 
 
 
-void paginaPrincipala(char *clasament,char* intrebariScurte, char *intrebariGrila, char *parolaAdmin, struct lista* scurte, struct lista* grila, struct lista* rank,int *contor,int* contorStocIntrebari,char parola[])
+void paginaPrincipala(char *clasament,char* intrebariScurte, char *intrebariGrila, char *parolaAdmin, struct lista* scurte, struct lista* grila, struct lista* rank,int *contor,int* contorStocIntrebari,char parola[],int* contorIntrebariScurt,int* contorIntrebariGrila)
 {
     opprinicipala();
     while (1)
@@ -31,16 +31,9 @@ void paginaPrincipala(char *clasament,char* intrebariScurte, char *intrebariGril
         printf("\t");
         gets(optiune);
 
-        /*preia intrebarile din fisier la inceput, cand se deschide aplicatie*/
-        /*
-        Chiar daca adminul adauga intrebari, dupa cand rejoci in aceiasi tura o sa ajunga sa reincarce intrebarile.
-        Astfel nu o sa fie intrebari adaugate care sa fie pierdute daca in aceiasi runda sunt si adaugate
-        */
-        int contorIntrebariScurt = 0;
-        int contorIntrebariGrila = 0;
         int statusUser = 0;
         if ((*contorStocIntrebari) == 0) {
-            stocareIntrebari(&contorIntrebariScurt, &contorIntrebariGrila, clasament, intrebariScurte, intrebariGrila, scurte, grila, contorStocIntrebari);
+            stocareIntrebari(contorIntrebariScurt, contorIntrebariGrila, clasament, intrebariScurte, intrebariGrila, scurte, grila, contorStocIntrebari,contorIntrebariScurt,contorIntrebariGrila);
             (*contorStocIntrebari)++;
         }
 
@@ -55,12 +48,17 @@ void paginaPrincipala(char *clasament,char* intrebariScurte, char *intrebariGril
                     (*contor)++;
                     verificareStatusUser(&statusUser);
                     system("cls");
-                    optiuniUser(clasament,intrebariScurte,intrebariGrila,parolaAdmin, contorIntrebariScurt, contorIntrebariGrila,scurte,grila,rank,contor,statusUser,contorStocIntrebari,parola);
+                    if (statusUser == 2 && rank->primul == NULL)
+                    {
+                        printf("\n\tNu aveti cum sa fiti utilizator existent intrucat jocul nu a fost jucat de nimeni.\n\n");
+                        statusUser = 1;
+                    }
+                    optiuniUser(clasament,intrebariScurte,intrebariGrila,parolaAdmin, *contorIntrebariScurt, *contorIntrebariGrila,scurte,grila,rank,contor,statusUser,contorStocIntrebari,parola);
                     break;
                 case 2:
                     if (verificareParolaAdministrator(parola) == 1) {
                         system("cls");
-                        optiuniAdministrator(clasament,intrebariScurte,intrebariGrila,parolaAdmin,scurte,grila,rank,contor,contorStocIntrebari,parola);
+                        optiuniAdministrator(clasament,intrebariScurte,intrebariGrila,parolaAdmin,scurte,grila,rank,contor,contorStocIntrebari,parola,contorIntrebariScurt,contorIntrebariGrila);
                     }
                     else {
                         system("cls");
@@ -70,13 +68,15 @@ void paginaPrincipala(char *clasament,char* intrebariScurte, char *intrebariGril
                 case 4:
                     mutareDateInFisier(rank, clasament);
                     plasareParolaNouaInFisier(parola, parolaAdmin);
+                    completareInFisier(intrebariScurte, intrebariGrila, scurte, grila, 1);
+                    completareInFisier(intrebariScurte, intrebariGrila, scurte, grila, 2);
                     system("cls");
                     printf("\tAi parasit jocul");
                     exit(0);
                 case 3:
                     system("cls");
                     reguli();
-                    meniuReguli(clasament, intrebariScurte, intrebariGrila, parolaAdmin, scurte, grila, rank, contor,contorStocIntrebari,parola);
+                    meniuReguli(clasament, intrebariScurte, intrebariGrila, parolaAdmin, scurte, grila, rank, contor,contorStocIntrebari,parola,contorIntrebariScurt,contorIntrebariGrila);
                     break;
                 default:
                     system("cls");
@@ -92,7 +92,7 @@ void paginaPrincipala(char *clasament,char* intrebariScurte, char *intrebariGril
     }
 }
 
-void meniuReguli(char* clasament, char* intrebariScurte, char* intrebariGrila, char* parolaAdmin, struct lista* scurte, struct lista* grila, struct lista* rank, int* contor,int *contorStocIntrebari,char parola[])
+void meniuReguli(char* clasament, char* intrebariScurte, char* intrebariGrila, char* parolaAdmin, struct lista* scurte, struct lista* grila, struct lista* rank, int* contor,int *contorStocIntrebari,char parola[], int* contorIntrebariScurt, int* contorIntrebariGrila)
 {
     optiuniReguli();
     while (1)
@@ -107,10 +107,13 @@ void meniuReguli(char* clasament, char* intrebariScurte, char* intrebariGrila, c
             {
             case 1:
                 system("cls");
-                paginaPrincipala(clasament, intrebariScurte, intrebariGrila, parolaAdmin, scurte, grila, rank, contor,contorStocIntrebari,parola);
+                paginaPrincipala(clasament, intrebariScurte, intrebariGrila, parolaAdmin, scurte, grila, rank, contor,contorStocIntrebari,parola,contorIntrebariScurt,contorIntrebariGrila);
                 break;
             case 2:
+                mutareDateInFisier(rank, clasament);
                 plasareParolaNouaInFisier(parola, parolaAdmin);
+                completareInFisier(intrebariScurte, intrebariGrila, scurte, grila, 1);
+                completareInFisier(intrebariScurte, intrebariGrila, scurte, grila, 2);
                 system("cls");
                 printf("\tAti parasit jocul.");
                 exit(0);
@@ -158,7 +161,7 @@ void progressBar()
 
 int main() {
     printf("\t\t\tQuizApp\n\n\n");
-    progressBar();
+    //progressBar();
     srand(time(0));
 
     struct lista scurte;
@@ -174,7 +177,7 @@ int main() {
     char* parolaAdmin;
     char parola[20];
     memset(parola, 0, 20);
-    int contor = 0,contorStocIntrebari=0;
+    int contor = 0,contorStocIntrebari=0,contorIntrebariScurt = 0,contorIntrebariGrila = 0;
     clasament = initializare();
     intrebariScurte = initializare();
     intrebariGrila = initializare();
@@ -182,7 +185,7 @@ int main() {
 
     numeFisiere(clasament, intrebariScurte, intrebariGrila,parolaAdmin);
     extragereParolaAdmin(parola, parolaAdmin);
-    paginaPrincipala(clasament,intrebariScurte,intrebariGrila,parolaAdmin,&scurte,&grila,&rank,&contor,&contorStocIntrebari,parola);
+    paginaPrincipala(clasament,intrebariScurte,intrebariGrila,parolaAdmin,&scurte,&grila,&rank,&contor,&contorStocIntrebari,parola,&contorIntrebariScurt,&contorIntrebariGrila);
 
     free(clasament);
     free(intrebariScurte);

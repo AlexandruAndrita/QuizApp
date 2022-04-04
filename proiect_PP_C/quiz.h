@@ -8,7 +8,7 @@ void transformaDinLitereMari(char s[])
 int verificaAparitii(int aparitii[], int maxNrIntrebari)
 {
     int cateNumere = 0;
-    for (int i = 0; i < maxNrIntrebari; i++)
+    for (int i = 1; i <= maxNrIntrebari; i++)
     {
         if (aparitii[i] != 0)
             cateNumere++;
@@ -36,7 +36,7 @@ int quizScurt(int contorIntrebariScurt, struct lista *scurte, clock_t *start_t,c
 {
     getchar();
     struct questions* a = scurte->head;
-    int contor = 0, j = 0, i = 0;
+    int contor = 0, j = 1, i = 0;
     int* aparitii = (int*)calloc(contorIntrebariScurt, sizeof(int));
     generareNumere(aparitii, contorIntrebariScurt);
 
@@ -153,7 +153,7 @@ int quizGrila(int contorIntrebariGrila, struct lista* grila, clock_t* start_t, c
 {
     getchar();
     struct grila* c = grila->cap;
-    int contor = 0, j = 0, i = 0;
+    int contor = 0, j = 1, i = 0;
     int* aparitii = (int*)calloc(contorIntrebariGrila, sizeof(int));
     generareNumere(aparitii, contorIntrebariGrila);
 

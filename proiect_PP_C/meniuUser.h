@@ -100,31 +100,35 @@ void incepeQuiz(int contorIntrebariScurt, int contorIntrebariGrila, char* parola
                 {
                     mutareDateInFisier(rank, clasament);
                     plasareParolaNouaInFisier(parola, parolaAdmin);
+                    completareInFisier(intrebariScurte, intrebariGrila, scurte, grila, 1);
+                    completareInFisier(intrebariScurte, intrebariGrila, scurte, grila, 2);
                     system("cls");
                     printf("\tAi parasit jocul");
                     exit(0);
                 }
                 if (numar == 1)
                 {
+                    int ramura = 0;
                     if (runda >= 1)
                     {
                         system("cls");
                         printf("\tAti jucat deja o runda.\n\tPuteti rejuca cu acelasi nume alta runda.Doriti?\n");
                         getchar();
-                        int ramura = 0;
                         repetareJoc(&ramura);
                         statusUser = 2;
                         if (ramura == 2) {
+                            statusUser = 1;
                             system("cls");
-                            break;
                         }
                     }
+                    if (statusUser == 1 && ramura!=0)
+                        break;
                     runda++;
                     system("cls");
                     printf("\n\tDoriti un test grila sau un test cu raspunsuri scurte?\n\t[1] Grila (Tasta 1)\n\t[2] Raspuns scurt (Tasta 2)\n\n");
                     char opt[10];
                     int numarOptiune = 0;
-                    memset(opt, 0, 15);
+                    memset(opt, 0, 10);
                     while (1)
                     {
                         printf("\t");
@@ -181,13 +185,14 @@ void incepeQuiz(int contorIntrebariScurt, int contorIntrebariGrila, char* parola
                 {
                     getchar();
                     system("cls");
-                    paginaPrincipala(clasament, intrebariScurte, intrebariGrila, parolaAdmin, scurte, grila, rank, contor,contorStocIntrebari,parola);
+                    paginaPrincipala(clasament, intrebariScurte, intrebariGrila, parolaAdmin, scurte, grila, rank, contor,contorStocIntrebari,parola,&contorIntrebariScurt,&contorIntrebariGrila);
 
                 }
                 if (numar == 3)
                 {
                     system("cls");
                     if (rank->primul == NULL) {
+                        system("cls");
                         printf("\n\tNu exista vreun clasament.\n\tNu a fost gasit niciun utilizator\n\n");
                     }
                     else {
@@ -220,12 +225,15 @@ void optiuniUser(char* clasament, char* intrebariScurte, char* intrebariGrila, c
             case 4:
                 mutareDateInFisier(rank, clasament);
                 plasareParolaNouaInFisier(parola, parolaAdmin);
+                completareInFisier(intrebariScurte, intrebariGrila, scurte, grila, 1);
+                completareInFisier(intrebariScurte, intrebariGrila, scurte, grila, 2);
                 system("cls");
                 printf("\tAi parasit jocul");
                 exit(0);
             case 1:
                 if (rank->primul == NULL)
                 {
+                    system("cls");
                     printf("\n\tNu exista vreun clasament.\n\tNu a fost gasit niciun utilizator\n\n");
                 }
                 else {
@@ -238,7 +246,7 @@ void optiuniUser(char* clasament, char* intrebariScurte, char* intrebariGrila, c
                 break;
             case 3:
                 system("cls");
-                paginaPrincipala(clasament, intrebariScurte, intrebariGrila, parolaAdmin, scurte, grila, rank, contor,contorStocIntrebari,parola);
+                paginaPrincipala(clasament, intrebariScurte, intrebariGrila, parolaAdmin, scurte, grila, rank, contor,contorStocIntrebari,parola,&contorIntrebariScurt,&contorIntrebariGrila);
                 break;
             default:
                 system("cls");

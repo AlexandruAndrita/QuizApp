@@ -1,0 +1,3 @@
+Mihai;4;7
+Laurentiu;4;8
+Matei;2;12

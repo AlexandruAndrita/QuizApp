@@ -19,32 +19,17 @@ void adaugareScurtaInLista(struct lista* scurte, char intrebare[], char raspuns[
     }
 }
 
-void adaugareRaspunsScurt(char* intrebariScurte,struct lista *scurte)
+void adaugareRaspunsScurt(struct lista *scurte)
 {
     char intrebare[150], raspuns[150];
-    FILE* fptr;
-    fptr = fopen(intrebariScurte, "a");
-    if (fptr == NULL)
-    {
-        system("cls");
-        printf("\tFisierul nu exista");
-        exit(1);
-    }
-    else {
-        printf("\tIntroduceti intrebarea:\n");
-        printf("\t");
-        gets(intrebare);
-        printf("\tIntroduceti raspunsul:\n");
-        printf("\t");
-        strcat(intrebare, ";");
-        gets(raspuns);
-        adaugareScurtaInLista(scurte, intrebare, raspuns);
-        strcat(intrebare, raspuns);
-        fprintf(fptr, "%s\n", intrebare);
-        printf("\n\tIntrebarea a fost adaugata\n\n");
-        
-    }
-    fclose(fptr);
+    printf("\tIntroduceti intrebarea:\n");
+    printf("\t");
+    gets(intrebare);
+    printf("\tIntroduceti raspunsul:\n");
+    printf("\t");
+    gets(raspuns);
+    adaugareScurtaInLista(scurte, intrebare, raspuns);
+    printf("\n\tIntrebarea a fost adaugata\n\n");
 }
 
 void adaugareGrilaInLista(struct lista* grila, char intrebare[], char raspuns[])
@@ -75,7 +60,7 @@ void citireVar(char* intrebare, char* raspuns1, char* raspuns2, char* raspuns3, 
     char copie[150];
     gets(intrebare);
     strcpy(copie, intrebare);
-    strcat(intrebare, ";");
+    intrebare[0] = '\0';
     printf("\tIntroduceti prima varianta de raspuns\n");
     printf("\t");
     gets(raspuns1);
@@ -109,35 +94,20 @@ void citireVar(char* intrebare, char* raspuns1, char* raspuns2, char* raspuns3, 
     }
 }
 
-void adaugareRaspunsMultiplu(char* intrebariGrila,struct lista *grila) {
+void adaugareRaspunsMultiplu(struct lista *grila) {
 
-    FILE* multiplu;
-    multiplu = fopen(intrebariGrila, "a");
-    if (multiplu == NULL)
-    {
-        system("cls");
-        printf("\tFisierul nu exista");
-        exit(1);
-    }
-    else {
-        char* intrebare = (char*)malloc(150 * sizeof(char));
-        char* raspuns1 = (char*)malloc(30 * sizeof(char));
-        char* raspuns2 = (char*)malloc(30 * sizeof(char));
-        char* raspuns3 = (char*)malloc(30 * sizeof(char));
-        char* corect = (char*)malloc(30 * sizeof(char));
-        citireVar(intrebare, raspuns1, raspuns2, raspuns3, corect,grila);
+    char* intrebare = (char*)malloc(150 * sizeof(char));
+    char* raspuns1 = (char*)malloc(30 * sizeof(char));
+    char* raspuns2 = (char*)malloc(30 * sizeof(char));
+    char* raspuns3 = (char*)malloc(30 * sizeof(char));
+    char* corect = (char*)malloc(30 * sizeof(char));
+    citireVar(intrebare, raspuns1, raspuns2, raspuns3, corect,grila);
 
-        fprintf(multiplu, "%s\n", intrebare);
-        
+    printf("\n\tIntrebarea a fost adaugata\n\n");
 
-        printf("\n\tIntrebarea a fost adaugata\n\n");
-
-        free(intrebare);
-        free(raspuns1);
-        free(raspuns2);
-        free(raspuns3);
-        free(corect);
-
-        fclose(multiplu);
-    }
+    free(intrebare);
+    free(raspuns1);
+    free(raspuns2);
+    free(raspuns3);
+    free(corect);
 }

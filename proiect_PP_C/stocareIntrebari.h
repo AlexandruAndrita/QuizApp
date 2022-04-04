@@ -69,6 +69,7 @@ void adaugareIntrebariGrila(char* intrebariGrila,int *contorIntrebariGrila, stru
         char* p = strtok(linie, ";");
         strcpy(elem->intrebare, p);
         p = strtok(NULL, ";");
+        int nr = 1;
         while (p != NULL)
         {
             if (p[strlen(p) - 1] == '\n')
@@ -76,8 +77,10 @@ void adaugareIntrebariGrila(char* intrebariGrila,int *contorIntrebariGrila, stru
                 p[strlen(p) - 1] = '\0';
             }
             strcat(variante, p);
-            strcat(variante, ";");
+            if(nr!=4)
+                strcat(variante, ";");
             p = strtok(NULL, ";");
+            nr++;
         }
         strcpy(elem->raspuns, variante);
         elem->urm = NULL;

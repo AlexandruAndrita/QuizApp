@@ -1,1 +1,5 @@
-
+Mihai;4;10
+alex;4;12
+Laura;4;17
+Denis;3;17
+mihai;3;18

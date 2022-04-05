@@ -57,7 +57,7 @@ void verificareTipJoc(int *incercari,int *statusUser,struct lista* rank,char num
 	int valid = 0;
 	while (valid==0)
 	{
-		printf("\t");
+		printf("\tOptiunea dumneavoastra: ");
 		char optiune[10];
 		gets(optiune);
 		if (validareInput(optiune) == 1)
@@ -95,7 +95,7 @@ void verificareTipJoc(int *incercari,int *statusUser,struct lista* rank,char num
 void preluareNumeUser(char numeJucator[], int *statusUser, struct lista* rank)
 {
 	printf("\tIntroduceti-va numele:\n");
-	printf("\t");
+	printf("\tNumele: ");
 	gets(numeJucator);
 	int incercari = 1,validat=0;
 	while (validat==0)
@@ -105,10 +105,10 @@ void preluareNumeUser(char numeJucator[], int *statusUser, struct lista* rank)
 			if (*statusUser == 1) //user nou
 			{
 				printf("\n\tNumele introdus a fost deja folosit.\n\tIncercati din nou.\n\n");
-				printf("\t");
+				printf("\tNumele: ");
 				gets(numeJucator);
 			}
-			else //returning user
+			else //user existent
 			{
 				printf("\n\tNumele a fost gasit.\n\n");
 				validat = 1;
@@ -121,7 +121,7 @@ void preluareNumeUser(char numeJucator[], int *statusUser, struct lista* rank)
 				printf("\n\tNumele a fost memorat.\n\n");
 				validat = 1;
 			}
-			else //returning user
+			else //user existent
 			{
 				if (incercari == 2)
 				{
@@ -130,7 +130,7 @@ void preluareNumeUser(char numeJucator[], int *statusUser, struct lista* rank)
 					{
 						system("cls");
 						printf("\n\tIntroduceti-va numele\n\n");
-						printf("\t");
+						printf("\tNumele: ");
 						gets(numeJucator);
 					}
 					else
@@ -139,14 +139,14 @@ void preluareNumeUser(char numeJucator[], int *statusUser, struct lista* rank)
 						{
 							system("cls");
 							printf("\n\tIntroduceti-va numele\n\n");
-							printf("\t");
+							printf("\tNumele: ");
 							gets(numeJucator);
 						}
 					}
 				}
 				else {
 					printf("\n\tNumele introdus nu a fost gasit.\n\tIncercati din nou.\n\n");
-					printf("\t");
+					printf("\tNumele: ");
 					gets(numeJucator);
 					incercari++;
 				}

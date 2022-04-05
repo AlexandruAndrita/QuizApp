@@ -28,7 +28,7 @@ void confirmareStergere(int contor,int *aparitii,int *numar,int *cateNumere)
         printf("\t[2] Nu\n");
         while (1)
         {
-            printf("\t");
+            printf("\tOptiunea dumneavoastra: ");
             scanf("%s", optiune);
             if (validareInput(optiune) == 1)
             {
@@ -46,7 +46,8 @@ void confirmareStergere(int contor,int *aparitii,int *numar,int *cateNumere)
     else
     {
         (*numar) = 2;
-        printf("\tNu au fost introdusi indecsi astfel incat sa poata sa fie sterse intrebari.\n\n");
+        printf("\tNu au fost introdusi indecsi sau indecii introdusi sunt mai mari decat indexul ultimei intrebari.\n");
+        printf("\tAstfel incat sa poata sa fie sterse intrebari.\n");
        
     }
 }

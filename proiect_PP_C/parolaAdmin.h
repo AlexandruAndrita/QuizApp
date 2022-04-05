@@ -22,12 +22,12 @@ void schimbareParolaAdmin(char parola[])
     char* confirmareparolaNoua = (char*)calloc(30, sizeof(char));
     int schimba = -1;
     printf("\tIntroduceti noua parola:\n");
-    printf("\t");
+    printf("\tNoua parola: ");
     gets(parolaNoua);
-    printf("\tIntroduceti din nou parola pentru confirmare:\n");
+    printf("\n\tIntroduceti din nou parola pentru confirmare:\n");
     while (1)
     {
-        printf("\t");
+        printf("\tConfirmare parola noua: ");
         gets(confirmareparolaNoua);
         if (strcmp(parolaNoua, confirmareparolaNoua) == 0)
         {
@@ -62,7 +62,7 @@ void confirmareSchimbareParola(int* schimba)
     int valid = 0;
     while (valid == 0)
     {
-        printf("\t");
+        printf("\tOptiunea dumneavoastra: ");
         char optiune[10];
         gets(optiune);
         if (validareInput(optiune) == 1)
@@ -99,7 +99,7 @@ int verificareParolaAdministrator(char parola[])
     char userInput[20];
 
     printf("\tIntroduceti parola\n\n");
-    printf("\t");
+    printf("\tParola: ");
     gets(userInput);
 
     if (strcmp(parola, userInput) != 0)

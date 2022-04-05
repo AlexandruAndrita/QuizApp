@@ -2,6 +2,8 @@ void afisareIntrebari(struct lista* scurte, struct lista* grila, int ok,int *con
 {
     if (ok == 1)
     {
+        printf("\n");
+        system("cls");
         (*contor) = 0;
         struct questions* aux = scurte->head;
         while (aux != NULL)
@@ -15,6 +17,8 @@ void afisareIntrebari(struct lista* scurte, struct lista* grila, int ok,int *con
     {
         if (ok == 2)
         {
+            printf("\n");
+            system("cls");
             (*contor) = 0;
             struct grila* aux = grila->cap;
             while (aux != NULL)

@@ -13,7 +13,7 @@ int verificaAparitii(int aparitii[], int maxNrIntrebari)
         if (aparitii[i] != 0)
             cateNumere++;
     }
-    if (cateNumere != 5) //pentru ca vreau sa am 5 intrebari la fiecare quiz
+    if (cateNumere != 5)
         return 0;
     return 1;
 }
@@ -50,7 +50,7 @@ int quizScurt(int contorIntrebariScurt, struct lista *scurte, clock_t *start_t,c
         {
             printf("\t%s\n", a->intrebare);
 
-            printf("\t");
+            printf("\tRaspunsul dumneavoastra: ");
             gets(rasp);
 
             strcpy(aux, a->raspuns);
@@ -61,6 +61,7 @@ int quizScurt(int contorIntrebariScurt, struct lista *scurte, clock_t *start_t,c
             if (strcmp(aux, rasp) == 0)
                 contor += 1;
             i++;
+            printf("\n");
         }
 
         a = a->next;
@@ -171,7 +172,7 @@ int quizGrila(int contorIntrebariGrila, struct lista* grila, clock_t* start_t, c
             strcpy(auxx, c->raspuns);
             afisareVariante(auxx, varCorecta);
 
-            printf("\t");
+            printf("\tOptiunea dumneavoastra: ");
             gets(rasp);
             memset(auxx, 0, 150);
             strcpy(auxx, c->raspuns);
@@ -186,6 +187,7 @@ int quizGrila(int contorIntrebariGrila, struct lista* grila, clock_t* start_t, c
                 contor += 1;
             }
             i++;
+            printf("\n");
         }
         c = c->urm;
         j++;

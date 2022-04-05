@@ -19,6 +19,7 @@
 #include "meniuAdmin.h"
 #include "parolaAdmin.h"
 #include "initializareNumeFisiere.h"
+#include "reguli.h"
 
 
 
@@ -28,7 +29,7 @@ void paginaPrincipala(char *clasament,char* intrebariScurte, char *intrebariGril
     while (1)
     {
         char optiune[10];
-        printf("\t");
+        printf("\n\tOptiunea dumneavoastra: ");
         gets(optiune);
 
         int statusUser = 0;
@@ -92,45 +93,6 @@ void paginaPrincipala(char *clasament,char* intrebariScurte, char *intrebariGril
     }
 }
 
-void meniuReguli(char* clasament, char* intrebariScurte, char* intrebariGrila, char* parolaAdmin, struct lista* scurte, struct lista* grila, struct lista* rank, int* contor,int *contorStocIntrebari,char parola[], int* contorIntrebariScurt, int* contorIntrebariGrila)
-{
-    optiuniReguli();
-    while (1)
-    {
-        char optiune[10];
-        printf("\t");
-        gets(optiune);
-        if (validareInput(optiune) == 1)
-        {
-            int numar = atoi(optiune);
-            switch (numar)
-            {
-            case 1:
-                system("cls");
-                paginaPrincipala(clasament, intrebariScurte, intrebariGrila, parolaAdmin, scurte, grila, rank, contor,contorStocIntrebari,parola,contorIntrebariScurt,contorIntrebariGrila);
-                break;
-            case 2:
-                mutareDateInFisier(rank, clasament);
-                plasareParolaNouaInFisier(parola, parolaAdmin);
-                completareInFisier(intrebariScurte, intrebariGrila, scurte, grila, 1);
-                completareInFisier(intrebariScurte, intrebariGrila, scurte, grila, 2);
-                system("cls");
-                printf("\tAti parasit jocul.");
-                exit(0);
-            default:
-                system("cls");
-                printf("\tValoarea introdusa nu corespunde cerintelor. Incercati din nou.\n\n");
-            }
-        }
-        else
-        {
-            system("cls");
-            printf("\tValoarea introdusa nu corespunde cerintelor. Incercati din nou.\n\n");
-        }
-        optiuniReguli();
-    }
-}
-
 int validareInput(char optiune[])
 {
     int n = strlen(optiune);
@@ -145,7 +107,7 @@ int validareInput(char optiune[])
 void progressBar()
 {
     char var1 = 177, var2 = 219;
-    printf("\t\tLoading...\n\n");
+    printf("\t\tSe incarca...\n\n");
     printf("\t\t");
     for (int i = 0; i < 25; i++)
         printf("%c", var1);
@@ -161,7 +123,7 @@ void progressBar()
 
 int main() {
     printf("\t\t\tQuizApp\n\n\n");
-    //progressBar();
+    progressBar();
     srand(time(0));
 
     struct lista scurte;

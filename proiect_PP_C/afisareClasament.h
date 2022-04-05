@@ -133,5 +133,6 @@ void afisareClasament(struct lista* rank)
 		delimitatorLinie(lungime);
 		elem = elem->urmator;
 	}
-	printf("\n\n");
+	printf("\n\n\tTimpul este socotit in secunde si reprezinta timpul petrecut per total in joc de catre utilizator.");
+	printf("\n\n\n");
 }

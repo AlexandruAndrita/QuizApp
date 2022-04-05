@@ -3,7 +3,7 @@ void verificareStatusUser(int* nou)
     optiuniStatusUser();
     while (*nou == 0)
     {
-        printf("\t");
+        printf("\tOptiunea dumneavoastra: ");
         char optiune[10];
         gets(optiune);
         if (validareInput(optiune) == 1)
@@ -40,7 +40,7 @@ void repetareJoc(int *ramura)
     int valid = 0;
     while (valid==0)
     {
-        printf("\n\t");
+        printf("\n\tOptiunea dumneavoastra: ");
         char raspuns[10];
         gets(raspuns);
         if (validareInput(raspuns) == 1)
@@ -83,7 +83,7 @@ void incepeQuiz(int contorIntrebariScurt, int contorIntrebariGrila, char* parola
     optiuniQuiz();
     while (1)
     {
-        printf("\t");
+        printf("\n\tOptiunea dumneavoastra: ");
         char optiune[10];
         scanf("%s", optiune);
 
@@ -131,7 +131,7 @@ void incepeQuiz(int contorIntrebariScurt, int contorIntrebariGrila, char* parola
                     memset(opt, 0, 10);
                     while (1)
                     {
-                        printf("\t");
+                        printf("\tOptiunea dumneavoastra: ");
                         scanf("%s", opt);
                         if (validareInput(opt) == 1)
                         {
@@ -215,7 +215,7 @@ void optiuniUser(char* clasament, char* intrebariScurte, char* intrebariGrila, c
     opuser();
     while (1)
     {
-        printf("\t");
+        printf("\n\tOptiunea dumneavoastra: ");
         char optiune[10];
         gets(optiune);
         if (validareInput(optiune) == 1) {

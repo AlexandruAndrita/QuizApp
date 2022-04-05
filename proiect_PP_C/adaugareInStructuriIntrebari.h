@@ -23,10 +23,10 @@ void adaugareRaspunsScurt(struct lista *scurte)
 {
     char intrebare[150], raspuns[150];
     printf("\tIntroduceti intrebarea:\n");
-    printf("\t");
+    printf("\tIntrebarea: ");
     gets(intrebare);
-    printf("\tIntroduceti raspunsul:\n");
-    printf("\t");
+    printf("\n\tIntroduceti raspunsul:\n");
+    printf("\tRaspunsul: ");
     gets(raspuns);
     adaugareScurtaInLista(scurte, intrebare, raspuns);
     printf("\n\tIntrebarea a fost adaugata\n\n");
@@ -56,31 +56,32 @@ void adaugareGrilaInLista(struct lista* grila, char intrebare[], char raspuns[])
 void citireVar(char* intrebare, char* raspuns1, char* raspuns2, char* raspuns3, char* corect,struct lista *grila)
 {
     printf("\tIntroduceti intrebarea\n");
-    printf("\t");
+    printf("\tIntrebarea: ");
     char copie[150];
     gets(intrebare);
     strcpy(copie, intrebare);
     intrebare[0] = '\0';
-    printf("\tIntroduceti prima varianta de raspuns\n");
-    printf("\t");
+    printf("\n\tIntroduceti prima varianta de raspuns\n");
+    printf("\tPrima varianta: ");
     gets(raspuns1);
     strcat(intrebare, raspuns1);
     strcat(intrebare, ";");
-    printf("\tIntroduceti a doua varianta de raspuns\n");
-    printf("\t");
+    printf("\n\tIntroduceti a doua varianta de raspuns\n");
+    printf("\tA doua varianta: ");
     gets(raspuns2);
     strcat(intrebare, raspuns2);
     strcat(intrebare, ";");
-    printf("\tIntroduceti a treia varianta de raspuns\n");
-    printf("\t");
+    printf("\n\tIntroduceti a treia varianta de raspuns\n");
+    printf("\tA treia varianta: ");
     gets(raspuns3);
     strcat(intrebare, raspuns3);
     strcat(intrebare, ";");
-    printf("\tIntroduceti raspunsul corect\n");
+    printf("\n\tIntroduceti raspunsul corect\n");
 
     while (1) {
-        printf("\t");
+        printf("\tRaspunsul corect: ");
         gets(corect);
+        printf("\n");
         if (strcmp(raspuns1, corect) == 0 || strcmp(raspuns2, corect) == 0 || strcmp(raspuns3, corect) == 0) {
             strcat(intrebare, corect);
             adaugareGrilaInLista(grila, copie, intrebare);

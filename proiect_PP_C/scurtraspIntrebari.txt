@@ -1,7 +1,3 @@
-In ce an a inceput Primul Razboi Mondial?;1914
-Care este cel mai lung fluviu din Europa?;Volga
-Din ce tara izvoraste Dunarea?;Germania
-In ce an a intrat Romania in Uniunea Europeana?;2007
 Ce poet a scris poezia "Plumb"?;George Bacovia
 Cate zile are un an bisect?;366
 Cati ani a durat razboiul de 100 de ani?;116
@@ -24,4 +20,3 @@ Care este cea mai mare insula din lume?;Groenlanda
 Cine a scris Odiseea?;Homer
 In ce tara se afla Taj Mahal?;India
 Care este temperatura medie a suprafetei pe Venus? (in grade Celsius);460
-In ce an a fost produsul WD40 inventat de chimistul Norm Larsen?;1953

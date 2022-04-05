@@ -159,6 +159,7 @@
     <ClInclude Include="parolaAdmin.h" />
     <ClInclude Include="prototipuri.h" />
     <ClInclude Include="quiz.h" />
+    <ClInclude Include="reguli.h" />
     <ClInclude Include="stergereIntrebari.h" />
     <ClInclude Include="stocareIntrebari.h" />
     <ClInclude Include="structuri.h" />

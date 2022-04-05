@@ -3,7 +3,7 @@ void optiuniAdministrator(char* clasament, char* intrebariScurte, char* intrebar
     opadmin();
     while (1)
     {
-        printf("\t");
+        printf("\n\tOptiunea dumneavoastra: ");
         char optiune[10];
         gets(optiune);
         if (validareInput(optiune) == 1) {
@@ -31,7 +31,7 @@ void optiuniAdministrator(char* clasament, char* intrebariScurte, char* intrebar
                 int numarOptiune = 0;
                 while (1)
                 {
-                    printf("\t");
+                    printf("\tOptiunea dumneavoastra: ");
                     scanf("%s", optiune);
 
                     if (validareInput(optiune) == 1)
@@ -131,7 +131,7 @@ void tipIntrebare(char* clasament, char* intrebariScurte, char* intrebariGrila, 
     tipIntrebareQ();
     while (1)
     {
-        printf("\t");
+        printf("\n\tOptiunea dumneavoastra: ");
         char optiune[10];
         gets(optiune);
         if (validareInput(optiune) == 1)

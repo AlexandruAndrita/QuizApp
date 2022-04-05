@@ -44,8 +44,8 @@ void reguli()
     printf("\n");
     printf("\t1. Pentru intrebariel cu raspuns scurt, va fi introdus doar raspunsul care este considerat corect de catre utilizator.\n");
     printf("\t2. Pentru intrebarile de tip grila, se va raspunde cu 1 (adica a) ),2 (adica b) ) sau 3 (adica c) ).\n\tOrice alt raspuns va fi considerat gresit.\n");
-    printf("\t3. Scorul va fi afisat la final, iar numele si scorul vor fi puse intr-un clasament.\n\tClasamentul poate fi vizuzalizat de catre utilizator daca se doreste acest lucru.\n");
-    printf("\t4. Pentru stergerea de intrebari vor fi introdusi indecsii intrebarilor ce vor fi a sterse separati printr-un spatiu.\n");
+    printf("\t3. Scorul va fi afisat la final, iar numele si scorul se vor regasi intr-un clasament ce poate fi vizualizat\n");
+    printf("\t4. Pentru stergerea de intrebari vor fi introdusi indecsii intrebarilor ce doresc a fi sterse, indecsii fiind separati printr-un spatiu.\n");
     printf("\n");
 }
 

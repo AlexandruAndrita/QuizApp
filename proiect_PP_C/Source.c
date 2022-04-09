@@ -37,6 +37,10 @@ void paginaPrincipala(char *clasament,char* intrebariScurte, char *intrebariGril
             stocareIntrebari(contorIntrebariScurt, contorIntrebariGrila, clasament, intrebariScurte, intrebariGrila, scurte, grila, contorStocIntrebari,contorIntrebariScurt,contorIntrebariGrila);
             (*contorStocIntrebari)++;
         }
+        if ((*contor) == 0) {
+            preluareNumeDinFisier(rank, clasament);
+        }
+        (*contor)++;
 
         if (validareInput(optiune) == 1) {
             int numar = atoi(optiune);
@@ -44,9 +48,9 @@ void paginaPrincipala(char *clasament,char* intrebariScurte, char *intrebariGril
             {
                 case 1:
                     system("cls");
-                    if((*contor)==0)
-                        preluareNumeDinFisier(rank, clasament);
-                    (*contor)++;
+                    //if((*contor)==0)
+                        //preluareNumeDinFisier(rank, clasament);
+                    //(*contor)++;
                     verificareStatusUser(&statusUser);
                     system("cls");
                     if (statusUser == 2 && rank->primul == NULL)

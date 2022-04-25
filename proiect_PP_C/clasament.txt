@@ -1,4 +1,5 @@
 miha;5;10
+Alex;5;19
 Mihai;4;10
 alex;4;12
 Laura;4;17

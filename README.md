@@ -9,6 +9,38 @@ The administrative part is for the administrator and develops other features. Th
 
 Demo:
 
-Main Page
+Main Page:
 ![image](https://user-images.githubusercontent.com/92984942/165149382-937cad5c-9511-4298-9614-b7c522b2c1e9.png)
+
+Home page:
+![image](https://user-images.githubusercontent.com/92984942/165149532-f74c0132-3383-45ed-b629-ac6cfcbc503c.png)
+
+User menu:
+![image](https://user-images.githubusercontent.com/92984942/165149584-7db9d062-e090-48ff-bb31-80cb3a6da4a0.png)
+![image](https://user-images.githubusercontent.com/92984942/165149603-d2d3459d-2914-4d64-ba1c-51d5d3d64530.png)
+
+Game choice:
+![image](https://user-images.githubusercontent.com/92984942/165149656-fa17d03e-84fa-4a9f-a04a-65ecb96639fe.png)
+
+Quiz result:
+![image](https://user-images.githubusercontent.com/92984942/165149801-0809ea6f-d4b2-4a00-ac47-198a004dbcfd.png)
+
+Standings:
+![image](https://user-images.githubusercontent.com/92984942/165149854-f0d78bbe-892d-46e5-a6bb-9ae0db5c004e.png)
+
+Admin menu:
+![image](https://user-images.githubusercontent.com/92984942/165149912-d246cd92-977a-4583-956b-b1158d05c14b.png)
+
+Select which type of question do you want to add:
+![image](https://user-images.githubusercontent.com/92984942/165150017-cb1ca568-e1ef-45ad-b667-f083eefd2f1d.png)
+
+Select which type of question do you want to delete:
+![image](https://user-images.githubusercontent.com/92984942/165150093-404163f4-dd85-48ff-b1a1-e1b004b124c6.png)
+
+Confirmation for deleting a question (or more questions should you wish):
+![image](https://user-images.githubusercontent.com/92984942/165150148-296cd847-b55c-4437-809c-756ee4f2e118.png)
+
+Changing the password for admin mode:
+![image](https://user-images.githubusercontent.com/92984942/165150281-ba9eee2e-104d-4841-9986-8e8cb95eed59.png)
+
 
